@@ -9,13 +9,13 @@ I am a third-year, physics Ph.D. student studying theoretical high-energy physic
 
 My research interests are in dark matter phenomenology and electroweak baryogenisis. Recently, collaborators and I have been investigating possible indirect-detection signals from MeV-scale dark matter.
 
-# Projects 
+# Current Projects 
 
-## Indirect detection of MeV-Scale Dark Matter
+* **Indirect detection of MeV-Scale Dark Matter**
 
-## Gauge-independent Gravitational Wave Signals From Electroweak Phase Transition
+* **Gauge-independent GW Signals From EW  Phase Transition**
 
-## Constraints on Dark Matter Effective Field Theories From Direct Detection
+* **Constraints on Dark Matter EFTs From Direct Detection**
 
 
 
