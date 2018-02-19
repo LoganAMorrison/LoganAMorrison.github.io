@@ -2,8 +2,8 @@
 layout: default
 ---
 
-About
------
+Brief Bio
+---------
 
 I am a third-year, physics Ph.D. student studying theoretical high-energy physics. I obtained my bachelor's degree in physics and mathematics from Western Washington University in Washington state in 2015. I also have a masters degree in physics from UCSC.
 
