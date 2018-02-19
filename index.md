@@ -4,7 +4,3 @@
 # See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 layout: home
 ---
-
-Projects
---------
-[Hazma](https://github.com/LoganAMorrison/Hazma)
