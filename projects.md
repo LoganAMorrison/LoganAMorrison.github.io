@@ -1,6 +1,9 @@
 ---
-layout: page
+layout: default
 ---
+
+Projects
+--------
 
 Hazma
 -----
