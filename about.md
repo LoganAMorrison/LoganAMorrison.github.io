@@ -2,6 +2,9 @@
 layout: default
 ---
 
+About
+=====
+
 Brief Bio
 ---------
 
