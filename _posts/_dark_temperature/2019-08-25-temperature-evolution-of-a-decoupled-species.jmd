@@ -378,7 +378,7 @@ using DelimitedFiles
 import PyPlot; const plt = PyPlot # python plotting
 using LaTeXStrings
 
-sm_data = readdlm(string(@__DIR__) * "smdof.csv", ',', skipstart=1)
+sm_data = readdlm(string(@__DIR__) * "assets/data/smdof.csv", ',', skipstart=1)
 sm_data_ts = sm_data[:, 1];
 sm_data_hs = sm_data[:, 3];
 
@@ -391,9 +391,6 @@ plt.xscale("log")
 plt.ylabel(L"$h_{\mathrm{eff}}(T)$", fontsize=16)
 plt.xlabel(L"$T \ (\mathrm{GeV})$", fontsize=16)
 plt.gcf()
-
-println("Max h(T) = $(sm_data_hs[end])")
-println("Min h(T) = $(sm_data_hs[1])")
 ```
 
 From this plot, we can see that $h(T)$ is bounded from above and below. The
