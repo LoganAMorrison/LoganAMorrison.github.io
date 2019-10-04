@@ -3,7 +3,7 @@ title: Visualizing Fourier Series
 tags: teaching
 ---
 
-![Alt Text](../../../assets/videos/fourier_physics_116c.gif)
+![Alt Text](../../../assets/videos/fourier_physics_116C.gif)
 
 Its fall again and I'm TAing PHYS 116C (for the third time). The first topic of PHYS 116C is Fourier series. So, naturally, I thought I'd make a post about Fourier series. At some point, I stumbled acrossed [this](https://www.youtube.com/watch?v=Mm2eYfj0SgA) video by `The Coding Train`. In this post, I'd like to replicate what the `The Coding Train` did, but in more generality, i.e. for a general Fourier series. I will focus on periodic functions on the interval $(-\pi, \pi)$ for simplicity (one can easily modify what I write to accomidate more general intervals). I will also be using `Julia`, but the code can be easily adapted to any language (but at some put you'll need a plotting library, so I'd say `Julia`, `python` or `Mathematica` is the way to go.)
 
@@ -276,4 +276,4 @@ Note that I have added some code to plot the centers of the circles using `scatt
 
 ![Alt Text](../../../assets/videos/fourier_linear_const.gif)
 
-As a final note, I'll explain how I made the gif displaying "Physics 116C" at the top of this post. What I did was plot digitize the text for "Physics 116C" using [this](https://automeris.io/WebPlotDigitizer/). Using the data that I extracted from the webplot digitizer, I constructed linear interpolating functions for the $x$ and $y$ data. Then, I constructed Fourier series for $x$ and $y$ functions and essentially repeated what I showed above. 
+As a final note, I'll explain how I made the gif displaying "Physics 116C" at the top of this post. What I did was plot digitize the text for "Physics 116C" using [this](https://automeris.io/WebPlotDigitizer/). Using the data that I extracted from the webplot digitizer, I constructed linear interpolating functions for the $x$ and $y$ data. Then, I constructed Fourier series for $x$ and $y$ functions and essentially repeated what I showed above.
