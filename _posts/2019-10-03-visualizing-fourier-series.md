@@ -3,9 +3,11 @@ title: Visualizing Fourier Series
 tags: teaching
 ---
 
+Its fall again and I'm TAing PHYS 116C (for the third time). The first topic of PHYS 116C is Fourier series. So, naturally, I thought I'd make a post about Fourier series.
+
 ![Alt Text](../../../assets/videos/fourier_physics_116C.gif)
 
-Its fall again and I'm TAing PHYS 116C (for the third time). The first topic of PHYS 116C is Fourier series. So, naturally, I thought I'd make a post about Fourier series. At some point, I stumbled acrossed [this](https://www.youtube.com/watch?v=Mm2eYfj0SgA) video by `The Coding Train`. In this post, I'd like to replicate what the `The Coding Train` did, but in more generality, i.e. for a general Fourier series. I will focus on periodic functions on the interval $(-\pi, \pi)$ for simplicity (one can easily modify what I write to accomidate more general intervals). I will also be using `Julia`, but the code can be easily adapted to any language (but at some put you'll need a plotting library, so I'd say `Julia`, `python` or `Mathematica` is the way to go.)
+At some point, I stumbled acrossed [this](https://www.youtube.com/watch?v=Mm2eYfj0SgA) video by `The Coding Train`. In this post, I'd like to replicate what the `The Coding Train` did, but in more generality, i.e. for a general Fourier series. I will focus on periodic functions on the interval $(-\pi, \pi)$ for simplicity (one can easily modify what I write to accomidate more general intervals). I will also be using `Julia`, but the code can be easily adapted to any language (but at some put you'll need a plotting library, so I'd say `Julia`, `python` or `Mathematica` is the way to go.)
 
 # Fourier Series
 The concept of Fourier series is incredibly useful for many fields in science, ranging from math, to physics, to engineering. As a physicist, I use Fourier series almost every day (mostly in infinite period limit, i.e. the Fourier transform, but thats a topic for a later day.) The goal of a Fourier series is to decompose a periodic function into a countably infinite number of sines and cosines with varying frequencies. This can be done for any piecewise continuous function over the real or complex numbers. Given some piecewise continuous function, $f(t)$, over the real numbers, which is periodic over the interval $(-\pi,\pi)$, we can write down its Fourier series as:
