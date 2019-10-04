@@ -1,0 +1,484 @@
+---
+title: Solving the Boltzmann Equation
+tags: quantum-field-theory effective-potential
+---
+
+## Introduction
+Given a quantum field theory containing a single or set of scalar field, one
+is often interested in the potential of the scalar sector. The potential
+dictates what the vacuum expectation value (VEV) of the scalar fields will be.
+For a generic scalar potential, the scalar field will obtain a non-zero VEV.
+This non-zero VEV will then effect the masses of all particles which interact
+with the scalar field. For example, is the simple abian Higgs model, where we
+have a complex, charge scalar field and a U(1) gauge boson, the non-zero VEV
+of the scalar field endows the gauge-boson with a non-zero mass. At this
+point, all of this is at the classical level, i.e. non quantum effects have
+been considered. The quantum effect will modify the potential to yeild what is
+known as the effective potential. In this document, we will investigate the
+quantum effects on the classical scalar potential to first order in perturbation
+theory, i.e. at one-loop. We will do so in the context of the Abelian Higgs
+model.
+
+The Lagrangian for the Abelian Higgs model is given by:
+$$\begin{align}
+  \mathcal{L} &= -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} +
+  (D_{\mu}H)^{\dagger}(D^{\mu}H) +\mu^2 H^{\dagger}H -
+  \dfrac{\lambda}{2}(H^{\dagger}H)^2
+\end{align}$$
+where $F_{\mu\nu}$ is the field-strength tensor for the photon (abelian gauge
+boson), $H$ is the complex scalar, $\mu^2 > 0$ is a negative mass term,
+$\lambda$ is a dimensionless coupling constant and $D_{\mu}$ is the covariant
+derivative, which is given by:
+$$\begin{align}
+  D_{\mu}H = \partial_{\mu}H -+ieA_{\mu}H
+\end{align}$$
+Here $A_{\mu}$ is the photon field. In the next section, we will look at the
+classical potential.
+
+## Classical Potential
+To get a sense of what the classical potential looks like, let's expand our
+complex scalar into real components:
+$$\begin{align}
+  H = \dfrac{1}{\sqrt{2}}\left(\phi_{1} + i\phi_{2}\right)
+\end{align}$$
+If we expand out the scalar potential, we find:
+$$\begin{align}
+  V &= -\mu^2 H^{\dagger}H + \dfrac{\lambda}{2}(H^{\dagger}H)^2\\
+  &= -\dfrac{\mu^2}{2}(\phi_{1}^2 + \phi_{2}^2) +
+  \dfrac{\lambda}{2}(\phi_{1}^2 + \phi_{2}^2)^2
+\end{align}$$
+If we expand the fields around $\phi_{1} = v + \varphi_{1}$ and
+$\phi_{2} = \varphi_{2}$, where we assume that
+$\langle\varphi_{1}\rangle = \langle\varphi_{1}\rangle=0$, then we find that
+the value of $v$ that minimizes the classical potential is:
+$$\begin{align}
+  v = \dfrac{\sqrt{2}\mu}{\sqrt{\lambda}}
+\end{align}$$
+In fact, our choice of have $\langle\phi_{1}\rangle = v$ was completely
+arbitrary. We could have instead chosens something more complicated like
+$\langle\phi_{1}\rangle = v\cos(\theta)$ and
+$\langle\phi_{1}\rangle = v\sin(\theta)$ and we still would have found the same
+$v$. In general, $\langle H\rangle = ve^{i\theta}$ where $\theta$ is a real
+number between $\theta\in\{0,2\pi\}$. This is of a global U(1) symmetry of our
+theory. Let's visualize the classical potential as a function of $\phi_{1}$ and
+$\phi_{2}$:
+
+````julia
+import PyPlot; const plt = PyPlot # python plotting
+using LaTeXStrings
+
+function classical_potential(ϕ1::Float64, ϕ2::Float64, μ::Float64, λ::Float64)
+  -μ^2 / 2 * (ϕ1^2 + ϕ2^2) + λ / 8 * (ϕ1^2 + ϕ2^2)^2
+end
+
+μ = 1.0
+λ = 0.1
+v = μ / sqrt(λ / 2)
+ϕ1s = range(-4.5, stop=4.5, length=100)
+ϕ2s = range(-4.5, stop=4.5, length=100)
+Vs = [classical_potential(ϕ1, ϕ2, μ, λ) for ϕ1 in ϕ1s, ϕ2 in ϕ2s]
+
+θs = range(0, stop=2π, length=100)
+xs = [v * cos(θ) for θ in θs]
+ys = [v * sin(θ) for θ in θs]
+zs = [classical_potential(v * cos(θ), v * sin(θ), μ, λ) for θ in θs]
+
+fig = plt.figure(dpi=100)
+plt.plot_surface(ϕ1s, ϕ2s, Vs, alpha=0.8)
+ax = fig.gca(projection="3d")
+ax.plot(xs, ys, zs, "-",lw=3)
+plt.gcf()
+````
+
+
+![]({{site.baseurl}}/assets/img/2019-08-24-one-loop-effective-potential-in-the-abelian-higgs-and-gauge-dependence_1_1.png)
+
+
+Notice that we highlighted the ring of VEVs located at $H = ve^{i\theta}$. When
+we plug $\phi_{1} = v + \varphi_{1}$ and $\phi_{2} = \varphi_{2}$ into our
+Lagrangian, we obtain the following:
+$$\begin{align}
+  \mathcal{L} &= -\frac{1}{4}F_{\mu\nu}F^{\mu\nu} + \dfrac{1}{2}m_{A}^2A_{\mu}A^{\mu}+
+  \dfrac{1}{2}(\partial_{\mu}\varphi_{1})^2 + \dfrac{1}{2}(\partial_{\mu}\varphi_{2})^2
+  -eA_{\mu}\left(\varphi_{2}\partial_{\mu}\varphi_{1}-
+    \varphi_{1}\partial_{\mu}\varphi_{2}\right)\\
+  &+evA^{\mu}\partial_{\mu}\varphi_2+\dfrac{e^2}{2}(\varphi_{1}^2+\varphi_{2}^2)A_{\mu}A^{\mu}
+  -V(\varphi_{1},\varphi_{2})\notag
+\end{align}$$
+where $m_{A} = ev$ and the potential is:
+$$\begin{align}
+  V(\varphi_{1},\varphi_{2}) &= -\dfrac{\lambda}{4}v^{4} + \lambda v^2\varphi_{1}^2 +
+  v\lambda \varphi_{1}^3 + v\lambda \varphi_{1}\varphi_{2}^2 +
+  \dfrac{\lambda}{4}(\varphi_{1}^2+\varphi_{2}^2)
+\end{align}$$
+There are a couple things to notice here. The first is, the field $\varphi_{1}$
+obtained a positive mass while the $\varphi_{2}$ field is massless. This is
+a consiquence of Goldstone's theorem. Since we have dynamically broken a
+continuous symmetry (the U(1) symmetry), we are guaranteed to have a massless
+mode. The second thing to notice is that the gauge field also obtains a mass.
+Lastly, we find that the gauge field mixes with the Golstone mode through the
+$A^{\mu}\partial_{\mu}\varphi_{2}$ term. We will see in the next section that
+with a proper gauge choice, the Goldstone can be completely decoupled and can
+be "eaten" by the gauge field to become a longitudinal mode of the gauge field.
+
+## Background Field Expansion
+In the last section, we expanded our Lagrangian around the classical field
+configuration $\langle\phi_{1}\rangle = v=\mu/\sqrt{\lambda}$ and
+$\langle\phi_{1}\rangle=0$. Instead of expanding around $v$, let's expand
+around $\phi_{B}$. That is, we will expand around an arbitrary field location
+in the $\phi_{1}$ direction. Ultimately, this is what we will want when we
+compute the effective potential. For background on the effective potential,
+see my notes.
+
+When deriving the effective potential, only terms that a quadratic in the
+fluctuation fields (all the fields except for the background field) contribute
+to the effective potential. To quadratic order, the Lagrangian is given by:
+$$\begin{align}
+\mathcal{L}_{\mathrm{quad}} & = - V(\varphi_{B})
++\dfrac{1}{2}A_{\mu}\left[(\Box + m_{A}^{2}) g^{\mu\nu}-
+\partial^{\mu}\partial^{\nu}\right]A_{\nu}+
+\dfrac{1}{2}\varphi_{i}\left[-\Box\delta_{ij}-M_{ij}^{2}\right]\phi_{j}
+\end{align}$$
+where the subscript $\mathrm{quad}$ indicates that we have dropped all terms
+that are not quadratic in the fields, including linear terms (which vanish
+at leading-order using the equations of motion.) The gauge-boson mass is
+$m_{A}^2 = e^2\phi_{B}^2$ and the scalar mass-matrix, $M_{ij}$, is
+given by:
+$$\begin{align}
+M_{ij} = \begin{pmatrix}
+  -\mu^2 + \frac{3}{2}\lambda\phi_{B}^2 & 0\\
+  0 & -\mu^2 + \frac{1}{2}\lambda\phi_{B}^2
+\end{pmatrix}
+\end{align}$$
+Before we can go any further, we will need to gauge fix our Lagrangian. We will
+do so in the next section.
+
+## Gauge Fixing and Ghosts
+Our next task will be to gauge-fix our Lagrangian. We will use the following
+gauge-fixing condition:
+$$\begin{align}
+  \mathcal{F}[A_{\mu}] &= \partial_{\mu}A^{\mu} - \xi e\phi_{B}\varphi_{2}
+\end{align}$$
+This gauge-fixing condition leads to the following gauge-fixing Lagrangian:
+$$\begin{align}
+  \mathcal{L}_{\mathrm{GF}} &= -\dfrac{1}{2\xi}\left(\partial_{\mu}A^{\mu} - \xi ev\varphi_{2}\right)^2\\
+  &= -\dfrac{1}{2\xi}\left(\partial_{\mu}A^{\mu}\right)^{2} +
+  e\phi_{B}\left(\partial_{\mu}A^{\mu}\right)\varphi_{2} -
+  \dfrac{1}{2}\xi e^{2}\phi_{B}^{2}\varphi_{2}^{2} \notag
+\end{align}$$
+The middle term actual combines with a term from the un-gauge-fixed
+Lagrangian to form a total derivative. Thus, we can ingore it. We know that
+adding a gauge fixing terms requires ghost fields. The ghost Lagrangian is
+given by:
+$$\begin{align}
+  \mathcal{L}_{\mathrm{ghost}} &= \bar{c}\left(\dfrac{\partial\mathcal{F}}{\partial\alpha}\right)c
+\end{align}$$
+where $\alpha$ is the gauge transformation parameter. To compute the functional
+derivative of $\mathcal{F}$, we need to know the gauge tranformations. These are
+$$\begin{align}
+	\delta A_{\mu} & = -\dfrac{1}{e}\partial_{\mu}\alpha,
+  & \delta\varphi_{1} & = -\alpha\varphi_{2},
+  & \delta\varphi_{2} & = \alpha\left(\varphi_{1}+v\right).
+\end{align}$$
+Thus, the ghost Lagrangian is:
+$$\begin{align}
+  \mathcal{L}_{\mathrm{ghost}} &=
+  \bar{c}\left(-\partial^2-\xi^2m_{A}^2-\xi e^2\phi_{B}\varphi_{1}\right)c
+\end{align}$$
+At this stage, total quadratic Lagrangian is given by:
+$$\begin{align}
+  \mathcal{L}_{\mathrm{quad}} &= - V(\phi_{B})
+  +\dfrac{1}{2}A_{\mu}\left[(\Box + m_{A}^{2}) g^{\mu\nu}-
+  \partial^{\mu}\partial^{\nu}\right]A_{\nu}+
+  \dfrac{1}{2}\varphi_{1}\left[-\Box-M_{11}^{2}\right]\phi_{1}\\
+  &\qquad +\dfrac{1}{2}\varphi_{2}\left[-\Box-M_{22}^{2}-\xi e^2\phi_{B}^2\right]
+  \phi_{2} + \bar{c}\left[-\Box-\xi m_{A}^2\right]\notag
+\end{align}$$
+With this Lagraian in hand, we are ready to begin computing the effective
+potential.
+
+## One-Loop Effective Potential
+The generic form of our effective potential is given by:
+$$\begin{align}
+  V_{\mathrm{eff}}(\phi_{V}) &= V(\phi_{B}) +
+  \dfrac{i}{2}\log\det(\mathcal{O}_{\mathrm{gauge}}) +
+  \dfrac{i}{2}\log\det(\mathcal{O}_{\mathrm{scalar}}) -
+  i\log\det(\mathcal{O}_{\mathrm{ghost}})
+\end{align}$$
+where the various operators are given by:
+$$\begin{align}
+  \mathcal{O}_{\mathrm{gauge}} &=(\Box + m_{A}^{2}) g^{\mu\nu}-
+  \partial^{\mu}\partial^{\nu}\\
+  \mathcal{O}_{\mathrm{scalar}} &=-\Box\delta_{ij}-M_{ij}^{2}-
+  \xi e^2\delta_{i1}\delta_{i2}\phi_{B}^2\\
+  \mathcal{O}_{\mathrm{ghost}}  &=-\Box-\xi m_{A}^2
+\end{align}$$
+To evaluate $\log\det(\mathcal{O})$, we use the well-known identity
+$\log\det(\mathcal{O}) = \mathrm{tr}\log(\mathcal{O})$. We then write the trace over
+the logarithm of the operator in bra-ket notation using:
+$$\begin{align}
+  \mathrm{tr}\log(\mathcal{O}) = VT\int\dfrac{d^4p}{(2\pi)^4}\mathrm{tr}\langle{p}|\log(\mathcal{O})|\rangle{p}
+\end{align}$$
+where $VT$ is the space-time volume and the residual trace inside the integrand
+is a trace over the matrix-components of $\mathcal{O}$ (i.e. sum over diagonal
+masses.) Before we dive into how to evaluate this, we will need to massage the
+form for the gauge boson operators. In momentum-space, the gauge-boson operator
+is given by:
+$$\begin{align}
+\mathcal{O}_{\mathrm{gauge}} &= -p^{2}g^{\mu\nu}+
+\left(1- \dfrac{1}{\xi}\right)p^{\mu}p^{\nu}+m_{A}^{2}g^{\mu\nu}
+\end{align}$$
+In this form, it isn't obvious what the various masses of the gauge modes are.
+To make them obvious, we decompose the operator into transverse and longitudinal
+modes. Note that the transverse and longitudinal pieces are proportional to:
+, yielding the following form:
+$$\begin{align}
+\Pi^{\mu\nu}_{T} &= g^{\mu\nu}-\dfrac{p^{\mu}p^{\nu}}{p^2}, &
+\Pi^{\mu\nu}_{L} &= \dfrac{p^{\mu}p^{\nu}}{p^2}
+\end{align}$$
+with $\Pi^{\mu\nu}_{T}$ being the transverse piece and $\Pi^{\mu\nu}_{L}$ the
+longitudinal. One can show that the gauge boson operator in momentum space
+is given by:
+$$\begin{align}
+\mathcal{O}_{\mathrm{gauge}} &= (-p^2+m_{A}^2)\left(g^{\mu\nu}-\dfrac{p^{\mu}p^{\nu}}{p^2}\right) +
+\dfrac{1}{\xi}(-p^2+\xi m_{A}^2)\dfrac{p^{\mu}p^{\nu}}{p^2}
+\end{align}$$
+In this form, it is clear that the transverse mode has a mass of $m_{A}^2$
+while the longitudinal mode has a mass of $\xi m_{A}^2$. We note that, in
+$d$-dimensions:
+$$\begin{align}
+\mathrm{tr}(\Pi^{\mu\nu}_{T}) &= g_{\mu\nu}\Pi^{\mu\nu}_{T} = d-1\\
+\mathrm{tr}(\Pi^{\mu\nu}_{L}) &= g_{\mu\nu}\Pi^{\mu\nu}_{L} = 1\\
+\end{align}$$
+Therefore, we find tha the $\mathrm{tr}\log\mathrm{O}_{\mathrm{gauge}}$ is
+given by:
+$$\begin{align}
+\mathrm{tr}\log(\mathcal{O}_{\mathrm{gauge}}) =
+VT\int\dfrac{d^4p}{(2\pi)^4}\mathrm{tr}\left[(d-1)\log(-p^2+m_{A}^2) +
+\log(-p^2+\xi m_{A}^2)\right]
+\end{align}$$
+where we've ignored the constant $\log(\xi)$ term since it plays no role in
+our analysis. The scalar and ghost pieces are similar:
+$$\begin{align}
+\mathrm{tr}\log(\mathcal{O}_{\mathrm{scalar}}) &=
+VT\int\dfrac{d^4p}{(2\pi)^4}\mathrm{tr}\left[\log(p^2-m_{1}^2) +
+\log(-p^2+m_{2}^2)\right]\\
+\mathrm{tr}\log(\mathcal{O}_{\mathrm{ghost}}) &=
+VT\int\dfrac{d^4p}{(2\pi)^4}\mathrm{tr}\left[\log(p^2-\xi m_{A}^2)\right]\\
+\end{align}$$
+Using the general result:
+$$\begin{align}
+\int\dfrac{d^4p}{(2\pi)^4}\mathrm{tr}\left[\log(-p^2+m^2)\right] &=
+-i\dfrac{\Gamma(d/2)}{(4\pi)^{d/2}}\left(m^2\right)^{d/2}
+\end{align}$$
+and expanding around $d=4-2\epsilon$, we find the effective potential is
+given by:
+$$\begin{align}
+V_{\mathrm{eff}}(\phi_{B}) &= V(\phi_{B}) +
+\underbrace{
+\dfrac{m_{1}^4}{64\pi^2}\left(\log\left(\dfrac{m_{1}^2}{\mu_{R}^2}\right)-\dfrac{3}{2}\right) +
+\dfrac{m_{2}^4}{64\pi^2}\left(\log\left(\dfrac{m_{2}^2}{\mu_{R}^2}\right)-\dfrac{3}{2}\right)}_{\mathrm{scalar}}\\
+&\qquad+
+\underbrace{
+\dfrac{3m_{A}^4}{64\pi^2}\left(\log\left(\dfrac{m_{A}^2}{\mu_{R}^2}\right)-\dfrac{5}{6}\right)}_{\mathrm{gauge}}
+-\underbrace{
+\dfrac{\xi^2m_{A}^4}{64\pi^2}\left(\log\left(\dfrac{\xi m_{A}^2}{\mu_{R}^2}\right)-\dfrac{3}{2}\right)}_{\mathrm{ghost+longitudinal}}
+\notag\\
+&\qquad+\underbrace{
+\dfrac{m_{1}^4+m_{2}^4+3m_{A}^4-\xi^2m_{A}^2}{64\pi^2\epsilon}
+\left(1+\dfrac{1}{\epsilon}\log(4\pi e^{-\gamma_{E}})\right)}_{\mathrm{divergences}}
+\end{align}$$
+Here we defined the renormalization scale to be $\mu_{R}$. The divergences
+appearing in the last term need to be cancled off by the counterterms of our
+theory. We will leave the renormalization for an exercise since it is not the
+focus of these notes.
+
+One thing that is striking about this result is that it is manifestly gauge
+dependent. This is quite worrisome since physical quantities should be
+independent of gauge. The physical quantity of the effective potential is the
+value of the potential at the minimum. There is an identity called the Nielson
+identity which says:
+$$\begin{align}
+\dfrac{\partial V_{\mathrm{eff}}}{\partial\xi} &=
+C(\phi, \xi)\dfrac{\partial V_{\mathrm{eff}}}{\partial\phi}
+\end{align}$$
+This statement holds order-by-order in $\hbar$ (or in the loop-expansion).
+However, one needs to be cautious about interpreting this identity. For, in
+fact, gauge-dependence will arise when numerically minimizing the effective
+potential. We will invesigate this is the next section.
+
+Let's define a model for the abelian Higgs theory and functions for the
+effective potential:
+
+````julia
+mutable struct AbelianHiggsEffectivePotential
+  μ::Float64
+  λ::Float64
+  e::Float64
+  ξ::Float64
+  μR::Float64
+end
+
+function classical_potential(ϕ, model::AbelianHiggsEffectivePotential)
+  -μ^2 * ϕ^2 + λ * ϕ^4
+end
+
+function one_loop(ϕ, model::AbelianHiggsEffectivePotential)
+  m1²::Float64 = -model.μ^2 + 3model.λ * ϕ^2 / 2
+  m2²::Float64 = -model.μ^2 + 3model.λ * ϕ^2 / 2
+  mA²::Float64 = model.e^2 * ϕ^2
+  mg²::Float64 = model.ξ * mA²
+  pf::Float64 = 1 / (64π^2)
+
+  pf * ((m1²)^2 * (log(abs(m1²/model.μR^2)) - 3/2)
+        + (m2²)^2 * (log(abs(m2²/model.μR^2)) - 3/2)
+        + 3 * (mA²)^2 * (log(abs(m1²/model.μR^2)) - 5/6)
+        - (mg²)^2 * (log(abs(mg²/model.μR^2)) - 3/2))
+end
+
+function effective_potential(ϕ, model::AbelianHiggsEffectivePotential)
+  classical_potential(ϕ, model) + one_loop(ϕ, model)
+end
+````
+
+
+````
+effective_potential (generic function with 1 method)
+````
+
+
+
+
+
+Now, let's plot the result for various values of the parameters:
+
+````julia
+function create_title(model::AbelianHiggsEffectivePotential)
+  (L"$\mu = $" * string(model.μ) *
+   L", $\lambda = $" * string(model.λ) *
+   L", $e = $" * string(model.e) *
+   L", $\xi = $" * string(model.ξ) *
+   L", $\mu_{R} = $" * string(model.μR))
+end
+
+ϕs = range(-4, stop=4, length=100)
+
+model = AbelianHiggsEffectivePotential(5.0, 0.5, 0.5, 1.0, 5.0)
+plt.figure(dpi=100, figsize=(6,6))
+plt.subplot(3, 2, 1)
+plt.title(create_title(model))
+Vs_classial = [classical_potential(ϕ, model) for ϕ in ϕs]
+Vs_one_loop = [effective_potential(ϕ, model) for ϕ in ϕs]
+plt.plot(ϕs, Vs_classial)
+plt.plot(ϕs, Vs_one_loop)
+
+model = AbelianHiggsEffectivePotential(5.0, 0.1, 0.5, 1.0, 5.0)
+plt.subplot(3, 2, 2)
+plt.title(create_title(model))
+Vs_classial = [classical_potential(ϕ, model) for ϕ in ϕs]
+Vs_one_loop = [effective_potential(ϕ, model) for ϕ in ϕs]
+plt.plot(ϕs, Vs_classial)
+plt.plot(ϕs, Vs_one_loop)
+
+model = AbelianHiggsEffectivePotential(5.0, 0.5, 0.1, 1.0, 5.0)
+plt.subplot(3, 2, 3)
+plt.title(create_title(model))
+Vs_classial = [classical_potential(ϕ, model) for ϕ in ϕs]
+Vs_one_loop = [effective_potential(ϕ, model) for ϕ in ϕs]
+plt.plot(ϕs, Vs_classial)
+plt.plot(ϕs, Vs_one_loop)
+plt.xlabel(L"$x$", fontsize=16)
+
+model = AbelianHiggsEffectivePotential(10.0, 0.5, 0.5, 1.0, 5.0)
+plt.subplot(3, 2, 4)
+plt.title(create_title(model))
+Vs_classial = [classical_potential(ϕ, model) for ϕ in ϕs]
+Vs_one_loop = [effective_potential(ϕ, model) for ϕ in ϕs]
+plt.plot(ϕs, Vs_classial, label="classical")
+plt.plot(ϕs, Vs_one_loop, label="effective")
+plt.xlabel(L"$x$", fontsize=16)
+plt.legend()
+plt.tight_layout()
+
+plt.gcf()
+````
+
+
+![]({{site.baseurl}}/assets/img/2019-08-24-one-loop-effective-potential-in-the-abelian-higgs-and-gauge-dependence_3_1.png)
+
+
+
+## Gauge Dependence
+One interesting excercise to perform is to investigate how the numerical
+minimum of the effective potential depends on $\xi$. To answer this question,
+we will fix $\lambda = e = 0.1$, $\mu_{R}=5$ and vary $\mu$ and $ξ$.
+
+````julia
+using Optim
+
+function find_minimum(model::AbelianHiggsEffectivePotential)
+  result = optimize(ϕ->effective_potential(first(ϕ), model), [0.1], BFGS())
+  (result.minimum, result.minimizer[1])
+end
+
+μs = range(0.1, stop=10, length=100)
+ξs = [1, 10, 100, 250, 500]
+μR = 5.0
+λ = 0.1
+e = 0.1
+models = [AbelianHiggsEffectivePotential(μ, λ, e, ξ, μR) for μ in μs, ξ in ξs]
+results = [find_minimum(model) for model in models];
+vmins = [result[1] for result in results]
+ϕmins = [result[2] for result in results]
+
+plt.figure(figsize=(8,4))
+plt.subplot(1, 2, 1)
+for (i, ξ) in enumerate(ξs)
+  plt.plot(μs, vmins[:,i], label=L"$\xi = $" * string(ξ))
+end
+plt.xlabel(L"$\mu$", fontsize=16)
+plt.ylabel(L"$V_{\mathrm{min}}$", fontsize=16)
+plt.legend()
+
+plt.subplot(1, 2, 2)
+for (i, ξ) in enumerate(ξs)
+  plt.plot(μs, ϕmins[:,i], label=L"$\xi = $" * string(ξ))
+end
+plt.xlabel(L"$\mu$", fontsize=16)
+plt.ylabel(L"$\phi_{\mathrm{min}}$", fontsize=16)
+plt.tight_layout()
+plt.gcf()
+````
+
+
+![]({{site.baseurl}}/assets/img/2019-08-24-one-loop-effective-potential-in-the-abelian-higgs-and-gauge-dependence_4_1.png)
+
+
+Thus, we can see that the value of the potential at the minimum is gauge
+dependent, in apparent violation of the Nielson identity. The issue was not
+with the Neilson identity, but in numerically minimizing the effective potential.
+An easy way to see this is as follows. Let
+$$\begin{align}
+C(\phi, \xi) &= a + b\hbar, &
+\dfrac{\partial V_{\mathrm{eff}}}{\partial\phi} = c + d\hbar
+\end{align}$$
+Then, by the Nielson identity,
+$$\begin{align}
+\partial V_{\mathrm{eff}}/d\xi = ac + (ad + bc)\hbar + \mathrm{O}(\hbar^2)
+\end{align}$$
+Here we've truncated our result at $\mathrm{O}(\hbar)$ since we are working
+only to one-loop. If we minimize the effective potential, we would find that
+$c-d\hbar$. If we evaluate the derivative of the effective potential at this
+value, we find:
+$$\begin{align}
+\partial V_{\mathrm{eff}}/d\xi = -ad\hbar + (ad - bd)\hbar = -bd\hbar^2
+\end{align}$$
+Hence, we have residual gauge dependence which is of $\mathrm{O}(\hbar^2)$. The
+resulution to this problem is the expand out $\phi$ in powers of $\hbar$ and
+minimize order-by-order in $\hbar$. This method, known as the $\hbar$-expansion
+will gaurantee gauge-indpendence.
+
+
+````julia
+plt.close_figs()
+````
