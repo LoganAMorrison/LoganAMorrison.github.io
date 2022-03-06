@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cosmology | Academic</title>
+    <link>https://example.com/tag/cosmology/</link>
+      <atom:link href="https://example.com/tag/cosmology/index.xml" rel="self" type="application/rss+xml" />
+    <description>cosmology</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language>
+    <image>
+      <url>https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
+      <title>cosmology</title>
+      <link>https://example.com/tag/cosmology/</link>
+    </image>
+    
+    <item>
+      <title>Solving the Boltzmann Equation</title>
+      <link>https://example.com/post/solving-boltzman-equation/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://example.com/post/solving-boltzman-equation/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In this notebook, we will investigate how to solve the Boltzmann equation in
+order to determine the relic abundance of a species. Our focus will be on
+a species which represents a dark matter (DM) particle. We will assume that the
+dark matter interacts with the standard model (SM) through a massive mediator
+with interactions that look like
+$\bar{\chi}\chi\to \mathrm{SM}_{1} + \mathrm{SM}_{2}$, i.e. through a $2\to2$
+interaction. For these types of interactions, the Boltzmann equation takes the
+form of:
+$$\begin{align}
+\dfrac{dn}{dt} + 3Hn = -\langle\sigma v\rangle(n^2 - n_{\mathrm{eq}}^2)
+\end{align}$$
+where $n$ is the DM number density, $n_{\mathrm{eq}}$ is the DM equilibrium
+number density, $H$ is the hubble constant and $\langle\sigma v\rangle$ is the
+annihilation cross section for DM into SM particles. As is, this equation is
+in poor form. We will make several changes to bring it into a more suitible
+form for numerically solving.&lt;/p&gt;
+&lt;p&gt;Our first change will be to define the so called comoving number density, $Y$.
+This will be defined as:
+$$\begin{align}
+Y = \dfrac{n}{s}
+\end{align}$$
+where $s$ is the SM entropy density. Note that the total SM entropy is
+conserved, i.e. $a^3s = \mathrm{constant}$ with $a$ being the scale factor of
+the universe. This implies that:
+$$\begin{align}
+\dfrac{d}{dt}a^3s = 3\dfrac{da}{dt}a^2s + a^3\dfrac{ds}{dt} = 0
+\end{align}$$
+If we rearange this equation and recall that $d\log(a)/dt = H$, we find that:
+$$\begin{align}
+\dfrac{ds}{dt} = -3\dfrac{1}{a}\dfrac{da}{dt}s = -3Hs
+\end{align}$$
+This relation will allow us to determine $dY/dt$:
+$$\begin{align}
+\dfrac{1}{s}\dfrac{dn}{dt} &amp;amp;= \dfrac{dY}{dt} - 3HY
+\end{align}$$
+Therefore, the Boltzmann equation for $Y$ is:
+$$\begin{align}
+\dfrac{dY}{dt} = -s\langle\sigma v\rangle(Y^2 - Y_{\mathrm{eq}}^2)
+\end{align}$$
+where we defined $Y_{\mathrm{eq}} = n_{\mathrm{eq}}/s$. Next, we will change
+independent variables from time to temperature. To do this, we again us
+$\dot{s}/s = -3H$. Using the explict form $s=2\pi^2/45 hT^3$
+($h$ being the number of d.o.f. in entropy),
+one finds that:
+$$\begin{align}
+-3H = \dfrac{1}{s}\dfrac{ds}{dt} =
+\dfrac{3}{T}\left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\dfrac{dT}{dt}
+\end{align}$$
+Therefore,
+$$\begin{align}
+\dfrac{dt}{dT} =-\dfrac{1}{HT}\left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\end{align}$$
+We can use this relationship to determine $dY/dT$:
+$$\begin{align}
+\dfrac{dY}{dT} = \dfrac{dt}{dT}\dfrac{dY}{dt} =
+\dfrac{s}{HT}\left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\langle\sigma v\rangle(Y^2 - Y_{\mathrm{eq}}^2)
+\end{align}$$
+Another change people usually make is again changing the indepednent variable
+from $T\to x = m/T$ where $m$ is the mass of the DM particle. If we make this
+change, we find that:
+$$\begin{align}
+\dfrac{dY}{dx} =-
+\dfrac{s}{Hx}\left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\langle\sigma v\rangle(Y^2 - Y_{\mathrm{eq}}^2)
+\end{align}$$
+We can expand out the definitions of $s$ and $H=\sqrt{8\pi\rho/3}/M_{\mathrm{pl}}$
+$$\begin{align}
+H = \sqrt{\dfrac{8\pi G}{3}\rho} =
+\sqrt{\dfrac{8\pi^3}{90}}\sqrt{g}\dfrac{T^2}{M_{\mathrm{pl}}}
+\end{align}$$
+to obtain:
+$$\begin{align}
+\boxed{\dfrac{dY}{dx} =-
+\sqrt{\dfrac{\pi}{45}}\dfrac{m M_{\mathrm{pl}}}{x^2}g^{1/2}_{\star}
+\langle\sigma v\rangle(Y^2 - Y_{\mathrm{eq}}^2)}
+\end{align}$$
+where we defined:
+$$\begin{align}
+g^{1/2}_{\star} \equiv \left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\dfrac{h}{\sqrt{g}}
+\end{align}$$
+This is typically how people quote the Boltzmann equation. However, one final
+set of modifications needs to be made for numerical purposes. $Y$ can vary
+over many orders of magnitude. Thus, it is very useful to define
+$W\equiv\log(Y)$. Then, $W$ only undergoes order $1$ changes. Additionally, it
+is useful to work with the $\log(x)$ instead of $x$. Making these changes
+we find that:
+$$\begin{align}
+\boxed{\dfrac{dW}{d\log(x)} =-
+\sqrt{\dfrac{\pi}{45}}\dfrac{m M_{\mathrm{pl}}}{x}g^{1/2}_{\star}
+\langle\sigma v\rangle(e^{W} - e^{2W_{\mathrm{eq}}-W})}
+\end{align}$$
+In the next sections, we will solve this equation.&lt;/p&gt;
+&lt;h2 id=&#34;simple-model&#34;&gt;Simple Model&lt;/h2&gt;
+&lt;p&gt;In many cases, the thermally averaged annihilation cross section can be brought
+into the form:
+$$\begin{align}
+\langle\sigma v\rangle = \langle\sigma v\rangle_{0}x^{-n} +
+\mathrm{O}(x^{-n-1})
+\end{align}$$
+In this form, we can simplify the Boltzmann equation to:
+$$\begin{align}
+\dfrac{dW}{d\log(x)} =-
+\sqrt{\dfrac{\pi}{45}}\dfrac{m M_{\mathrm{pl}}}{x^{n+1}}g^{1/2}_{\star}
+\langle\sigma v\rangle_{0}(e^{W} - e^{2W_{\mathrm{eq}}-W})
+\end{align}$$&lt;/p&gt;
+&lt;h4 id=&#34;evolution-of-w--logns&#34;&gt;Evolution of $W = \log(n/s)$&lt;/h4&gt;
+&lt;p&gt;Now, let&amp;rsquo;s define a model:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;using DarkSUN
+
+mutable struct DarkMatterModel
+  χ::ThermodynamicFermion
+  n::Int64
+  sm::StandardModel
+  σ0::Float64
+end
+
+&amp;quot;&amp;quot;&amp;quot;
+  DarkMatterModel(m::Float64, n::Int64, σ0::Float64)
+
+Default constructor for DM model
+
+# Arguments
+- `m::Float64`: DM mass
+- `n::Int64`: interaction order - 0: s-wave, 1: p-wave and so on.
+- `σ0::Float64`: thermal cross section coefficient
+&amp;quot;&amp;quot;&amp;quot;
+function DarkMatterModel(m::Float64, n::Int64, σ0::Float64)
+  χ = ThermodynamicFermion(m, 2.0)
+  DarkMatterModel(χ, n, StandardModel(), σ0)
+end;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To solve the Boltzmann equation, we will use &lt;code&gt;DifferentialEquantions.jl&lt;/code&gt;
+(for solving the differential equation) and &lt;code&gt;DarkSUN&lt;/code&gt; (for thermal functions
+such as $g^{1/2}_{\star}$ and $n_{\mathrm{eq}}$.) Let&amp;rsquo;s define the Boltzmann
+equation:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;using DifferentialEquations
+
+const Mpl = 1.220910e19
+
+&amp;quot;&amp;quot;&amp;quot;
+  boltzmann(w, p, logx)
+
+Boltzmann equation in `DifferentialEquations.jl` format.
+
+# Arguments
+- `dW::Array{Float64, 1}`: derivative of log of number density over SM entropy density
+- `W::Array{Float64, 1}`: log of number density over SM entropy density
+- `model::DarkMatterModel`: model
+- `logx::Float64`: log of mass over temperature
+&amp;quot;&amp;quot;&amp;quot;
+function boltzmann!(dW::Array{Float64, 1}, W::Array{Float64, 1},
+                   model::DarkMatterModel, logx::Float64)
+  x::Float64 = exp(logx)
+  # update the temperature
+  model.χ.T = model.χ.mass / x
+  model.sm.T = model.χ.mass / x
+  pf::Float64 = (-sqrt(π/45) * model.σ0 * model.χ.mass * Mpl * sqrt_gstar(model.sm) / x^(model.n+1))
+  Weq::Float64 = log_neq(model.χ) - log_entropy_density(model.sm)
+  dW[1] = pf * (exp(W[1]) - exp(2Weq - W[1]))
+end
+
+
+&amp;quot;&amp;quot;&amp;quot;
+  jacobian(w, p, logx)
+
+Jacobian of the boltzmann equation in `DifferentialEquations.jl` format.
+
+# Arguments
+- `J::Array{Float64, 2}`: derivative of log of number density over SM entropy density
+- `W::Array{Float64, 1}`: log of number density over SM entropy density
+- `model::DarkMatterModel`: model
+- `logx::Float64`: log of mass over temperature
+&amp;quot;&amp;quot;&amp;quot;
+function jacobian!(J::Array{Float64, 2}, W::Array{Float64, 1},
+                   model::DarkMatterModel, logx::Float64)
+  x::Float64 = exp(logx)
+  # update the temperature
+  model.χ.T = model.χ.mass / x
+  model.sm.T = model.χ.mass / x
+  pf::Float64 = (-sqrt(π/45) * model.σ0 * model.χ.mass * Mpl * sqrt_gstar(model.sm) / x^(model.n+1))
+  Weq::Float64 = log_neq(model.χ) - log_entropy_density(model.sm)
+  J[1,1] = pf * (exp(W[1]) + exp(2Weq - W[1]))
+end;
+
+&amp;quot;&amp;quot;&amp;quot;
+  solve(model, logxspan)
+
+Solve the Boltzmann equation for the given model.
+
+# Arguments
+- `model::DarkMatterModel`: DM model
+- `logxspan::Tuple{Float64}`: range of log(x)
+&amp;quot;&amp;quot;&amp;quot;
+function solve!(model::DarkMatterModel, logxspan::Tuple{Float64, Float64})
+  # Initialize temperatures
+  model.χ.T = model.χ.mass * exp(-logxspan[1])
+  model.sm.T = model.χ.mass * exp(-logxspan[1])
+  # Initial value for W
+  W0 = log_neq(model.χ) - log_entropy_density(model.sm)
+  # Create ODE problem
+  ff = ODEFunction(boltzmann!;jac=jacobian!)
+  prob = ODEProblem(ff,[W0],logxspan, model)
+  # Solve it!
+  solve(prob, Rodas5(autodiff=false));
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now let&amp;rsquo;s solve for various values of $\sigma_{0}$&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;# Values for logx
+logxspan = (log(1), log(500))
+σ0s = [1e-7, 1e-8, 1e-9, 1e-10]
+models = [DarkMatterModel(100.0, 0, σ0) for σ0 in σ0s]
+sols = [solve!(model, logxspan) for model in models];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can plot the solution:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;import PyPlot; const plt = PyPlot # python plotting
+using LaTeXStrings
+
+plt.figure(dpi=100)
+for (i, sol) in enumerate(sols)
+  plt.plot(sol.t, sol[1,:], label=L&amp;quot;$\sigma_{0} = $&amp;quot;*string(σ0s[i]))
+end
+plt.ylabel(L&amp;quot;$W$&amp;quot;, fontsize=16)
+plt.xlabel(L&amp;quot;$\log(x)$&amp;quot;, fontsize=16)
+plt.xlim([logxspan[1], logxspan[2]])
+plt.legend()
+plt.gcf()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img alt=&#34;&#34; srcset=&#34;
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp 400w,
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_56d2474567ca18be94e709899cdf0bb6.webp 760w,
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
+               src=&#34;https://example.com/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp&#34;
+               width=&#34;578&#34;
+               height=&#34;442&#34;
+               loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h4 id=&#34;relic-densities&#34;&gt;Relic Densities&lt;/h4&gt;
+&lt;p&gt;Recall that the relic density is computed using:
+$$\begin{align}
+\Omega_{\chi} h^2 = \dfrac{s_{0}}{\rho_{c}}m_{\chi}Y(x=\infty)
+\end{align}$$
+where $s_{0} = 2891.2 \mathrm{cm}^{-3}$ and
+$\rho_{c} =1.05375\times10^{-5}\mathrm{h}^2\mathrm{GeV}\mathrm{cm}^{-3}$. Let&amp;rsquo;s
+perform the excercise of computing the relic density for values values of
+$m_{\chi}$ and $\langle\sigma v\rangle_{0}$. We will then plot the contours
+for which the combination $(m_{\chi}, \langle\sigma v\rangle_{0})$ gives the
+correct observed relic density, which is $\Omega_{\chi}h^2=0.1198$. First,
+let&amp;rsquo;s write a function to solve the Boltzmann equantion and compute the relic
+density:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;const ρc = 1.05375e-5
+const s₀ = 2891.2
+
+function relic_density(model::DarkMatterModel)
+  sol = solve!(model, (log(1), log(1000)))
+  s₀ / ρc * model.χ.mass * exp(sol[1, end])
+end;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, let&amp;rsquo;s compute the relic density for DM masses between $10$ and
+$10^4\mathrm{GeV}$ with cross sections between $10^{-12}$ and
+$10^{-7} \mathrm{GeV}^{-2}$.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;mχs = 10 .^(range(-1, stop=4, length=150))
+σ0s = 10 .^(range(-12, stop=-7, length=150))
+models = [DarkMatterModel(mχ, 0, σ0) for mχ in mχs, σ0 in σ0s]
+Ωh²s = [relic_density(model) for model in models];
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, let&amp;rsquo;s plot the contours of correct relic density:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;using Contour
+const Ωh²cdm = 0.1198
+
+cs = contour(mχs, σ0s, Ωh²s, Ωh²cdm)
+
+plt.figure(dpi=100)
+for line in lines(cs)
+  xs, ys = coordinates(line)
+  plt.plot(xs, ys .* 1.16733e-17 * 1e26) # convert units to 10^-26 cm^3/s
+end
+plt.xscale(&amp;quot;log&amp;quot;)
+plt.ylabel(L&amp;quot;$\langle\sigma v\rangle_{0} \ (10^{-26}\mathrm{cm}^{3}/\mathrm{s})$&amp;quot;, fontsize=16)
+plt.xlabel(L&amp;quot;$m_{\chi} \ (\mathrm{GeV})$&amp;quot;, fontsize=16)
+plt.ylim([0, 6])
+plt.xlim([minimum(mχs),maximum(mχs)])
+plt.gcf()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img alt=&#34;&#34; srcset=&#34;
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp 400w,
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_412cf33d3a1dd3cf0474bbce2a0fddf1.webp 760w,
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
+               src=&#34;https://example.com/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp&#34;
+               width=&#34;571&#34;
+               height=&#34;444&#34;
+               loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Temperature Evolution of a Decoupled Dark Sector</title>
+      <link>https://example.com/post/temp-evolution-decoupled/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://example.com/post/temp-evolution-decoupled/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In this document, we will invesigate how to compute the temperature and
+evolution of temperature of a species which is decoupled from the standard
+model. For simplicity, we will consider a set of particles which are decoupled
+from the standard model but are coupled in their own sector. If a species
+or set of species is completely decoupled from the standard model, then there
+should be no entropy exchange between the standard model and the secluded
+sector. Let&amp;rsquo;s denote the secluded sector as the &amp;ldquo;dark&amp;rdquo; sector. Then, the entropy
+density of the dark sector, denoted by $s_{d}$, is conserved in totality, i.e.,
+$\frac{d}{dt}(a^3s_{d}) = 0$ ($a$ is the scale factor of the universe.) This
+implies that the ratio of entropy densities of the dark and standar model is
+a constant:
+$$\begin{align}
+\mathrm{constant} = \dfrac{a^3s_{d}(T_{d})}{a^3s(T)} = \dfrac{s_{d}(T_{d})}{s(T)}
+\end{align}$$
+where $s$ is the standard model entropy density, $T_{d}$ is the dark sector
+temperature and $T$ is the standard model temperature. Since this ratio is a
+constant, we can evaluate the ratio at different temperature and still have
+equality. i.e.:
+$$\begin{align}
+\dfrac{s_{d}(T_{d,1})}{s(T_1)} = \dfrac{s_{d}(T_{d,2})}{s(T_2)}
+\end{align}$$
+Let&amp;rsquo;s parameterize the entropy densities in terms of their repsective
+relativistic degrees of freedom:
+$$\begin{align}
+s_{d}(T_{d}) &amp;amp;= \dfrac{2\pi^2}{45}h_{d}(T_{d})T_{d}^3\
+s(T) &amp;amp;= \dfrac{2\pi^2}{45}h(T)T^3
+\end{align}$$
+Then, the ratio of entropy densities becomes:
+$$\begin{align}
+\dfrac{s_{d}(T_{d})}{s(T)} = \dfrac{h_{d}(T_{d})}{h(T)}\left(\dfrac{T_{d}}{T}\right)^3
+\end{align}$$
+We will define the ratio of dark to standard model temperatures as
+$\xi\equiv T_{d}/T$. Now, our conservation equation reads:
+$$\begin{align}
+\dfrac{h_{d}(T_{d,1})}{h(T_1)}\xi_{1}^3 = \dfrac{h_{d}(T_{d,2})}{h(T_2)}\xi_{2}^3
+\end{align}$$
+Suppose that in the very early universe, the ratio of temperatures is known.
+Let&amp;rsquo;s call it $\xi_{\infty} = T_{d,\infty}/T_{\infty}$. Then, at lower
+temperatures, the ratio will be given by:
+$$\begin{align}
+\xi^3 = \dfrac{h(T)}{h_{d}(T_{d})}\dfrac{h_{d}(T_{d,\infty})}{h(T_{\infty})}\xi_{\infty}^3
+= \dfrac{h(T)}{h_{d}(T_{d})} C_{\infty}
+\end{align}$$
+where we defined $C_{\infty} = \xi_{\infty}^3h_{d}(T_{d,\infty})/h(T_{\infty})$.
+Thus, the evolution of the dark sector temperature is governed by the evolution
+of its own d.o.f. and the standard model d.o.f. In principle, if the ratio at
+very large temperatures is known, then the ratio at lower temperatures can be
+computed numerically. In the next sections, we will figure out how to
+numerically determine the ratio at lower temperatures. We will do so for two
+cases: one case where all dark sector particles are massive and two where there
+is at least one massless species. The reason for the distinction can be seen
+from the above equation. For massive particles, the entropy density drops off
+exponentially once the temperature drops bellow its mass. Therefore, if all
+particles are massive, the dark temperature will increase exponentially
+compared to the standard model as long as the massive particles are in kinetic
+equilibrium. If there is at least one massless particle, the temperature never
+undergoes an exponetial increase.&lt;/p&gt;
+&lt;h2 id=&#34;approximate-form-of-dof-in-entropy&#34;&gt;Approximate Form of D.O.F in Entropy&lt;/h2&gt;
+&lt;p&gt;Here we give results for the general form of $h_{d}(T_{d})$. It is:
+$$\begin{align}
+h_{d}(T_{d}) = \dfrac{45}{4\pi^4}\sum_{i}\left(\dfrac{T_{i}}{T_{d}}\right)^3
+g_{i}x_{i}^3\sum_{m=1}^{\infty}\dfrac{(\mp1)^{m+1}}{m}K_{3}(mx_{i})
+\end{align}$$
+where the sum runs over all particles in the sector, $g_{i}$ is the number
+of internal d.o.f. in species $i$, $T_{i}$ is the temperature of species $i$,
+and $x_{i} = m_{i}/T_{i}$. Typically, it is
+sufficient to keep only the $m=1$ term in the series, yielding:
+$$\begin{align}
+h_{d}(T_{d}) = \dfrac{45}{4\pi^4}\sum_{i}\left(\dfrac{T_{i}}{T_{d}}\right)^3
+g_{i}x_{i}^3K_{3}(x_{i}) =
+\dfrac{45}{4\pi^4 T_{d}^3}\sum_{i}g_{i}m_{i}^3K_{3}(m_{i}/T_{i})
+\end{align}$$
+For a massless species, one finds that:
+$$\begin{align}
+m_{i}^3K_{3}(m_{i}/T_{i}) \to 8T_{i}^3
+\end{align}$$
+Therefore, the general expression is:
+$$\begin{align}
+h_{d}(T_{d}) =
+\dfrac{90}{\pi^4}\sum_{m_{i}=0}g_{i} +
+\dfrac{45}{4\pi^4}\sum_{m_{i}\neq0}g_{i}x_{i}^3K_{3}(x_{i}) + \cdots
+\end{align}$$
+where the $\cdots$ represent terms that are decoupled.&lt;/p&gt;
+&lt;h2 id=&#34;case-1-all-massive-dark-sector-particles&#34;&gt;Case 1: All Massive Dark Sector Particles&lt;/h2&gt;
+&lt;p&gt;The equation that we wish to solve is the following:
+$$\begin{align}
+\xi^3h_{d}(\xi T) = h(T)\dfrac{h_{d}(T_{d,\infty})}{h(T_{\infty})}\xi_{\infty}^3
+\end{align}$$
+where, in this expression, one should consider $T$ as being fixed and $\xi$
+being a function of $T$. Our goal will be to find upper and lower bounds on
+the LHS of this equation. Note that
+$$\begin{align}
+\dfrac{45}{4\sqrt{2}\pi^{7/2}}\sum_{i}x_{i}^{5/2}e^{-x_{i}}
+&amp;lt;
+h_{d}(\xi T) &amp;lt; \sum_{i,b}g_{i} + \dfrac{7}{8}\sum_{i,f}g_{i}
+\end{align}$$
+where the sum over $b$ is for bosons and $f$ for fermions and
+$x_{i} = m_{i} / T_{d} = m_{i} / \xi T$. We can therefore see a concrete
+lower bound on $\xi$ from the upper inequality:
+$$\begin{align}
+\left(h(T)\dfrac{h_{d}(T_{d,\infty})}{h(T_{\infty})
+\sum_{i}\eta_{i}g_{i}}\right)^{1/3}\xi_{\infty} &amp;lt; \xi
+\end{align}$$
+Here we defined $\eta_{i} = 1$ for bosons and $7/8$ for fermions. To get the
+upper bound on $\xi$, we need to work a bit harder. First, we notice the the
+lower bound on $\xi^3h_{d}$ is a sum of positive terms. Thus, we can simply
+take one of the terms and retain the inequality. Let&amp;rsquo;s take the term with the
+smallest mass. Let $x_{\ell}$ denote the term with the smallest mass.
+Additionally, let $\tilde{x}_{\ell} = \xi x_{\ell} = m_{\ell}/T$. Then,&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\dfrac{45}{4\sqrt{2}\pi^{7/2}}g_{\ell}\tilde{x}_{\ell}^{5/2}\sqrt{\xi}e^{-\tilde{x}_{\ell}/\xi}
+&amp;lt; h(T) \dfrac{h_{d}(T_{d,\infty})}{h(T_{\infty})}\xi_{\infty}^3
+\end{align}$$
+The solution to this inequality is a product-log, or the Lambert-W function:
+$$\begin{align}
+\xi &amp;lt;
+\dfrac{2\tilde{x}_{\ell}}{W\left(\dfrac{2025 g_{\ell}^2 h(T_{\infty})^2 \tilde{x_{\ell}}^6}
+{16 h_{d}(T_{d,\infty})^2 h(T)^2 \pi^7 \xi_{\infty}^2}\right)}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;For example&amp;rsquo;s sake let&amp;rsquo;s suppose that we have a two-component dark sector with
+particles $\eta$ and $\Delta$ which have masses $m_{\eta}$ and $m_{\Delta}$. Let
+$\Delta$ be a fermion and $\eta$ be a scalar. Suppose these particles interact
+with eachother but not with the standard model. Assume that these particles are
+in kinetic equilibrium with a temperature $T_{d}$. We would like to determine
+$T_{d}$ given a standard model temperature $T$. Let the masses be given by:
+$$\begin{align}
+m_{\eta} &amp;amp;= \Lambda / \sqrt{N}\
+m_{\Delta} &amp;amp;= \Lambda N
+\end{align}$$
+We will take from the &lt;code&gt;DarkSUN&lt;/code&gt; package the functions for thermodynamic
+particles and the SM thermal functions.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;using DarkSUN
+
+mutable struct ToyModel
+  η::ThermodynamicParticle
+  Δ::ThermodynamicParticle
+  sm::StandardModel
+  ξ::Float64
+  N::Float64
+  Λ::Float64
+
+  function ToyModel(Λ::Float64, N::Float64)
+    η = ThermodynamicBoson(Λ/sqrt(N), 1.0)
+    Δ = ThermodynamicFermion(Λ*sqrt(N), 1.0)
+    sm = StandardModel()
+    new(η, Δ, sm, NaN, N, Λ)
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here, $\xi$ will be given by $T_{d}/T$. We will assume that the value of $\xi$
+at large temperatures is 1. i.e., perhaps the dark and SM sectors we coupled at
+very large temperatures but decoupled at some point. Given this model,
+let&amp;rsquo;s write functions to compute the d.o.f. stored in entropy of the dark
+sector:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;function dark_dof_entropy(model::ToyModel)
+  hη = dof_entropy(model.η)
+  hΔ = dof_entropy(model.Δ)
+  h::Float64 = isfinite(hη) ? hη : 0.0
+  h += isfinite(hΔ) ? hΔ : 0.0
+  h
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let&amp;rsquo;s now write a function to find the temperature of the dark sector using
+a bisection routine:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;using Roots
+using LambertW
+
+function ξ_lower_bound(T::Float64, model::ToyModel)
+  model.sm.T = T
+  hsm::Float64 = dof_entropy(model.sm)
+  hsminf::Float64 = 106.83
+  hdinf::Float64 = 7.0 / 8.0 * 4model.N + 2.0 * (model.N^2 - 1);
+  ξinf::Float64 = 1.0
+  sumg::Float64 = model.η.g + model.Δ.g * 7/8
+  cbrt(hsm * hdinf * ξinf^3 / (hsminf * sumg))
+end
+
+function ξ_upper_bound(T::Float64, model::ToyModel)
+  model.sm.T = T
+  hsm::Float64 = dof_entropy(model.sm)
+  hsminf::Float64 = 106.83
+  hdinf::Float64 = 7.0 / 8.0 * 4model.N + 2.0 * (model.N^2 - 1)
+  ξinf::Float64 = 1.0
+  xl::Float64 = model.η.mass / T
+  gl::Float64 = model.η.g
+  lw_arg_num::Float64 = 2025gl^2 * hsminf^2 * xl^6
+  lw_arg_den::Float64 = 16hdinf^2 * hsm^2 * π^7 * ξinf^2
+  2xl / lambertw(lw_arg_num / lw_arg_den)
+end
+
+function compute_ξ(T::Float64, model::ToyModel)
+  model.sm.T = T
+  hsm::Float64 = dof_entropy(model.sm)
+  hsminf::Float64 = 106.83
+  hdinf::Float64 = 7/8 * 4model.N + 2.0 * (model.N^2 - 1)
+  ξinf::Float64 = 1.0
+  function residual(ξ::Float64)
+    model.η.T = ξ * T
+    model.Δ.T = ξ * T
+    res::Float64 = dark_dof_entropy(model)*ξ^3 -hsm*hdinf*ξinf^3/hsminf
+    return res
+  end
+  lb::Float64 = ξ_lower_bound(T, model)
+  ub::Float64 = ξ_upper_bound(T, model)
+
+  ξsol::Float64 = find_zero(residual, (lb*0.99, ub*1.01), Bisection())
+  model.ξ = ξsol
+  ξsol
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, let&amp;rsquo;s pick various values of $T$ and solve for $T_{d}$:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;import PyPlot; const plt = PyPlot # python plotting
+using LaTeXStrings
+
+model = ToyModel(10.0, 1.0)
+
+Ts = 10 .^(range(-2, stop=2.0, length=100))
+ξs = [compute_ξ(T, model) for T in Ts]
+ξs_ub = [ξ_upper_bound(T, model) for T in Ts]
+ξs_lb = [ξ_lower_bound(T, model) for T in Ts]
+
+plt.figure(dpi=100)
+plt.title(L&amp;quot;Evolution of $\xi$ With All Massive Species&amp;quot;)
+plt.plot(Ts, ξs)
+plt.plot(Ts, ξs_ub, &amp;quot;--&amp;quot;, label=&amp;quot;upper-bound&amp;quot;)
+plt.plot(Ts, ξs_lb, &amp;quot;--&amp;quot;, label=&amp;quot;lower-bound&amp;quot;)
+plt.yscale(&amp;quot;log&amp;quot;)
+plt.xscale(&amp;quot;log&amp;quot;)
+plt.xlabel(L&amp;quot;$T \ (\mathrm{GeV})$&amp;quot;, fontsize=16)
+plt.ylabel(L&amp;quot;$\xi(T)$&amp;quot;, fontsize=16)
+plt.ylim([1e-1,1e2])
+plt.legend()
+plt.gcf()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img alt=&#34;&#34; srcset=&#34;
+               /post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_465648c16ff17f05d638cef1b8af5af8.webp 400w,
+               /post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_19c79573a4dd3bc451b4a5400efea480.webp 760w,
+               /post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_ad933b263457463d2c623440241d445c.webp 1200w&#34;
+               src=&#34;https://example.com/post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_465648c16ff17f05d638cef1b8af5af8.webp&#34;
+               width=&#34;584&#34;
+               height=&#34;459&#34;
+               loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;We can therefore see that our bounds are correct and the root finding routine
+correctly finds values of $\xi$ between these bounding curves. Additionally,
+the value of $\xi$ is asymptotic to these bounding curves in the limits as
+$T\to 0$ and $T\to\infty$. It is interesting to note the behavior of $\xi$ in
+the limit as $T\to0$. We can see that $\xi$ exponentially grows, implies that
+the dark sector becomes exponentially hot compared to the standard model. This
+behavior does not continue forever, however. Once all of the dark sector
+particles have left kinetic equilibrium, their temperatures will begin to drop
+and simply red-shift away.&lt;/p&gt;
+&lt;h2 id=&#34;case-2-one-massless-dark-sector-particle&#34;&gt;Case 2: One Massless Dark Sector Particle&lt;/h2&gt;
+&lt;p&gt;The senario in which there exists at least on massless species is a bit simpler
+than the case of all massive species. This is because the lower bound on
+$\xi^3h_{d}$ is much simpler. In this case, the bounds on $\xi$ are:
+$$\begin{align}
+\left(h(T)\dfrac{h_{d}(T_{d,\infty})}{h(T_{\infty})
+\sum_{i}\eta_{i}g_{i}}\right)^{1/3}\xi_{\infty} &amp;lt; \xi &amp;lt;
+\left(h(T)\dfrac{h_{d}(T_{d,\infty})}{h(T_{\infty})
+g_{\ell}}\right)^{1/3}\xi_{\infty}
+\end{align}$$
+Here we&amp;rsquo;ve take $g_{\ell}$ to be one of the massless species. If we have many
+massless species, we can strengthen the lower bound by replacing $g_{\ell}$
+with a sum over all massles species. Let&amp;rsquo;s modify our previous model by adding
+in a massless particle.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;function dark_dof_entropy(model::ToyModel)
+  hη = dof_entropy(model.η)
+  hΔ = dof_entropy(model.Δ)
+  h::Float64 = isfinite(hη) ? hη : 0.0
+  h += isfinite(hΔ) ? hΔ : 0.0
+  h += 2.0 # massles vector boson
+  h
+end
+
+function ξ_lower_bound(T::Float64, model::ToyModel)
+  model.sm.T = T
+  hsm::Float64 = dof_entropy(model.sm)
+  hsminf::Float64 = 106.83
+  hdinf::Float64 = 7.0 / 8.0 * 4model.N + 2.0 * (model.N^2 - 1) + 2.0;
+  ξinf::Float64 = 1.0
+  sumg::Float64 = model.η.g + model.Δ.g * 7/8 + 2.0
+  cbrt(hsm * hdinf * ξinf^3 / (hsminf * sumg))
+end
+
+function ξ_upper_bound(T::Float64, model::ToyModel)
+  model.sm.T = T
+  hsm::Float64 = dof_entropy(model.sm)
+  hsminf::Float64 = 106.83
+  hdinf::Float64 = 7.0 / 8.0 * 4model.N + 2.0 * (model.N^2 - 1) + 2.0;
+  ξinf::Float64 = 1.0
+  sumg::Float64 = 2.0
+  cbrt(hsm * hdinf * ξinf^3 / (hsminf * sumg))
+end
+
+function compute_ξ(T::Float64, model::ToyModel)
+  model.sm.T = T
+  hsm::Float64 = dof_entropy(model.sm)
+  hsminf::Float64 = 106.83
+  hdinf::Float64 = 7/8 * 4model.N + 2.0 * (model.N^2 - 1) + 2.0
+  ξinf::Float64 = 1.0
+  function residual(ξ::Float64)
+    model.η.T = ξ * T
+    model.Δ.T = ξ * T
+    res::Float64 = dark_dof_entropy(model)*ξ^3 -hsm*hdinf*ξinf^3/hsminf
+    return res
+  end
+  lb::Float64 = ξ_lower_bound(T, model)
+  ub::Float64 = ξ_upper_bound(T, model)
+
+  ξsol::Float64 = find_zero(residual, (lb*0.99, ub*1.01), Bisection())
+  model.ξ = ξsol
+  ξsol
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now let&amp;rsquo;s plot:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;import PyPlot; const plt = PyPlot # python plotting
+using LaTeXStrings
+
+model = ToyModel(10.0, 1.0)
+
+Ts = 10 .^(range(-2, stop=2.0, length=100))
+ξs = [compute_ξ(T, model) for T in Ts]
+ξs_ub = [ξ_upper_bound(T, model) for T in Ts]
+ξs_lb = [ξ_lower_bound(T, model) for T in Ts]
+
+plt.figure(dpi=100)
+plt.title(L&amp;quot;Evolution of $\xi$ With a Massless Species&amp;quot;)
+plt.plot(Ts, ξs)
+plt.plot(Ts, ξs_ub, &amp;quot;--&amp;quot;, label=&amp;quot;upper-bound&amp;quot;)
+plt.plot(Ts, ξs_lb, &amp;quot;--&amp;quot;, label=&amp;quot;lower-bound&amp;quot;)
+plt.yscale(&amp;quot;log&amp;quot;)
+plt.xscale(&amp;quot;log&amp;quot;)
+plt.xlabel(L&amp;quot;$T \ (\mathrm{GeV})$&amp;quot;, fontsize=16)
+plt.ylabel(L&amp;quot;$\xi(T)$&amp;quot;, fontsize=16)
+plt.legend()
+plt.gcf()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img alt=&#34;&#34; srcset=&#34;
+               /post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_1cfafb771cd77b42bf735bd6eb1b3d44.webp 400w,
+               /post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_e899de8ac5b52ef75346b2468ca2caf5.webp 760w,
+               /post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_e8e876b2eb307f920c9ab8f1684cfe5a.webp 1200w&#34;
+               src=&#34;https://example.com/post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_1cfafb771cd77b42bf735bd6eb1b3d44.webp&#34;
+               width=&#34;606&#34;
+               height=&#34;459&#34;
+               loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;The behavior that we are seeing shouldn&amp;rsquo;t be too surprising. Our bounding
+curves for $\xi$ are both proportional to $h(T)$. Therefore, $\xi$ simply
+interpolates bewteen to different scalings of $h(T)$.&lt;/p&gt;
+&lt;h2 id=&#34;case-3-sm-temperature-from-the-dark-temperature&#34;&gt;Case 3: SM Temperature from the Dark Temperature&lt;/h2&gt;
+&lt;p&gt;Suppose we want to compute the tempertature of the SM in given the a dark
+sector temperature. Then, we need to solve the following equation:
+$$\begin{align}
+\xi^3(T_{d}) = \dfrac{T_{d}^3}{T^3} = \dfrac{h(T)}{h_{d}(T_{d})}C_{\infty}
+\end{align}$$
+In this case, one should think of $T_{d}$ as a fixed number and $T$ being a
+function of $T_{d}$. Isolating the constant pieces, we find:
+$$\begin{align}
+h(T)T^3 = \dfrac{T_{d}^3h_{d}(T_{d})}{C_{\infty}}
+\end{align}$$
+The LHS of this equation is constant. Let&amp;rsquo;s look at a plot $h(T)$ for the
+SM.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-julia&#34;&gt;using DelimitedFiles
+import PyPlot; const plt = PyPlot # python plotting
+using LaTeXStrings
+
+sm_data = readdlm(string(@__DIR__) * &amp;quot;assets/data/smdof.csv&amp;quot;, &#39;,&#39;, skipstart=1)
+sm_data_ts = sm_data[:, 1];
+sm_data_hs = sm_data[:, 3];
+
+plt.figure(dpi=100)
+plt.plot(sm_data_ts, sm_data_hs)
+plt.plot(sm_data_ts, [sm_data_hs[end] for _ in 1:length(sm_data_ts)], &amp;quot;k--&amp;quot;)
+plt.plot(sm_data_ts, [sm_data_hs[1] for _ in 1:length(sm_data_ts)], &amp;quot;k--&amp;quot;)
+plt.yscale(&amp;quot;log&amp;quot;)
+plt.xscale(&amp;quot;log&amp;quot;)
+plt.ylabel(L&amp;quot;$h_{\mathrm{eff}}(T)$&amp;quot;, fontsize=16)
+plt.xlabel(L&amp;quot;$T \ (\mathrm{GeV})$&amp;quot;, fontsize=16)
+plt.gcf()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img alt=&#34;&#34; srcset=&#34;
+               /post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_0ee9f2531fadfe6013936d7924b40a12.webp 400w,
+               /post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_d97dddc04d7e5e12feb3e8f9011b965c.webp 760w,
+               /post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_c7838c58a55715770b7a77a8e37d4bc4.webp 1200w&#34;
+               src=&#34;https://example.com/post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_0ee9f2531fadfe6013936d7924b40a12.webp&#34;
+               width=&#34;576&#34;
+               height=&#34;442&#34;
+               loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;From this plot, we can see that $h(T)$ is bounded from above and below. The
+bounding values are:
+$$\begin{align}
+h_{\mathrm{min}} \approx 3.93 &amp;lt; h(T) &amp;lt; 106.83  \approx h_{\mathrm{max}}
+\end{align}$$
+It is therefore straight forward to find bounds on $T$:
+$$\begin{align}
+\dfrac{T_{d}^3h_{d}(T_{d})}{C_{\infty}h_{\mathrm{max}}} &amp;lt; T &amp;lt; \dfrac{T_{d}^3h_{d}(T_{d})}{C_{\infty}h_{\mathrm{min}}}
+\end{align}$$
+Given these bounds, one can use a bisection method to solve for $T$ given a
+value for $T_{d}$.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

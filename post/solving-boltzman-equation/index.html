@@ -1,0 +1,1365 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Logan A. Morrison" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Introduction In this notebook, we will investigate how to solve the Boltzmann equation in order to determine the relic abundance of a species. Our focus will be on a species which represents a dark matter (DM) particle." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://example.com/post/solving-boltzman-equation/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.01bfacb0fece2d537d67315227e35ce3.css" />
+
+  
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://example.com/post/solving-boltzman-equation/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@wowchemy" />
+    <meta property="twitter:creator" content="@wowchemy" />
+  
+  <meta property="og:site_name" content="Academic" />
+  <meta property="og:url" content="https://example.com/post/solving-boltzman-equation/" />
+  <meta property="og:title" content="Solving the Boltzmann Equation | Academic" />
+  <meta property="og:description" content="Introduction In this notebook, we will investigate how to solve the Boltzmann equation in order to determine the relic abundance of a species. Our focus will be on a species which represents a dark matter (DM) particle." /><meta property="og:image" content="https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+    
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://example.com/post/solving-boltzman-equation/"
+  },
+  "headline": "Solving the Boltzmann Equation",
+  
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Logan A. Morrison"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Academic",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "Introduction In this notebook, we will investigate how to solve the Boltzmann equation in order to determine the relic abundance of a species. Our focus will be on a species which represents a dark matter (DM) particle."
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Solving the Boltzmann Equation | Academic</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="df2676fcfb73c54e19029d971d8ce8f5" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.63a793a0158e186da77f80f308d537e2.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">Academic</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">Academic</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#featured"><span>Publications</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Solving the Boltzmann Equation</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+  <span >
+      Logan A. Morrison</span>
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Jan 1, 0001
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    6 min read
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/category/teaching/">Teaching</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h2 id="introduction">Introduction</h2>
+<p>In this notebook, we will investigate how to solve the Boltzmann equation in
+order to determine the relic abundance of a species. Our focus will be on
+a species which represents a dark matter (DM) particle. We will assume that the
+dark matter interacts with the standard model (SM) through a massive mediator
+with interactions that look like
+$\bar{\chi}\chi\to \mathrm{SM}_{1} + \mathrm{SM}_{2}$, i.e. through a $2\to2$
+interaction. For these types of interactions, the Boltzmann equation takes the
+form of:
+$$\begin{align}
+\dfrac{dn}{dt} + 3Hn = -\langle\sigma v\rangle(n^2 - n_{\mathrm{eq}}^2)
+\end{align}$$
+where $n$ is the DM number density, $n_{\mathrm{eq}}$ is the DM equilibrium
+number density, $H$ is the hubble constant and $\langle\sigma v\rangle$ is the
+annihilation cross section for DM into SM particles. As is, this equation is
+in poor form. We will make several changes to bring it into a more suitible
+form for numerically solving.</p>
+<p>Our first change will be to define the so called comoving number density, $Y$.
+This will be defined as:
+$$\begin{align}
+Y = \dfrac{n}{s}
+\end{align}$$
+where $s$ is the SM entropy density. Note that the total SM entropy is
+conserved, i.e. $a^3s = \mathrm{constant}$ with $a$ being the scale factor of
+the universe. This implies that:
+$$\begin{align}
+\dfrac{d}{dt}a^3s = 3\dfrac{da}{dt}a^2s + a^3\dfrac{ds}{dt} = 0
+\end{align}$$
+If we rearange this equation and recall that $d\log(a)/dt = H$, we find that:
+$$\begin{align}
+\dfrac{ds}{dt} = -3\dfrac{1}{a}\dfrac{da}{dt}s = -3Hs
+\end{align}$$
+This relation will allow us to determine $dY/dt$:
+$$\begin{align}
+\dfrac{1}{s}\dfrac{dn}{dt} &amp;= \dfrac{dY}{dt} - 3HY
+\end{align}$$
+Therefore, the Boltzmann equation for $Y$ is:
+$$\begin{align}
+\dfrac{dY}{dt} = -s\langle\sigma v\rangle(Y^2 - Y_{\mathrm{eq}}^2)
+\end{align}$$
+where we defined $Y_{\mathrm{eq}} = n_{\mathrm{eq}}/s$. Next, we will change
+independent variables from time to temperature. To do this, we again us
+$\dot{s}/s = -3H$. Using the explict form $s=2\pi^2/45 hT^3$
+($h$ being the number of d.o.f. in entropy),
+one finds that:
+$$\begin{align}
+-3H = \dfrac{1}{s}\dfrac{ds}{dt} =
+\dfrac{3}{T}\left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\dfrac{dT}{dt}
+\end{align}$$
+Therefore,
+$$\begin{align}
+\dfrac{dt}{dT} =-\dfrac{1}{HT}\left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\end{align}$$
+We can use this relationship to determine $dY/dT$:
+$$\begin{align}
+\dfrac{dY}{dT} = \dfrac{dt}{dT}\dfrac{dY}{dt} =
+\dfrac{s}{HT}\left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\langle\sigma v\rangle(Y^2 - Y_{\mathrm{eq}}^2)
+\end{align}$$
+Another change people usually make is again changing the indepednent variable
+from $T\to x = m/T$ where $m$ is the mass of the DM particle. If we make this
+change, we find that:
+$$\begin{align}
+\dfrac{dY}{dx} =-
+\dfrac{s}{Hx}\left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\langle\sigma v\rangle(Y^2 - Y_{\mathrm{eq}}^2)
+\end{align}$$
+We can expand out the definitions of $s$ and $H=\sqrt{8\pi\rho/3}/M_{\mathrm{pl}}$
+$$\begin{align}
+H = \sqrt{\dfrac{8\pi G}{3}\rho} =
+\sqrt{\dfrac{8\pi^3}{90}}\sqrt{g}\dfrac{T^2}{M_{\mathrm{pl}}}
+\end{align}$$
+to obtain:
+$$\begin{align}
+\boxed{\dfrac{dY}{dx} =-
+\sqrt{\dfrac{\pi}{45}}\dfrac{m M_{\mathrm{pl}}}{x^2}g^{1/2}_{\star}
+\langle\sigma v\rangle(Y^2 - Y_{\mathrm{eq}}^2)}
+\end{align}$$
+where we defined:
+$$\begin{align}
+g^{1/2}_{\star} \equiv \left(1 + \dfrac{T}{3h}\dfrac{dh}{dT}\right)
+\dfrac{h}{\sqrt{g}}
+\end{align}$$
+This is typically how people quote the Boltzmann equation. However, one final
+set of modifications needs to be made for numerical purposes. $Y$ can vary
+over many orders of magnitude. Thus, it is very useful to define
+$W\equiv\log(Y)$. Then, $W$ only undergoes order $1$ changes. Additionally, it
+is useful to work with the $\log(x)$ instead of $x$. Making these changes
+we find that:
+$$\begin{align}
+\boxed{\dfrac{dW}{d\log(x)} =-
+\sqrt{\dfrac{\pi}{45}}\dfrac{m M_{\mathrm{pl}}}{x}g^{1/2}_{\star}
+\langle\sigma v\rangle(e^{W} - e^{2W_{\mathrm{eq}}-W})}
+\end{align}$$
+In the next sections, we will solve this equation.</p>
+<h2 id="simple-model">Simple Model</h2>
+<p>In many cases, the thermally averaged annihilation cross section can be brought
+into the form:
+$$\begin{align}
+\langle\sigma v\rangle = \langle\sigma v\rangle_{0}x^{-n} +
+\mathrm{O}(x^{-n-1})
+\end{align}$$
+In this form, we can simplify the Boltzmann equation to:
+$$\begin{align}
+\dfrac{dW}{d\log(x)} =-
+\sqrt{\dfrac{\pi}{45}}\dfrac{m M_{\mathrm{pl}}}{x^{n+1}}g^{1/2}_{\star}
+\langle\sigma v\rangle_{0}(e^{W} - e^{2W_{\mathrm{eq}}-W})
+\end{align}$$</p>
+<h4 id="evolution-of-w--logns">Evolution of $W = \log(n/s)$</h4>
+<p>Now, let&rsquo;s define a model:</p>
+<pre><code class="language-julia">using DarkSUN
+
+mutable struct DarkMatterModel
+  χ::ThermodynamicFermion
+  n::Int64
+  sm::StandardModel
+  σ0::Float64
+end
+
+&quot;&quot;&quot;
+  DarkMatterModel(m::Float64, n::Int64, σ0::Float64)
+
+Default constructor for DM model
+
+# Arguments
+- `m::Float64`: DM mass
+- `n::Int64`: interaction order - 0: s-wave, 1: p-wave and so on.
+- `σ0::Float64`: thermal cross section coefficient
+&quot;&quot;&quot;
+function DarkMatterModel(m::Float64, n::Int64, σ0::Float64)
+  χ = ThermodynamicFermion(m, 2.0)
+  DarkMatterModel(χ, n, StandardModel(), σ0)
+end;
+</code></pre>
+<p>To solve the Boltzmann equation, we will use <code>DifferentialEquantions.jl</code>
+(for solving the differential equation) and <code>DarkSUN</code> (for thermal functions
+such as $g^{1/2}_{\star}$ and $n_{\mathrm{eq}}$.) Let&rsquo;s define the Boltzmann
+equation:</p>
+<pre><code class="language-julia">using DifferentialEquations
+
+const Mpl = 1.220910e19
+
+&quot;&quot;&quot;
+  boltzmann(w, p, logx)
+
+Boltzmann equation in `DifferentialEquations.jl` format.
+
+# Arguments
+- `dW::Array{Float64, 1}`: derivative of log of number density over SM entropy density
+- `W::Array{Float64, 1}`: log of number density over SM entropy density
+- `model::DarkMatterModel`: model
+- `logx::Float64`: log of mass over temperature
+&quot;&quot;&quot;
+function boltzmann!(dW::Array{Float64, 1}, W::Array{Float64, 1},
+                   model::DarkMatterModel, logx::Float64)
+  x::Float64 = exp(logx)
+  # update the temperature
+  model.χ.T = model.χ.mass / x
+  model.sm.T = model.χ.mass / x
+  pf::Float64 = (-sqrt(π/45) * model.σ0 * model.χ.mass * Mpl * sqrt_gstar(model.sm) / x^(model.n+1))
+  Weq::Float64 = log_neq(model.χ) - log_entropy_density(model.sm)
+  dW[1] = pf * (exp(W[1]) - exp(2Weq - W[1]))
+end
+
+
+&quot;&quot;&quot;
+  jacobian(w, p, logx)
+
+Jacobian of the boltzmann equation in `DifferentialEquations.jl` format.
+
+# Arguments
+- `J::Array{Float64, 2}`: derivative of log of number density over SM entropy density
+- `W::Array{Float64, 1}`: log of number density over SM entropy density
+- `model::DarkMatterModel`: model
+- `logx::Float64`: log of mass over temperature
+&quot;&quot;&quot;
+function jacobian!(J::Array{Float64, 2}, W::Array{Float64, 1},
+                   model::DarkMatterModel, logx::Float64)
+  x::Float64 = exp(logx)
+  # update the temperature
+  model.χ.T = model.χ.mass / x
+  model.sm.T = model.χ.mass / x
+  pf::Float64 = (-sqrt(π/45) * model.σ0 * model.χ.mass * Mpl * sqrt_gstar(model.sm) / x^(model.n+1))
+  Weq::Float64 = log_neq(model.χ) - log_entropy_density(model.sm)
+  J[1,1] = pf * (exp(W[1]) + exp(2Weq - W[1]))
+end;
+
+&quot;&quot;&quot;
+  solve(model, logxspan)
+
+Solve the Boltzmann equation for the given model.
+
+# Arguments
+- `model::DarkMatterModel`: DM model
+- `logxspan::Tuple{Float64}`: range of log(x)
+&quot;&quot;&quot;
+function solve!(model::DarkMatterModel, logxspan::Tuple{Float64, Float64})
+  # Initialize temperatures
+  model.χ.T = model.χ.mass * exp(-logxspan[1])
+  model.sm.T = model.χ.mass * exp(-logxspan[1])
+  # Initial value for W
+  W0 = log_neq(model.χ) - log_entropy_density(model.sm)
+  # Create ODE problem
+  ff = ODEFunction(boltzmann!;jac=jacobian!)
+  prob = ODEProblem(ff,[W0],logxspan, model)
+  # Solve it!
+  solve(prob, Rodas5(autodiff=false));
+end
+</code></pre>
+<p>Now let&rsquo;s solve for various values of $\sigma_{0}$</p>
+<pre><code class="language-julia"># Values for logx
+logxspan = (log(1), log(500))
+σ0s = [1e-7, 1e-8, 1e-9, 1e-10]
+models = [DarkMatterModel(100.0, 0, σ0) for σ0 in σ0s]
+sols = [solve!(model, logxspan) for model in models];
+</code></pre>
+<p>Now we can plot the solution:</p>
+<pre><code class="language-julia">import PyPlot; const plt = PyPlot # python plotting
+using LaTeXStrings
+
+plt.figure(dpi=100)
+for (i, sol) in enumerate(sols)
+  plt.plot(sol.t, sol[1,:], label=L&quot;$\sigma_{0} = $&quot;*string(σ0s[i]))
+end
+plt.ylabel(L&quot;$W$&quot;, fontsize=16)
+plt.xlabel(L&quot;$\log(x)$&quot;, fontsize=16)
+plt.xlim([logxspan[1], logxspan[2]])
+plt.legend()
+plt.gcf()
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img alt="" srcset="
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp 400w,
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_56d2474567ca18be94e709899cdf0bb6.webp 760w,
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_1200x1200_fit_q75_h2_lanczos_3.webp 1200w"
+               src="/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp"
+               width="578"
+               height="442"
+               loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<h4 id="relic-densities">Relic Densities</h4>
+<p>Recall that the relic density is computed using:
+$$\begin{align}
+\Omega_{\chi} h^2 = \dfrac{s_{0}}{\rho_{c}}m_{\chi}Y(x=\infty)
+\end{align}$$
+where $s_{0} = 2891.2 \mathrm{cm}^{-3}$ and
+$\rho_{c} =1.05375\times10^{-5}\mathrm{h}^2\mathrm{GeV}\mathrm{cm}^{-3}$. Let&rsquo;s
+perform the excercise of computing the relic density for values values of
+$m_{\chi}$ and $\langle\sigma v\rangle_{0}$. We will then plot the contours
+for which the combination $(m_{\chi}, \langle\sigma v\rangle_{0})$ gives the
+correct observed relic density, which is $\Omega_{\chi}h^2=0.1198$. First,
+let&rsquo;s write a function to solve the Boltzmann equantion and compute the relic
+density:</p>
+<pre><code class="language-julia">const ρc = 1.05375e-5
+const s₀ = 2891.2
+
+function relic_density(model::DarkMatterModel)
+  sol = solve!(model, (log(1), log(1000)))
+  s₀ / ρc * model.χ.mass * exp(sol[1, end])
+end;
+</code></pre>
+<p>Now, let&rsquo;s compute the relic density for DM masses between $10$ and
+$10^4\mathrm{GeV}$ with cross sections between $10^{-12}$ and
+$10^{-7} \mathrm{GeV}^{-2}$.</p>
+<pre><code class="language-julia">mχs = 10 .^(range(-1, stop=4, length=150))
+σ0s = 10 .^(range(-12, stop=-7, length=150))
+models = [DarkMatterModel(mχ, 0, σ0) for mχ in mχs, σ0 in σ0s]
+Ωh²s = [relic_density(model) for model in models];
+</code></pre>
+<p>Now, let&rsquo;s plot the contours of correct relic density:</p>
+<pre><code class="language-julia">using Contour
+const Ωh²cdm = 0.1198
+
+cs = contour(mχs, σ0s, Ωh²s, Ωh²cdm)
+
+plt.figure(dpi=100)
+for line in lines(cs)
+  xs, ys = coordinates(line)
+  plt.plot(xs, ys .* 1.16733e-17 * 1e26) # convert units to 10^-26 cm^3/s
+end
+plt.xscale(&quot;log&quot;)
+plt.ylabel(L&quot;$\langle\sigma v\rangle_{0} \ (10^{-26}\mathrm{cm}^{3}/\mathrm{s})$&quot;, fontsize=16)
+plt.xlabel(L&quot;$m_{\chi} \ (\mathrm{GeV})$&quot;, fontsize=16)
+plt.ylim([0, 6])
+plt.xlim([minimum(mχs),maximum(mχs)])
+plt.gcf()
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img alt="" srcset="
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp 400w,
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_412cf33d3a1dd3cf0474bbce2a0fddf1.webp 760w,
+               /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_1200x1200_fit_q75_h2_lanczos_3.webp 1200w"
+               src="/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp"
+               width="571"
+               height="444"
+               loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+
+    </div>
+
+    
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/quantum-field-theory/">quantum-field-theory</a>
+  
+  <a class="badge badge-light" href="/tag/cosmology/">cosmology</a>
+  
+  <a class="badge badge-light" href="/tag/numerics/">numerics</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by copyright-license-text">
+    © 2022 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.3d946de2e8784a477845261d87025092.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/r.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/latex.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/rust.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.e8fd2d733eef6a8bbbe0539398fc0547.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.a2ed145159dd33ad55ff402163350b5d.js"></script>
+
+    
+    
+    
+    
+    
+    
+      
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <script src="/js/wowchemy-publication.b0d291ed6d27eacec233e6cf5204f99a.js" type="module"></script>
+
+
+
+
+
+
+</body>
+</html>
