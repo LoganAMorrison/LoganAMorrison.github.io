@@ -1,22 +1,259 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>quantum-field-theory | Academic</title>
-    <link>https://example.com/tag/quantum-field-theory/</link>
-      <atom:link href="https://example.com/tag/quantum-field-theory/index.xml" rel="self" type="application/rss+xml" />
+    <title>quantum-field-theory | Logan A. Morrison</title>
+    <link>https://loganamorrison.github.io/tag/quantum-field-theory/</link>
+      <atom:link href="https://loganamorrison.github.io/tag/quantum-field-theory/index.xml" rel="self" type="application/rss+xml" />
     <description>quantum-field-theory</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
+      <url>https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>quantum-field-theory</title>
-      <link>https://example.com/tag/quantum-field-theory/</link>
+      <link>https://loganamorrison.github.io/tag/quantum-field-theory/</link>
     </image>
     
     <item>
+      <title>Evaluating Functional Determinants in a Thermal Field Theory using the Heat-Kernel</title>
+      <link>https://loganamorrison.github.io/post/functional-det-heat-kernel/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/functional-det-heat-kernel/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In this post, we will discuss how to compute fluctuation determinants is a
+finite temperature field theory. The general form of an operator that we will
+investigate is:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\mathcal{O} &amp;amp;= -\nabla^2 + \omega_{n}^2 + m^2 + V(x)
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;where $m$ is a zero-temperature mass, $\omega_{n} = 2\pi n T$ for bosons and
+$2\pi(n+1/2)T$ for fermions and $V(x)$ is some space-dependent function. Often,
+$V(x)$ will take the form of a background- or low-mass-field-dependent mass for
+the fluctuation fields of the problem. For example, consider a $\phi^4$ theory at finite temperature with the following action:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+S[\phi] &amp;amp;= \int_{0}^{\beta}d\tau\int d^{3}x \dfrac{1}{2}(\partial_{\mu}\phi)^2 -\dfrac{1}{2}m^2\phi^2
++\dfrac{\lambda}{8}\phi^4
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;where $\phi = \phi(\tau, x)$. If one expands the field $\phi$ as a Fourier series in the imaginary time coordinate $\tau$,&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\phi(\tau, x) &amp;amp;= \sum_{n=-\infty}^{\infty}\phi_{n}e^{i\omega_{n}\tau}
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;and wishes to integrate over the heavy Matsubara modes ($n\neq0$ modes), then they will need to compute a thermal fluctuation determinant of an operator of the form:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\mathcal{O} &amp;amp;= -\nabla^2 + \omega_{n}^2 + m^2 + \dfrac{3}{2}\lambda\phi_{0}^2
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;Where $\phi_{0}$ is the zero-mode ($n=0$ Matsubara mode.) In this case,
+$V(x) = (3\lambda/2)\phi_{0}^2(x)$. The question we would like to answer is: how does one evaluate the following fluctuation determinant&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\mathrm{tr}\log\left(-\nabla^2 + \omega_{n}^2 + m^2 + V(x)\right)
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;We will answer this question in the limit as $T\to\infty$.&lt;/p&gt;
+&lt;h2 id=&#34;heat-kernal-expansion&#34;&gt;Heat Kernal Expansion&lt;/h2&gt;
+&lt;p&gt;The method we will employ to evaluate the fluctuation determinant of the operator $\mathcal{O} = -\nabla^2 + \omega_{n}^2 + m^2 + V(x)$ is the so called
+heat-kernel expansion. The idea is to use the following identity:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\log(\lambda) = -\int_{0}^{\infty}\dfrac{ds}{s}e^{-\lambda s} + \mathrm{constant}
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;where the constant we left implicit is some infinite constant which will play
+no role in our analysis. To derive this expression, one can consider the
+following:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\int_{0}^{\infty}\dfrac{ds}{s}e^{-\lambda s} &amp;amp;=
+\int_{0}^{\infty}ds\int_{\lambda}^{\infty}d\lambda&amp;rsquo;e^{-\lambda&amp;rsquo; s}
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;Switching the order of integration and integrating over $s$, we find:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\int_{0}^{\infty}\dfrac{ds}{s}e^{-\lambda s} &amp;amp;=
+\int_{\lambda}^{\infty}d\lambda&amp;rsquo;\dfrac{1}{\lambda&amp;rsquo;} = \lim_{\lambda&amp;rsquo;\to\infty}\log(\lambda&amp;rsquo;) - \log(\lambda)
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;Thus, up to an infinite constant, the identity holds. Note that if we take
+the trace of a log of a determinant, we are equivalently summing over the
+log of the eigenvalues of the operator. Therefore, we can say that:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\mathrm{tr}\log(\mathcal{O}) = \sum_{\lambda}\log(\lambda) = -\int_{0}^{\infty}\dfrac{ds}{s}\sum_{\lambda}e^{-\lambda s} =
+\int_{0}^{\infty}\dfrac{ds}{s}\mathrm{tr}e^{-\mathcal{O} s}
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;We will define the factor of $e^{-\mathcal{O}s}$ as the &lt;strong&gt;heat kernel&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+K(s, x, y) \equiv \langle x|e^{-\mathcal{O}_{x} s}|y\rangle
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;where the subscript $x$ denotes that the derivatives and function evaluation of $\mathcal{O}$ to be evaluated with $x$. Then, the trace of $e^{-\mathcal{O} s}$ is just the integral over $x$ of $K(s,x,x)$:&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\mathrm{tr}e^{-\mathcal{O} s} = \int d^{d}x K(s,x,x)
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;The heat-kernel turns out to satisfy the heat equation (hence the name). This is
+easy to see:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\dfrac{\partial}{\partial s}e^{-\mathcal{O}_{x} s} = -{\mathcal{O}_{x}} K(s,x,y)
+\quad \implies \quad \left(\dfrac{\partial}{\partial s} + {\mathcal{O}_{x}}\right)K(s,x,y)
+= 0
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;The right-most equality is simply the heat equation with a source term of
+$\omega_{n}^2 + m^2 + V(x)$. The boundary condition of the heat equation can be
+found by setting $s=0$:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+K(s=0,x,y) = \langle x|y\rangle = \delta^d(x-y)
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;The heat-kernel can be determined exactly if we set $V(x) = 0$. Let&amp;rsquo;s call:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\mathcal{M}^2 = \omega_{n}^2 + m^2
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;for ease of notation. The heat-kernel for the operator:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\mathcal{O}_{0} = -\nabla^2 + \mathcal{M}^2
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;is given by the following:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+K_{0}(s,x,y) = \dfrac{1}{(4\pi s)^{d/2}}\exp\left(-\dfrac{|x-y|^2}{4s}-s\mathcal{M}^2\right)
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;This can be verified by differentiation. Additionally, one can check that this
+expression satisfies the boundary condition (to do this, integrate some function
+$f(x)$ by Taylor expanding the function. The results are a set of gaussian
+integrals which can easily be evaluate to obtain $f(y)$.) Further more,
+$K_{0}(s, x, x)$ is:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+K_{0}(s,x,x) = \dfrac{1}{(4\pi s)^{d/2}}e^{-s\mathcal{M}^2}
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;We can use this result to find the general result. Recall the Zassenhaus formula (a special case of the Baker-Campbell-Hausdorff formula):&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+e^{-t(X + Y)} &amp;amp;= e^{-t X}e^{-t Y}e^{-\frac{t^2}{2}[X,Y]}
+e^{-\frac{t^3}{3!}(2[Y,[X,Y]]+ [X,[X,Y]])}\cdots
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;where the $\cdots$ represent terms of order $t^{4}$ and higher. If we break up our general operator into:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\mathcal{O} = \mathcal{O}_{0} + V(x),
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;then we find that the general heat-kernel is given by:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+e^{-s\mathcal{O}} &amp;amp;= e^{-s\mathcal{O}_{0}}e^{-sV}e^{-\frac{s^2}{2}[\mathcal{O}_{0},V]}
+e^{-\frac{s^3}{3!}(2[V,[\mathcal{O}_{0},V]]+ [\mathcal{O}_{0},[\mathcal{O}_{0},V]])}\cdots
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;We can easily evaluate the various commutators by considering their action on some test function $f(x)$. The results for the commutators shown are:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+[\mathcal{O}_{0},V] &amp;amp;= -\nabla^2 V\\
+2[V,[\mathcal{O}_{0},V]]+ [\mathcal{O}_{0},[\mathcal{O}_{0},V]] &amp;amp;=-4V\nabla^2V+\nabla^4V
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;The higher order terms can easily be evaluated as well. Thus, we have that:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+K(s,x,x) &amp;amp;= e^{-s(\mathcal{M}^2 + V)}e^{\frac{s^2}{2}\nabla^2V}
+e^{-\frac{s^3}{3!}\left(\nabla^4V-4V\nabla^2V\right)}\cdots
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;In order to make progress on this expression, we need to have control over which terms in the expression are important. Let&amp;rsquo;s re-introduce our original definitions:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\mathcal{M}^2=\omega_{n}^2+m^2 = \tilde{\omega}_{n}^2T^2 + m^2
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;where we defined:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\tilde{\omega}_{n}^2 = \omega_{n}^2/T^2
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;Next, we will define a scaleless variable $z=sT^2$. In terms of $z$, our expression is:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+K(s,x,x) &amp;amp;= e^{-z\tilde{\omega}_{n}^2}e^{-\frac{z}{T^2}(m^2 + V)}e^{\frac{z^2}{2T^4}\nabla^2V}
+e^{-\frac{z^3}{3!T^6}\left(\nabla^4V-4V\nabla^2V\right)}e^{\mathcal{O}(T^{-6})}
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;Now it is clear how to proceed. We expand this expression in inverse powers of $T$. If we expand in inverse powers of $T$ and integrate over $s$, we find that, for bosons:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+&amp;amp;\dfrac{T}{2}\sum_{n=-\infty}^{\infty} \mathrm{tr}\log(-{\nabla^2}+(2\pi n T)^2 + m^2 +V({x}))\\
+&amp;amp;\hspace{1cm}= -\dfrac{T}{2}\sum_{n=\infty}^{\infty} \int d^{d}{x}\left(\dfrac{T}{4\pi}\right)^{d/2}\int_{0}^{\infty}dz\dfrac{K(z,{x},{x})}{z^{d/2+1}}\notag\\
+&amp;amp;\hspace{1cm}\underset{d\to3-2\epsilon}{=} \int d^{3}{x}\bigg{[}
+-\frac{\pi^2 T^4}{90}+\frac{T^2(m^2 + V)}{24} -\frac{\left(m^2 + V\right)^2 \left(\frac{1}{\epsilon}+\log(\frac{\mu^2}{4\pi T^2e^{-\gamma_{E}}})\right)}{64\pi^2}+ \mathrm{O}({T^{-2}})
+\notag\\
+&amp;amp;\hspace{3cm} +
+\left(-\dfrac{T(m+V)^{3/2}}{12\pi} + \dfrac{T({\nabla}^2V)}{32\pi\sqrt{m^2+V}} + \dfrac{T(-4V{\nabla}^2V + {\nabla}^2V)}{192\pi(m^2+V)^{3/2}} + \cdots\right)
+\bigg{]}\notag
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;and for fermions:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+&amp;amp;-\dfrac{T}{2}\sum_{n=-\infty}^{\infty} \mathrm{tr}\log(-{\nabla^2}+(2\pi (n+1/2) T)^2 + m^2 +V({x}))\\
+&amp;amp;\hspace{1cm}=\dfrac{T}{2}\sum_{n=\infty}^{\infty} \int d^{d}{x}\left(\dfrac{T}{4\pi}\right)^{d/2}\int_{0}^{\infty}dz\dfrac{K(z,{x},{x})}{z^{d/2+1}}\notag\\
+&amp;amp;\hspace{1cm}\underset{d\to3-2\epsilon}{=}
+\int d^{3}{x}\bigg{[} -\frac{7\pi^2 T^4}{720}
++ \frac{T^2(m^2 + V)}{48}
++ \frac{\left(m^2 + V\right)^2 \left(\frac{1}{\epsilon}+\log(\frac{4e^{-\gamma_{E}}\mu^2}{\pi T^2})\right)}{64\pi^2}+\mathrm{O}({T^{-2}})\bigg{]}\notag
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;It is useful to note that, for bosons, the term proportional to $(m^2+V)^2$ can be written as:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+&amp;amp;-\frac{\left(m^2 + V\right)^2 \left(\frac{1}{\epsilon}+\log(\frac{\mu^2}{4\pi T^2e^{-\gamma_{E}}})\right)}{64\pi^2}\\
+&amp;amp;\qquad= \frac{\left(m^2 + V\right)^2}{64\pi^2}\left[-\left(\frac{1}{\epsilon}+\log(4\pi e^{-\gamma})\right)+2\left(\dfrac{3}{4}+\log(4\pi)-\gamma_{E}\right)+\left(\log\left(\dfrac{T^2}{\mu^2}\right)-\dfrac{3}{2}\right)\right]\notag
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;where we&amp;rsquo;ve isolated the typical subtraction term (containing the $1/\epsilon +
+\log(4\pi e^{-\gamma_{E}})$) and the Coleman-Weinberg-like potential term (the
+$\log(T^2/\mu^2) - 3/2$). We can do the same for fermions, obtaining:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+&amp;amp;\frac{\left(m^2 + V\right)^2 \left(\frac{1}{\epsilon}+\log(\frac{4\mu^2e^{-\gamma_{E}}}{\pi T^2})\right)}{64\pi^2}\\
+&amp;amp;\qquad= \frac{\left(m^2 + V\right)^2}{64\pi^2}\left[
+\left(\frac{1}{\epsilon}+\log(4\pi e^{-\gamma})\right)-2\left(\dfrac{3}{4}+\log(\pi)-\gamma_{E}\right)-\left(\log\left(\dfrac{T^2}{\mu^2}\right)-\dfrac{3}{2}\right)\right]\notag
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;Even though we stopped our expansion at order $T^{0}$, one can easily see how to
+include higher order term: simply cary out the expansion of the heat-kernel to
+higher orders in $1/T$. For expand, the next term in the non-zero mode bosonic
+expansion is:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+\dfrac{\zeta(3)}{768\pi^2 T^2}\left[\nabla^4V+2V\nabla^2V+(m^2+V)^3\right]
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;and the next term in the fermionic expansion is the same thing multiplied by 7.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Effective Potential in a Scalar Field Theory</title>
-      <link>https://example.com/post/effective-potential-scalar-ft/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/effective-potential-scalar-ft/</guid>
+      <link>https://loganamorrison.github.io/post/effective-potential-scalar-ft/</link>
+      <pubDate>Mon, 26 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/effective-potential-scalar-ft/</guid>
       <description>&lt;h2 id=&#34;generic-form&#34;&gt;Generic Form&lt;/h2&gt;
 &lt;p&gt;To derive the effective potential, we start with a couple definitions. We
 define the generating function for greens functions as:
@@ -535,501 +772,10 @@ V_{\text{eff}} &amp;amp; = -\dfrac{1}{2}\mu^{2}\Phi_{\text{cl}}^{2} + \dfrac{\la
     </item>
     
     <item>
-      <title>Evaluating Functional Determinants in a Thermal Field Theory using the Heat-Kernel</title>
-      <link>https://example.com/post/functional-det-heat-kernel/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/functional-det-heat-kernel/</guid>
-      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;In this post, we will discuss how to compute fluctuation determinants is a
-finite temperature field theory. The general form of an operator that we will
-investigate is:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\mathcal{O} &amp;amp;= -\nabla^2 + \omega_{n}^2 + m^2 + V(x)
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;where $m$ is a zero-temperature mass, $\omega_{n} = 2\pi n T$ for bosons and
-$2\pi(n+1/2)T$ for fermions and $V(x)$ is some space-dependent function. Often,
-$V(x)$ will take the form of a background- or low-mass-field-dependent mass for
-the fluctuation fields of the problem. For example, consider a $\phi^4$ theory at finite temperature with the following action:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-S[\phi] &amp;amp;= \int_{0}^{\beta}d\tau\int d^{3}x \dfrac{1}{2}(\partial_{\mu}\phi)^2 -\dfrac{1}{2}m^2\phi^2
-+\dfrac{\lambda}{8}\phi^4
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;where $\phi = \phi(\tau, x)$. If one expands the field $\phi$ as a Fourier series in the imaginary time coordinate $\tau$,&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\phi(\tau, x) &amp;amp;= \sum_{n=-\infty}^{\infty}\phi_{n}e^{i\omega_{n}\tau}
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;and wishes to integrate over the heavy Matsubara modes ($n\neq0$ modes), then they will need to compute a thermal fluctuation determinant of an operator of the form:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\mathcal{O} &amp;amp;= -\nabla^2 + \omega_{n}^2 + m^2 + \dfrac{3}{2}\lambda\phi_{0}^2
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;Where $\phi_{0}$ is the zero-mode ($n=0$ Matsubara mode.) In this case,
-$V(x) = (3\lambda/2)\phi_{0}^2(x)$. The question we would like to answer is: how does one evaluate the following fluctuation determinant&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\mathrm{tr}\log\left(-\nabla^2 + \omega_{n}^2 + m^2 + V(x)\right)
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;We will answer this question in the limit as $T\to\infty$.&lt;/p&gt;
-&lt;h2 id=&#34;heat-kernal-expansion&#34;&gt;Heat Kernal Expansion&lt;/h2&gt;
-&lt;p&gt;The method we will employ to evaluate the fluctuation determinant of the operator $\mathcal{O} = -\nabla^2 + \omega_{n}^2 + m^2 + V(x)$ is the so called
-heat-kernel expansion. The idea is to use the following identity:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\log(\lambda) = -\int_{0}^{\infty}\dfrac{ds}{s}e^{-\lambda s} + \mathrm{constant}
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;where the constant we left implicit is some infinite constant which will play
-no role in our analysis. To derive this expression, one can consider the
-following:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\int_{0}^{\infty}\dfrac{ds}{s}e^{-\lambda s} &amp;amp;=
-\int_{0}^{\infty}ds\int_{\lambda}^{\infty}d\lambda&amp;rsquo;e^{-\lambda&amp;rsquo; s}
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;Switching the order of integration and integrating over $s$, we find:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\int_{0}^{\infty}\dfrac{ds}{s}e^{-\lambda s} &amp;amp;=
-\int_{\lambda}^{\infty}d\lambda&amp;rsquo;\dfrac{1}{\lambda&amp;rsquo;} = \lim_{\lambda&amp;rsquo;\to\infty}\log(\lambda&amp;rsquo;) - \log(\lambda)
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;Thus, up to an infinite constant, the identity holds. Note that if we take
-the trace of a log of a determinant, we are equivalently summing over the
-log of the eigenvalues of the operator. Therefore, we can say that:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\mathrm{tr}\log(\mathcal{O}) = \sum_{\lambda}\log(\lambda) = -\int_{0}^{\infty}\dfrac{ds}{s}\sum_{\lambda}e^{-\lambda s} =
-\int_{0}^{\infty}\dfrac{ds}{s}\mathrm{tr}e^{-\mathcal{O} s}
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;We will define the factor of $e^{-\mathcal{O}s}$ as the &lt;strong&gt;heat kernel&lt;/strong&gt;:&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-K(s, x, y) \equiv \langle x|e^{-\mathcal{O}_{x} s}|y\rangle
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;where the subscript $x$ denotes that the derivatives and function evaluation of $\mathcal{O}$ to be evaluated with $x$. Then, the trace of $e^{-\mathcal{O} s}$ is just the integral over $x$ of $K(s,x,x)$:&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\mathrm{tr}e^{-\mathcal{O} s} = \int d^{d}x K(s,x,x)
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;The heat-kernel turns out to satisfy the heat equation (hence the name). This is
-easy to see:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\dfrac{\partial}{\partial s}e^{-\mathcal{O}_{x} s} = -{\mathcal{O}_{x}} K(s,x,y)
-\quad \implies \quad \left(\dfrac{\partial}{\partial s} + {\mathcal{O}_{x}}\right)K(s,x,y)
-= 0
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;The right-most equality is simply the heat equation with a source term of
-$\omega_{n}^2 + m^2 + V(x)$. The boundary condition of the heat equation can be
-found by setting $s=0$:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-K(s=0,x,y) = \langle x|y\rangle = \delta^d(x-y)
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;The heat-kernel can be determined exactly if we set $V(x) = 0$. Let&amp;rsquo;s call:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\mathcal{M}^2 = \omega_{n}^2 + m^2
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;for ease of notation. The heat-kernel for the operator:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\mathcal{O}_{0} = -\nabla^2 + \mathcal{M}^2
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;is given by the following:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-K_{0}(s,x,y) = \dfrac{1}{(4\pi s)^{d/2}}\exp\left(-\dfrac{|x-y|^2}{4s}-s\mathcal{M}^2\right)
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;This can be verified by differentiation. Additionally, one can check that this
-expression satisfies the boundary condition (to do this, integrate some function
-$f(x)$ by Taylor expanding the function. The results are a set of gaussian
-integrals which can easily be evaluate to obtain $f(y)$.) Further more,
-$K_{0}(s, x, x)$ is:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-K_{0}(s,x,x) = \dfrac{1}{(4\pi s)^{d/2}}e^{-s\mathcal{M}^2}
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;We can use this result to find the general result. Recall the Zassenhaus formula (a special case of the Baker-Campbell-Hausdorff formula):&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-e^{-t(X + Y)} &amp;amp;= e^{-t X}e^{-t Y}e^{-\frac{t^2}{2}[X,Y]}
-e^{-\frac{t^3}{3!}(2[Y,[X,Y]]+ [X,[X,Y]])}\cdots
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;where the $\cdots$ represent terms of order $t^{4}$ and higher. If we break up our general operator into:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\mathcal{O} = \mathcal{O}_{0} + V(x),
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;then we find that the general heat-kernel is given by:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-e^{-s\mathcal{O}} &amp;amp;= e^{-s\mathcal{O}_{0}}e^{-sV}e^{-\frac{s^2}{2}[\mathcal{O}_{0},V]}
-e^{-\frac{s^3}{3!}(2[V,[\mathcal{O}_{0},V]]+ [\mathcal{O}_{0},[\mathcal{O}_{0},V]])}\cdots
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;We can easily evaluate the various commutators by considering their action on some test function $f(x)$. The results for the commutators shown are:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-[\mathcal{O}_{0},V] &amp;amp;= -\nabla^2 V\\
-2[V,[\mathcal{O}_{0},V]]+ [\mathcal{O}_{0},[\mathcal{O}_{0},V]] &amp;amp;=-4V\nabla^2V+\nabla^4V
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;The higher order terms can easily be evaluated as well. Thus, we have that:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-K(s,x,x) &amp;amp;= e^{-s(\mathcal{M}^2 + V)}e^{\frac{s^2}{2}\nabla^2V}
-e^{-\frac{s^3}{3!}\left(\nabla^4V-4V\nabla^2V\right)}\cdots
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;In order to make progress on this expression, we need to have control over which terms in the expression are important. Let&amp;rsquo;s re-introduce our original definitions:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\mathcal{M}^2=\omega_{n}^2+m^2 = \tilde{\omega}_{n}^2T^2 + m^2
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;where we defined:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\tilde{\omega}_{n}^2 = \omega_{n}^2/T^2
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;Next, we will define a scaleless variable $z=sT^2$. In terms of $z$, our expression is:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-K(s,x,x) &amp;amp;= e^{-z\tilde{\omega}_{n}^2}e^{-\frac{z}{T^2}(m^2 + V)}e^{\frac{z^2}{2T^4}\nabla^2V}
-e^{-\frac{z^3}{3!T^6}\left(\nabla^4V-4V\nabla^2V\right)}e^{\mathcal{O}(T^{-6})}
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;Now it is clear how to proceed. We expand this expression in inverse powers of $T$. If we expand in inverse powers of $T$ and integrate over $s$, we find that, for bosons:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-&amp;amp;\dfrac{T}{2}\sum_{n=-\infty}^{\infty} \mathrm{tr}\log(-{\nabla^2}+(2\pi n T)^2 + m^2 +V({x}))\\
-&amp;amp;\hspace{1cm}= -\dfrac{T}{2}\sum_{n=\infty}^{\infty} \int d^{d}{x}\left(\dfrac{T}{4\pi}\right)^{d/2}\int_{0}^{\infty}dz\dfrac{K(z,{x},{x})}{z^{d/2+1}}\notag\\
-&amp;amp;\hspace{1cm}\underset{d\to3-2\epsilon}{=} \int d^{3}{x}\bigg{[}
--\frac{\pi^2 T^4}{90}+\frac{T^2(m^2 + V)}{24} -\frac{\left(m^2 + V\right)^2 \left(\frac{1}{\epsilon}+\log(\frac{\mu^2}{4\pi T^2e^{-\gamma_{E}}})\right)}{64\pi^2}+ \mathrm{O}({T^{-2}})
-\notag\\
-&amp;amp;\hspace{3cm} +
-\left(-\dfrac{T(m+V)^{3/2}}{12\pi} + \dfrac{T({\nabla}^2V)}{32\pi\sqrt{m^2+V}} + \dfrac{T(-4V{\nabla}^2V + {\nabla}^2V)}{192\pi(m^2+V)^{3/2}} + \cdots\right)
-\bigg{]}\notag
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;and for fermions:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-&amp;amp;-\dfrac{T}{2}\sum_{n=-\infty}^{\infty} \mathrm{tr}\log(-{\nabla^2}+(2\pi (n+1/2) T)^2 + m^2 +V({x}))\\
-&amp;amp;\hspace{1cm}=\dfrac{T}{2}\sum_{n=\infty}^{\infty} \int d^{d}{x}\left(\dfrac{T}{4\pi}\right)^{d/2}\int_{0}^{\infty}dz\dfrac{K(z,{x},{x})}{z^{d/2+1}}\notag\\
-&amp;amp;\hspace{1cm}\underset{d\to3-2\epsilon}{=}
-\int d^{3}{x}\bigg{[} -\frac{7\pi^2 T^4}{720}
-+ \frac{T^2(m^2 + V)}{48}
-+ \frac{\left(m^2 + V\right)^2 \left(\frac{1}{\epsilon}+\log(\frac{4e^{-\gamma_{E}}\mu^2}{\pi T^2})\right)}{64\pi^2}+\mathrm{O}({T^{-2}})\bigg{]}\notag
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;It is useful to note that, for bosons, the term proportional to $(m^2+V)^2$ can be written as:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-&amp;amp;-\frac{\left(m^2 + V\right)^2 \left(\frac{1}{\epsilon}+\log(\frac{\mu^2}{4\pi T^2e^{-\gamma_{E}}})\right)}{64\pi^2}\\
-&amp;amp;\qquad= \frac{\left(m^2 + V\right)^2}{64\pi^2}\left[-\left(\frac{1}{\epsilon}+\log(4\pi e^{-\gamma})\right)+2\left(\dfrac{3}{4}+\log(4\pi)-\gamma_{E}\right)+\left(\log\left(\dfrac{T^2}{\mu^2}\right)-\dfrac{3}{2}\right)\right]\notag
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;where we&amp;rsquo;ve isolated the typical subtraction term (containing the $1/\epsilon +
-\log(4\pi e^{-\gamma_{E}})$) and the Coleman-Weinberg-like potential term (the
-$\log(T^2/\mu^2) - 3/2$). We can do the same for fermions, obtaining:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-&amp;amp;\frac{\left(m^2 + V\right)^2 \left(\frac{1}{\epsilon}+\log(\frac{4\mu^2e^{-\gamma_{E}}}{\pi T^2})\right)}{64\pi^2}\\
-&amp;amp;\qquad= \frac{\left(m^2 + V\right)^2}{64\pi^2}\left[
-\left(\frac{1}{\epsilon}+\log(4\pi e^{-\gamma})\right)-2\left(\dfrac{3}{4}+\log(\pi)-\gamma_{E}\right)-\left(\log\left(\dfrac{T^2}{\mu^2}\right)-\dfrac{3}{2}\right)\right]\notag
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;Even though we stopped our expansion at order $T^{0}$, one can easily see how to
-include higher order term: simply cary out the expansion of the heat-kernel to
-higher orders in $1/T$. For expand, the next term in the non-zero mode bosonic
-expansion is:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{align}
-\dfrac{\zeta(3)}{768\pi^2 T^2}\left[\nabla^4V+2V\nabla^2V+(m^2+V)^3\right]
-\end{align}
-$$&lt;/p&gt;
-&lt;p&gt;and the next term in the fermionic expansion is the same thing multiplied by 7.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Rutherford Scattering</title>
-      <link>https://example.com/post/rutherford-scattering/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/rutherford-scattering/</guid>
-      <description>&lt;h2 id=&#34;classical-calculation&#34;&gt;Classical Calculation&lt;/h2&gt;
-&lt;p&gt;$\require{cancel}$
-$\newcommand{\bra}[1]{\left&amp;lt; #1 \right|}$
-$\newcommand{\ket}[1]{\left| #1 \right&amp;gt;}$
-$\newcommand{\bk}[2]{\left&amp;lt; #1 \middle| #2 \right&amp;gt;}$
-$\newcommand{\bke}[3]{\left&amp;lt; #1 \middle| #2 \middle| #3 \right&amp;gt;}$
-$\newcommand{\Tr}{\mathrm{Tr}}$&lt;/p&gt;
-&lt;p&gt;We consider a charged particle of mass $m$ scattering off a heavy
-nucleus. Let the impact parameter be $b$ and the energy of the impinging
-particle be $E$. The classical Lagrangian for a particle with charge $e$
-scattering off a heavy nucleus of charge $eZ$ is:
-$$\begin{align}
-\mathcal{L}= T - V = \dfrac{1}{2}m \left(\dfrac{d\vec{r}}{dt}\right)^2 - V(r)
-\end{align}$$
-with
-$$\begin{align}
-V(r) = \dfrac{e^2Z}{4\pi r}
-\end{align}$$
-In the plane of scattering, we need only to consider two variables - $|\vec{r}| = r$ and $\theta$. We can write the derivative of $\vec{r}$ as:
-$$\begin{align}
-\dfrac{d\vec{r}}{dt} = \dfrac{dr}{dt}\hat{\vec{r}} + r \dfrac{d\theta}{dt}\hat{\vec{\theta}}
-\end{align}$$
-Our Lagrangian then reads:
-$$\begin{align}
-\mathcal{L}= \dfrac{1}{2}m \left(\left(\dfrac{dr}{dt}\right)^2 + r^2 \left(\dfrac{d\theta}{dt}\right)^2\right) - \dfrac{e^2Z}{4\pi r}
-\end{align}$$
-The Euler-Lagrange equation of $\theta$ reads:
-$$\begin{align}
-0 = \dfrac{\partial\mathcal{L}}{d\theta} = \dfrac{d}{dt}\dfrac{\partial\mathcal{L}}{\partial\dot{\theta}} = \dfrac{d}{dt}mr^2\dot{\theta}
-\end{align}$$
-Hence, $mr^2\dot{\theta}$ is a constant, which is the angular momentum,
-$L = b\sqrt{2mE}$. Therefore,
-$$\begin{align}
-\dfrac{d\theta}{dt} = \dfrac{L}{mr^2}
-\end{align}$$
-By energy conservation, we can write
-$$\begin{align}
-E = \dfrac{1}{2}m \left(\left(\dfrac{dr}{dt}\right)^2 + r^2 \left(\dfrac{d\theta}{dt}\right)^2\right) + \dfrac{e^2Z}{4\pi r}
-\end{align}$$
-We can readily solve this equation for the time derivative of $r$,
-obtaining:
-$$\begin{align}
-\dfrac{dr}{dr} = \dfrac{1}{mr}\sqrt{2mEr^2 - \dfrac{e^2Zm}{2\pi}r - L^2}
-\end{align}$$
-We can write
-$$\begin{align}
-\dfrac{d\theta}{dt} = \dfrac{d\theta}{dr}\dfrac{dr}{dt} = \dfrac{L}{mr^2}
-\end{align}$$
-Therefore,
-$$\begin{align}
-\dfrac{d\theta}{dr} = \dfrac{L}{mr^2}\left(\dfrac{dr}{dt}\right)^{-1} = \dfrac{L}{r\sqrt{2mEr^2 - \dfrac{e^2Zm}{2\pi}r - L^2}}
-\end{align}$$
-This equation can be integrated to obtain the final value of $\theta$.
-We would want to integrate this equation over $\infty\to\infty$. We can
-instead integrate this equation over $r_{0}\to\infty$ where $r_0$ is the
-minimum value of $r$. The minimum value of $r$ will occur when
-$dr/dt = 0$, which happens when
-$$\begin{align}
-2mEr^2 - \dfrac{e^2Zm}{2\pi}r - L^2 = 0
-\end{align}$$
-We can solve this equation by completing the square:
-$$\begin{align}
-r_0 = \dfrac{e^2Z}{8\pi E} + \sqrt{\dfrac{L^2}{2mE} + \dfrac{e^4Z^2}{64\pi^2 E^2}} = A + \sqrt{A^2 + b^2}
-\end{align}$$
-where
-$$\begin{align}
-A &amp;amp; = \dfrac{e^2Z}{8\pi E}
-\end{align}$$
-Given these definitions,
-$$\begin{align}
-\theta(\infty)-\theta(r_{0}) = \int_{r_{0}}^{\infty}dr \dfrac{b}{r\sqrt{(r-A)^2-A^2-b^2}}
-\end{align}$$
-Integrating this give us:
-$$\begin{align}
-\theta(\infty)-\theta(r_{0}) = -\dfrac{\pi}{2} - i\log(\dfrac{-b+iA}{\sqrt{A^2+b^2}})
-\end{align}$$
-If we rotate our system such that $\theta(r_0) = \pi/2$ (which sends
-$\theta\to\theta/2$), then we find that
-$$\begin{align}
-\sin(\theta/2) = \dfrac{A}{\sqrt{A^2+b^2}}
-\end{align}$$
-We thus find that
-$$\begin{align}
-b = A\cot(\theta/2)
-\end{align}$$
-This implies that the impact parameter as a function of $\theta$ is
-$$\begin{align}
-b = \dfrac{e^2Z}{8\pi E\tan(\theta/2)}
-\end{align}$$
-Recall that the differential scattering cross-sections is
-$$\begin{align}
-\dfrac{d\sigma}{d\Omega} = \dfrac{b}{\sin\theta}\dfrac{db}{d\theta}
-\end{align}$$
-we find that
-$$\begin{align}
-\dfrac{d\sigma}{d\Omega} = \dfrac{e^4Z^2}{256\pi^2E^2\sin^4(\theta/2)} = \dfrac{\alpha^2Z^2}{16E^2\sin^4(\theta/2)} = \dfrac{\alpha^2Z^2}{4m^2v_i^2\sin^4(\theta/2)}
-\end{align}$$
-where $\alpha = e^2/4\pi$.&lt;/p&gt;
-&lt;h2 id=&#34;quantum-field-theory-calculation&#34;&gt;Quantum Field Theory Calculation&lt;/h2&gt;
-&lt;p&gt;In this section, we will investigate Rutherford Scattering through the
-point of view of quantum field theory. We will consider the electron and
-positron as dynamic fields and the photon field as static. The
-Lagrangian we will consider is
-$$\begin{align}
-\mathcal{L}= \overline{\Psi}\left(i\cancel{\partial}-m\right)\Psi
--eA_{\mu}\overline{\Psi}\gamma^{\mu}\Psi
-\end{align}$$
-Our goal will be to calculate the differential cross-section
-$\dfrac{d\sigma}{d\Omega}$ for an electron scattering of the static
-potential. The $T$ matrix element for this process, to first order in
-the electromagnetic coupling constant, is&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\langle{p&amp;rsquo;}|iT|\rangle{p}
-&amp;amp; = \bra{p&amp;rsquo;,s&amp;rsquo;}T\exp\left[-i\int d^4x \mathcal{L}_{I}(x)\right]\ket{p,s} \\
-&amp;amp; = ie\int d^4x \bra{p&amp;rsquo;,s&amp;rsquo;}A_{\mu}(x)\overline{\Psi}(x)\gamma^{\mu}\Psi(x)\ket{p,s}+
-\mathcal{O}(e^2)\\
-&amp;amp; = ie\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)
-\int d^4xA_{\mu}(x)e^{i(p&amp;rsquo;-p)x}
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Now Fourier transform the photon field:&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-A_{\mu}(x) = \int \dfrac{d^4q}{(2\pi)^4}\tilde{A}_{\mu}(q)e^{-iqx}
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Inserting this into the expression for the $T$-matrix element, we find&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\langle{p&amp;rsquo;}|iT|\rangle{p}
-&amp;amp; = ie\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)
-\int d^4x\int \dfrac{d^4q}{(2\pi)^4}
-\tilde{A}_{\mu}(q)e^{i(p&amp;rsquo;-p-q)x}
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Integrating over $x$ will produce a factor of $(2\pi)^4\delta^4(p&amp;rsquo;-p-q)$. We can then integrate over $q$ using this delta function, producing&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\langle{p&amp;rsquo;}|iT|\rangle{p}
-&amp;amp; = ie\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)\tilde{A}_{\mu}(p&amp;rsquo;-p)
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Now, suppose the photon field is time-independent. Then, the fourier
-transform of the photon field is&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\tilde{A}_{\mu}(p&amp;rsquo;-p) &amp;amp; = \int d^3zA_{\mu}(\vec{z}) e^{i(\vec{p}&amp;rsquo;-\vec{p})\cdot\vec{z}}\int_{-\infty}^{\infty}dt&amp;rsquo;e^{i(E_{p&amp;rsquo;}-E_{p})t&amp;rsquo;}\\
-&amp;amp; = (2\pi)\delta(E_{p&amp;rsquo;}-E_{p})\int d^3zA_{\mu}(\vec{z})
-e^{i(\vec{p}&amp;rsquo;-\vec{p})\cdot\vec{z}}
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;We now define the matrix element as&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\langle{p&amp;rsquo;}|iT|\rangle{p} = (2\pi)i\delta(E_{p&amp;rsquo;}-E_{p})\mathcal{M}
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Through this definition, we can see that $\mathcal{M}$ is&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\mathcal{M}= e\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)
-\tilde{A}_{\mu}(\vec{p}&amp;rsquo;-\vec{p})
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;where it is understood that $E_{p&amp;rsquo;} = E_{p}$. Let&amp;rsquo;s square this matrix element and average over the initial spin and sum over final spin of the electron:&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\sum_{s,s&amp;rsquo;}\left|\mathcal{M}\right|^2
-&amp;amp; =\dfrac{1}{2}e^2\tilde{A}_{\mu}\tilde{A}_{\nu}
-\Tr\left[\left(\cancel{p}&amp;rsquo;+m\right)\gamma^{\mu}
-\left(\cancel{p}+m\right)\gamma^{\nu}\right]\\
-&amp;amp; =\dfrac{1}{2}e^2\tilde{A}_{\mu}\tilde{A}_{\nu}
-\left(\Tr\left[\cancel{p}&amp;rsquo;\gamma^{\mu}\cancel{p}\gamma^{\nu}\right]
-+m^2\Tr\left[\gamma^{\mu}\gamma^{\nu}\right]\right)\\
-&amp;amp; = 2e^2\tilde{A}_{\mu}\tilde{A}_{\nu}
-\left(p&amp;rsquo;^{\mu}p^{\nu}+p&amp;rsquo;^{\nu}p^{\mu}-(p&amp;rsquo;\cdot p)g^{\mu\nu}
-+m^2g^{\mu\nu}\right)\\
-&amp;amp; = 2e^2\left[2\left(\tilde{A}\cdot p&amp;rsquo;\right)\left(\tilde{A}\cdot p\right)
-+(m^2-p&amp;rsquo;\cdot p)\left(\tilde{A}\cdot\tilde{A}\right)\right]
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Now, let&amp;rsquo;s assume that the four-potential is generated by a charged
-particle of charge $Ze$. Then, the vector potential is given by&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-A^0(\vec{x}) = \dfrac{Ze}{4\pi r} \qquad \text{and}\qquad\vec{A}(\vec{x}) = 0
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;where $r = \left|\vec{x}\right|$. Now, let&amp;rsquo;s compute the fourier transform of
-this potential. To do so, we need to regulate the integrate. We modify
-it in the following way:&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-A^0(\vec{x}) = \dfrac{Ze}{4\pi r}e^{-\lambda r}
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;where $\lambda$ will be taken to zero at the end of the calculation. The
-Fourier transform of this vector potential is&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\tilde{A}^0(k)
-&amp;amp;= \int d^3\vec{x}\dfrac{Ze}{4\pi r}e^{-\lambda r}e^{i k r\cos(\theta)}\\
-&amp;amp;= \dfrac{Ze}{2}\int_{0}^{\infty}dr\int_{-1}^{1}d(\cos\theta)re^{-\lambda r}
-e^{i k r\cos(\theta)}\\
-&amp;amp;= \dfrac{Ze}{2ik}\left[\dfrac{e^{(ik-\lambda) r}}{ik-\lambda}+
-\dfrac{e^{(-ik-\lambda) r}}{ik+\lambda}\right]_{0}^{\infty}\\
-&amp;amp;= -\dfrac{Ze}{2ik}\left[\dfrac{(-ik-\lambda)+(-ik+\lambda)}{k^2+\lambda^2}\right]\\
-&amp;amp; = \dfrac{Ze}{k^2+\lambda^2}
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;where $k = |\vec{p}&amp;rsquo;-\vec{p}|$. Taking $\lambda$ to zero, we obtain&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\tilde{A}^0(\vec{p}&amp;rsquo;-\vec{p}) = \dfrac{Ze}{|\vec{p}&amp;rsquo;-\vec{p}|^2}
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Let&amp;rsquo;s use this to simplify the matrix element. The matrix element is&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\sum_{s,s&amp;rsquo;}\left|\mathcal{M}\right|^2
-&amp;amp; = 2e^2
-\left[2 \dfrac{Z^2e^2E_iE_f}{|\vec{p}&amp;rsquo;-\vec{p}|^4}
-+(m^2-E_iE_f+\vec{p}\cdot\vec{p}&amp;rsquo;)
-\dfrac{Z^2e^2}{|\vec{p}&amp;rsquo;-\vec{p}|^4}\right]\\
-&amp;amp; =  \dfrac{2Z^2e^4}{|\vec{p}&amp;rsquo;-\vec{p}|^4}
-\left[E_iE_f+m^2+\vec{p}\cdot\vec{p}&amp;rsquo;\right]
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;We are now ready to compute the differential cross section. The
-differential cross section is given by&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-d\sigma = \dfrac{1}{2E_iv_i}\dfrac{d^3p_f}{(2\pi)^3(2E_f)}
-(2\pi)\delta(E_f-E_i)\left|\mathcal{M}\right|^2
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Using&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-p_f^2 dp_fd\Omega = p_fE_fdE_fd\Omega
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;(where $p_f$ and $p_i$ are the magnitude of the initial and final momentum
-respectively,) and integrating over $E_f$, we obtain $E_f=E_i=E$ and
-$p_f = p_i$. Thus, the differential cross section is&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\dfrac{d\sigma}{d\Omega}
-= \dfrac{1}{4Ev_i(2\pi)^2}
-\dfrac{2Z^2e^4}{|\vec{p}&amp;rsquo;-\vec{p}|^4}p_f
-\left[E^2+m^2+\vec{p}\cdot\vec{p}&amp;rsquo;\right]
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Let $\theta$ be the angle between $\vec{p}&amp;rsquo;$ and $\vec{p}$. Then,&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-|\vec{p}&amp;rsquo;-\vec{p}|^4 &amp;amp; = \left(p_i^2+p_f^2-2p_fp_i\cos\theta\right)^2 \\
-&amp;amp; = \left(2p_i^2-2p_i^2\cos\theta\right)^2       \\
-&amp;amp; = 4p_i^4\left(1-\cos\theta\right)^2            \\
-&amp;amp; = 16p_i^4\sin^4(\theta/2)
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Now, in the non-relativistic limit, the momentum is $p_i=mv_i$ and $E=m$.
-Hence, the differential cross section is&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\dfrac{d\sigma}{d\Omega}
-&amp;amp; = \dfrac{1}{4mv_i(2\pi)^2}
-\dfrac{2Z^2e^4mv_i}{(16)m^4v_i^4\sin^4(\theta/2)}
-\left[E^2+m^2+\vec{p}\cdot\vec{p}&amp;rsquo;\right]\\
-&amp;amp; = \dfrac{1}{8\pi^2}
-\dfrac{Z^2e^4}{(16)m^4v_i^4\sin^4(\theta/2)}
-\left[2m^2+m^2v_i^2\cos\theta\right]
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;Since $v_i\ll 1$, we find that&lt;/p&gt;
-&lt;p&gt;$$\begin{align}
-\dfrac{d\sigma}{d\Omega}
-&amp;amp; =\dfrac{Z^2\alpha^2}{4m^2v_i^4\sin^4(\theta/2)}
-\end{align}$$&lt;/p&gt;
-&lt;p&gt;where we used $e^2=4\pi\alpha$.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Solving the Boltzmann Equation</title>
-      <link>https://example.com/post/solving-boltzman-equation/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/solving-boltzman-equation/</guid>
+      <link>https://loganamorrison.github.io/post/solving-boltzman-equation/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/solving-boltzman-equation/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;In this notebook, we will investigate how to solve the Boltzmann equation in
 order to determine the relic abundance of a species. Our focus will be on
@@ -1283,7 +1029,7 @@ plt.gcf()
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp 400w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_56d2474567ca18be94e709899cdf0bb6.webp 760w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp&#34;
                width=&#34;578&#34;
                height=&#34;442&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -1358,7 +1104,7 @@ plt.gcf()
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp 400w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_412cf33d3a1dd3cf0474bbce2a0fddf1.webp 760w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp&#34;
                width=&#34;571&#34;
                height=&#34;444&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -1369,9 +1115,9 @@ plt.gcf()
     
     <item>
       <title>Temperature Evolution of a Decoupled Dark Sector</title>
-      <link>https://example.com/post/temp-evolution-decoupled/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/temp-evolution-decoupled/</guid>
+      <link>https://loganamorrison.github.io/post/temp-evolution-decoupled/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/temp-evolution-decoupled/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;In this document, we will invesigate how to compute the temperature and
 evolution of temperature of a species which is decoupled from the standard
@@ -1629,7 +1375,7 @@ plt.gcf()
                /post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_465648c16ff17f05d638cef1b8af5af8.webp 400w,
                /post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_19c79573a4dd3bc451b4a5400efea480.webp 760w,
                /post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_ad933b263457463d2c623440241d445c.webp 1200w&#34;
-               src=&#34;https://example.com/post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_465648c16ff17f05d638cef1b8af5af8.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_465648c16ff17f05d638cef1b8af5af8.webp&#34;
                width=&#34;584&#34;
                height=&#34;459&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -1752,7 +1498,7 @@ plt.gcf()
                /post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_1cfafb771cd77b42bf735bd6eb1b3d44.webp 400w,
                /post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_e899de8ac5b52ef75346b2468ca2caf5.webp 760w,
                /post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_e8e876b2eb307f920c9ab8f1684cfe5a.webp 1200w&#34;
-               src=&#34;https://example.com/post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_1cfafb771cd77b42bf735bd6eb1b3d44.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_1cfafb771cd77b42bf735bd6eb1b3d44.webp&#34;
                width=&#34;606&#34;
                height=&#34;459&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -1814,7 +1560,7 @@ plt.gcf()
                /post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_0ee9f2531fadfe6013936d7924b40a12.webp 400w,
                /post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_d97dddc04d7e5e12feb3e8f9011b965c.webp 760w,
                /post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_c7838c58a55715770b7a77a8e37d4bc4.webp 1200w&#34;
-               src=&#34;https://example.com/post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_0ee9f2531fadfe6013936d7924b40a12.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_0ee9f2531fadfe6013936d7924b40a12.webp&#34;
                width=&#34;576&#34;
                height=&#34;442&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -1836,9 +1582,9 @@ value for $T_{d}$.&lt;/p&gt;
     
     <item>
       <title>Thermal Distribution Functions</title>
-      <link>https://example.com/post/thermal-distributions/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/thermal-distributions/</guid>
+      <link>https://loganamorrison.github.io/post/thermal-distributions/</link>
+      <pubDate>Wed, 21 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/thermal-distributions/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;In this notebook we wish to compute the thermal distribution functions for
 fermions and bosons. The functions we wish to compute are the equilibirium
@@ -1999,7 +1745,7 @@ plt.gcf()
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_2_1_hu1e69a7eac82d643e598b8db3a7f361a2_32243_0c5be179540cb710060d55ca9a1a83da.webp 400w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_2_1_hu1e69a7eac82d643e598b8db3a7f361a2_32243_f2025a9262cabb33e865e6d373e033aa.webp 760w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_2_1_hu1e69a7eac82d643e598b8db3a7f361a2_32243_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/thermal-distributions/2019-08-21-thermal-distribution-functions_2_1_hu1e69a7eac82d643e598b8db3a7f361a2_32243_0c5be179540cb710060d55ca9a1a83da.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/thermal-distributions/2019-08-21-thermal-distribution-functions_2_1_hu1e69a7eac82d643e598b8db3a7f361a2_32243_0c5be179540cb710060d55ca9a1a83da.webp&#34;
                width=&#34;563&#34;
                height=&#34;440&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -2146,7 +1892,7 @@ plt.gcf()
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_5_1_hu919eebb188a1bc8ade07cc6cd9d75b0f_52625_c9684bc50574191847c61ad29ae76059.webp 400w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_5_1_hu919eebb188a1bc8ade07cc6cd9d75b0f_52625_72e88b499117f4f3a991d3e1580dd733.webp 760w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_5_1_hu919eebb188a1bc8ade07cc6cd9d75b0f_52625_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/thermal-distributions/2019-08-21-thermal-distribution-functions_5_1_hu919eebb188a1bc8ade07cc6cd9d75b0f_52625_c9684bc50574191847c61ad29ae76059.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/thermal-distributions/2019-08-21-thermal-distribution-functions_5_1_hu919eebb188a1bc8ade07cc6cd9d75b0f_52625_c9684bc50574191847c61ad29ae76059.webp&#34;
                width=&#34;629&#34;
                height=&#34;469&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -2308,7 +2054,7 @@ plt.gcf()
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_8_1_hu0019447d4fbb8735ea14e80f47f3b7c9_49575_20c01f773be2813f7de88a4d1b0c8d9c.webp 400w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_8_1_hu0019447d4fbb8735ea14e80f47f3b7c9_49575_ed9902173e7629aee4a42ec6c3bceba7.webp 760w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_8_1_hu0019447d4fbb8735ea14e80f47f3b7c9_49575_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/thermal-distributions/2019-08-21-thermal-distribution-functions_8_1_hu0019447d4fbb8735ea14e80f47f3b7c9_49575_20c01f773be2813f7de88a4d1b0c8d9c.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/thermal-distributions/2019-08-21-thermal-distribution-functions_8_1_hu0019447d4fbb8735ea14e80f47f3b7c9_49575_20c01f773be2813f7de88a4d1b0c8d9c.webp&#34;
                width=&#34;629&#34;
                height=&#34;469&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -2397,7 +2143,7 @@ plt.gcf()
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_9_1_hu9f2b5e6b82f6b794785d24eb8d9e3559_38665_9f9bc5b6ead32807a3136cd0af00ccf8.webp 400w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_9_1_hu9f2b5e6b82f6b794785d24eb8d9e3559_38665_7678a102ffa0784075419c1ca6b30629.webp 760w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_9_1_hu9f2b5e6b82f6b794785d24eb8d9e3559_38665_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/thermal-distributions/2019-08-21-thermal-distribution-functions_9_1_hu9f2b5e6b82f6b794785d24eb8d9e3559_38665_9f9bc5b6ead32807a3136cd0af00ccf8.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/thermal-distributions/2019-08-21-thermal-distribution-functions_9_1_hu9f2b5e6b82f6b794785d24eb8d9e3559_38665_9f9bc5b6ead32807a3136cd0af00ccf8.webp&#34;
                width=&#34;629&#34;
                height=&#34;469&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -2590,7 +2336,7 @@ plt.gcf()
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_12_1_hu39cb897a72c79f8387e2fcf2bc2e421c_53419_4231ed3c7c141cc5856c48e0230a7515.webp 400w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_12_1_hu39cb897a72c79f8387e2fcf2bc2e421c_53419_7a917f034b7d92cb16be111d8f88bd80.webp 760w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_12_1_hu39cb897a72c79f8387e2fcf2bc2e421c_53419_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/thermal-distributions/2019-08-21-thermal-distribution-functions_12_1_hu39cb897a72c79f8387e2fcf2bc2e421c_53419_4231ed3c7c141cc5856c48e0230a7515.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/thermal-distributions/2019-08-21-thermal-distribution-functions_12_1_hu39cb897a72c79f8387e2fcf2bc2e421c_53419_4231ed3c7c141cc5856c48e0230a7515.webp&#34;
                width=&#34;570&#34;
                height=&#34;439&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -2702,12 +2448,266 @@ plt.gcf()
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_14_1_hu482d3b1ce6706dff3e45ed267245765c_68008_c4c4aab3029047290b566181e1f27c16.webp 400w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_14_1_hu482d3b1ce6706dff3e45ed267245765c_68008_abc42e1d5887aa3a7bd57b7b77d60670.webp 760w,
                /post/thermal-distributions/2019-08-21-thermal-distribution-functions_14_1_hu482d3b1ce6706dff3e45ed267245765c_68008_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/thermal-distributions/2019-08-21-thermal-distribution-functions_14_1_hu482d3b1ce6706dff3e45ed267245765c_68008_c4c4aab3029047290b566181e1f27c16.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/thermal-distributions/2019-08-21-thermal-distribution-functions_14_1_hu482d3b1ce6706dff3e45ed267245765c_68008_c4c4aab3029047290b566181e1f27c16.webp&#34;
                width=&#34;630&#34;
                height=&#34;469&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
   &lt;/div&gt;&lt;/figure&gt;
 &lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rutherford Scattering</title>
+      <link>https://loganamorrison.github.io/post/rutherford-scattering/</link>
+      <pubDate>Sun, 25 Feb 2018 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/rutherford-scattering/</guid>
+      <description>&lt;h2 id=&#34;classical-calculation&#34;&gt;Classical Calculation&lt;/h2&gt;
+&lt;p&gt;$\require{cancel}$
+$\newcommand{\bra}[1]{\left&amp;lt; #1 \right|}$
+$\newcommand{\ket}[1]{\left| #1 \right&amp;gt;}$
+$\newcommand{\bk}[2]{\left&amp;lt; #1 \middle| #2 \right&amp;gt;}$
+$\newcommand{\bke}[3]{\left&amp;lt; #1 \middle| #2 \middle| #3 \right&amp;gt;}$
+$\newcommand{\Tr}{\mathrm{Tr}}$&lt;/p&gt;
+&lt;p&gt;We consider a charged particle of mass $m$ scattering off a heavy
+nucleus. Let the impact parameter be $b$ and the energy of the impinging
+particle be $E$. The classical Lagrangian for a particle with charge $e$
+scattering off a heavy nucleus of charge $eZ$ is:
+$$\begin{align}
+\mathcal{L}= T - V = \dfrac{1}{2}m \left(\dfrac{d\vec{r}}{dt}\right)^2 - V(r)
+\end{align}$$
+with
+$$\begin{align}
+V(r) = \dfrac{e^2Z}{4\pi r}
+\end{align}$$
+In the plane of scattering, we need only to consider two variables - $|\vec{r}| = r$ and $\theta$. We can write the derivative of $\vec{r}$ as:
+$$\begin{align}
+\dfrac{d\vec{r}}{dt} = \dfrac{dr}{dt}\hat{\vec{r}} + r \dfrac{d\theta}{dt}\hat{\vec{\theta}}
+\end{align}$$
+Our Lagrangian then reads:
+$$\begin{align}
+\mathcal{L}= \dfrac{1}{2}m \left(\left(\dfrac{dr}{dt}\right)^2 + r^2 \left(\dfrac{d\theta}{dt}\right)^2\right) - \dfrac{e^2Z}{4\pi r}
+\end{align}$$
+The Euler-Lagrange equation of $\theta$ reads:
+$$\begin{align}
+0 = \dfrac{\partial\mathcal{L}}{d\theta} = \dfrac{d}{dt}\dfrac{\partial\mathcal{L}}{\partial\dot{\theta}} = \dfrac{d}{dt}mr^2\dot{\theta}
+\end{align}$$
+Hence, $mr^2\dot{\theta}$ is a constant, which is the angular momentum,
+$L = b\sqrt{2mE}$. Therefore,
+$$\begin{align}
+\dfrac{d\theta}{dt} = \dfrac{L}{mr^2}
+\end{align}$$
+By energy conservation, we can write
+$$\begin{align}
+E = \dfrac{1}{2}m \left(\left(\dfrac{dr}{dt}\right)^2 + r^2 \left(\dfrac{d\theta}{dt}\right)^2\right) + \dfrac{e^2Z}{4\pi r}
+\end{align}$$
+We can readily solve this equation for the time derivative of $r$,
+obtaining:
+$$\begin{align}
+\dfrac{dr}{dr} = \dfrac{1}{mr}\sqrt{2mEr^2 - \dfrac{e^2Zm}{2\pi}r - L^2}
+\end{align}$$
+We can write
+$$\begin{align}
+\dfrac{d\theta}{dt} = \dfrac{d\theta}{dr}\dfrac{dr}{dt} = \dfrac{L}{mr^2}
+\end{align}$$
+Therefore,
+$$\begin{align}
+\dfrac{d\theta}{dr} = \dfrac{L}{mr^2}\left(\dfrac{dr}{dt}\right)^{-1} = \dfrac{L}{r\sqrt{2mEr^2 - \dfrac{e^2Zm}{2\pi}r - L^2}}
+\end{align}$$
+This equation can be integrated to obtain the final value of $\theta$.
+We would want to integrate this equation over $\infty\to\infty$. We can
+instead integrate this equation over $r_{0}\to\infty$ where $r_0$ is the
+minimum value of $r$. The minimum value of $r$ will occur when
+$dr/dt = 0$, which happens when
+$$\begin{align}
+2mEr^2 - \dfrac{e^2Zm}{2\pi}r - L^2 = 0
+\end{align}$$
+We can solve this equation by completing the square:
+$$\begin{align}
+r_0 = \dfrac{e^2Z}{8\pi E} + \sqrt{\dfrac{L^2}{2mE} + \dfrac{e^4Z^2}{64\pi^2 E^2}} = A + \sqrt{A^2 + b^2}
+\end{align}$$
+where
+$$\begin{align}
+A &amp;amp; = \dfrac{e^2Z}{8\pi E}
+\end{align}$$
+Given these definitions,
+$$\begin{align}
+\theta(\infty)-\theta(r_{0}) = \int_{r_{0}}^{\infty}dr \dfrac{b}{r\sqrt{(r-A)^2-A^2-b^2}}
+\end{align}$$
+Integrating this give us:
+$$\begin{align}
+\theta(\infty)-\theta(r_{0}) = -\dfrac{\pi}{2} - i\log(\dfrac{-b+iA}{\sqrt{A^2+b^2}})
+\end{align}$$
+If we rotate our system such that $\theta(r_0) = \pi/2$ (which sends
+$\theta\to\theta/2$), then we find that
+$$\begin{align}
+\sin(\theta/2) = \dfrac{A}{\sqrt{A^2+b^2}}
+\end{align}$$
+We thus find that
+$$\begin{align}
+b = A\cot(\theta/2)
+\end{align}$$
+This implies that the impact parameter as a function of $\theta$ is
+$$\begin{align}
+b = \dfrac{e^2Z}{8\pi E\tan(\theta/2)}
+\end{align}$$
+Recall that the differential scattering cross-sections is
+$$\begin{align}
+\dfrac{d\sigma}{d\Omega} = \dfrac{b}{\sin\theta}\dfrac{db}{d\theta}
+\end{align}$$
+we find that
+$$\begin{align}
+\dfrac{d\sigma}{d\Omega} = \dfrac{e^4Z^2}{256\pi^2E^2\sin^4(\theta/2)} = \dfrac{\alpha^2Z^2}{16E^2\sin^4(\theta/2)} = \dfrac{\alpha^2Z^2}{4m^2v_i^2\sin^4(\theta/2)}
+\end{align}$$
+where $\alpha = e^2/4\pi$.&lt;/p&gt;
+&lt;h2 id=&#34;quantum-field-theory-calculation&#34;&gt;Quantum Field Theory Calculation&lt;/h2&gt;
+&lt;p&gt;In this section, we will investigate Rutherford Scattering through the
+point of view of quantum field theory. We will consider the electron and
+positron as dynamic fields and the photon field as static. The
+Lagrangian we will consider is
+$$\begin{align}
+\mathcal{L}= \overline{\Psi}\left(i\cancel{\partial}-m\right)\Psi
+-eA_{\mu}\overline{\Psi}\gamma^{\mu}\Psi
+\end{align}$$
+Our goal will be to calculate the differential cross-section
+$\dfrac{d\sigma}{d\Omega}$ for an electron scattering of the static
+potential. The $T$ matrix element for this process, to first order in
+the electromagnetic coupling constant, is&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\langle{p&amp;rsquo;}|iT|\rangle{p}
+&amp;amp; = \bra{p&amp;rsquo;,s&amp;rsquo;}T\exp\left[-i\int d^4x \mathcal{L}_{I}(x)\right]\ket{p,s} \\
+&amp;amp; = ie\int d^4x \bra{p&amp;rsquo;,s&amp;rsquo;}A_{\mu}(x)\overline{\Psi}(x)\gamma^{\mu}\Psi(x)\ket{p,s}+
+\mathcal{O}(e^2)\\
+&amp;amp; = ie\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)
+\int d^4xA_{\mu}(x)e^{i(p&amp;rsquo;-p)x}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Now Fourier transform the photon field:&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+A_{\mu}(x) = \int \dfrac{d^4q}{(2\pi)^4}\tilde{A}_{\mu}(q)e^{-iqx}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Inserting this into the expression for the $T$-matrix element, we find&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\langle{p&amp;rsquo;}|iT|\rangle{p}
+&amp;amp; = ie\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)
+\int d^4x\int \dfrac{d^4q}{(2\pi)^4}
+\tilde{A}_{\mu}(q)e^{i(p&amp;rsquo;-p-q)x}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Integrating over $x$ will produce a factor of $(2\pi)^4\delta^4(p&amp;rsquo;-p-q)$. We can then integrate over $q$ using this delta function, producing&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\langle{p&amp;rsquo;}|iT|\rangle{p}
+&amp;amp; = ie\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)\tilde{A}_{\mu}(p&amp;rsquo;-p)
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Now, suppose the photon field is time-independent. Then, the fourier
+transform of the photon field is&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\tilde{A}_{\mu}(p&amp;rsquo;-p) &amp;amp; = \int d^3zA_{\mu}(\vec{z}) e^{i(\vec{p}&amp;rsquo;-\vec{p})\cdot\vec{z}}\int_{-\infty}^{\infty}dt&amp;rsquo;e^{i(E_{p&amp;rsquo;}-E_{p})t&amp;rsquo;}\\
+&amp;amp; = (2\pi)\delta(E_{p&amp;rsquo;}-E_{p})\int d^3zA_{\mu}(\vec{z})
+e^{i(\vec{p}&amp;rsquo;-\vec{p})\cdot\vec{z}}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;We now define the matrix element as&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\langle{p&amp;rsquo;}|iT|\rangle{p} = (2\pi)i\delta(E_{p&amp;rsquo;}-E_{p})\mathcal{M}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Through this definition, we can see that $\mathcal{M}$ is&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\mathcal{M}= e\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)
+\tilde{A}_{\mu}(\vec{p}&amp;rsquo;-\vec{p})
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;where it is understood that $E_{p&amp;rsquo;} = E_{p}$. Let&amp;rsquo;s square this matrix element and average over the initial spin and sum over final spin of the electron:&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\sum_{s,s&amp;rsquo;}\left|\mathcal{M}\right|^2
+&amp;amp; =\dfrac{1}{2}e^2\tilde{A}_{\mu}\tilde{A}_{\nu}
+\Tr\left[\left(\cancel{p}&amp;rsquo;+m\right)\gamma^{\mu}
+\left(\cancel{p}+m\right)\gamma^{\nu}\right]\\
+&amp;amp; =\dfrac{1}{2}e^2\tilde{A}_{\mu}\tilde{A}_{\nu}
+\left(\Tr\left[\cancel{p}&amp;rsquo;\gamma^{\mu}\cancel{p}\gamma^{\nu}\right]
++m^2\Tr\left[\gamma^{\mu}\gamma^{\nu}\right]\right)\\
+&amp;amp; = 2e^2\tilde{A}_{\mu}\tilde{A}_{\nu}
+\left(p&amp;rsquo;^{\mu}p^{\nu}+p&amp;rsquo;^{\nu}p^{\mu}-(p&amp;rsquo;\cdot p)g^{\mu\nu}
++m^2g^{\mu\nu}\right)\\
+&amp;amp; = 2e^2\left[2\left(\tilde{A}\cdot p&amp;rsquo;\right)\left(\tilde{A}\cdot p\right)
++(m^2-p&amp;rsquo;\cdot p)\left(\tilde{A}\cdot\tilde{A}\right)\right]
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Now, let&amp;rsquo;s assume that the four-potential is generated by a charged
+particle of charge $Ze$. Then, the vector potential is given by&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+A^0(\vec{x}) = \dfrac{Ze}{4\pi r} \qquad \text{and}\qquad\vec{A}(\vec{x}) = 0
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;where $r = \left|\vec{x}\right|$. Now, let&amp;rsquo;s compute the fourier transform of
+this potential. To do so, we need to regulate the integrate. We modify
+it in the following way:&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+A^0(\vec{x}) = \dfrac{Ze}{4\pi r}e^{-\lambda r}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;where $\lambda$ will be taken to zero at the end of the calculation. The
+Fourier transform of this vector potential is&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\tilde{A}^0(k)
+&amp;amp;= \int d^3\vec{x}\dfrac{Ze}{4\pi r}e^{-\lambda r}e^{i k r\cos(\theta)}\\
+&amp;amp;= \dfrac{Ze}{2}\int_{0}^{\infty}dr\int_{-1}^{1}d(\cos\theta)re^{-\lambda r}
+e^{i k r\cos(\theta)}\\
+&amp;amp;= \dfrac{Ze}{2ik}\left[\dfrac{e^{(ik-\lambda) r}}{ik-\lambda}+
+\dfrac{e^{(-ik-\lambda) r}}{ik+\lambda}\right]_{0}^{\infty}\\
+&amp;amp;= -\dfrac{Ze}{2ik}\left[\dfrac{(-ik-\lambda)+(-ik+\lambda)}{k^2+\lambda^2}\right]\\
+&amp;amp; = \dfrac{Ze}{k^2+\lambda^2}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;where $k = |\vec{p}&amp;rsquo;-\vec{p}|$. Taking $\lambda$ to zero, we obtain&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\tilde{A}^0(\vec{p}&amp;rsquo;-\vec{p}) = \dfrac{Ze}{|\vec{p}&amp;rsquo;-\vec{p}|^2}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s use this to simplify the matrix element. The matrix element is&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\sum_{s,s&amp;rsquo;}\left|\mathcal{M}\right|^2
+&amp;amp; = 2e^2
+\left[2 \dfrac{Z^2e^2E_iE_f}{|\vec{p}&amp;rsquo;-\vec{p}|^4}
++(m^2-E_iE_f+\vec{p}\cdot\vec{p}&amp;rsquo;)
+\dfrac{Z^2e^2}{|\vec{p}&amp;rsquo;-\vec{p}|^4}\right]\\
+&amp;amp; =  \dfrac{2Z^2e^4}{|\vec{p}&amp;rsquo;-\vec{p}|^4}
+\left[E_iE_f+m^2+\vec{p}\cdot\vec{p}&amp;rsquo;\right]
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;We are now ready to compute the differential cross section. The
+differential cross section is given by&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+d\sigma = \dfrac{1}{2E_iv_i}\dfrac{d^3p_f}{(2\pi)^3(2E_f)}
+(2\pi)\delta(E_f-E_i)\left|\mathcal{M}\right|^2
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Using&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+p_f^2 dp_fd\Omega = p_fE_fdE_fd\Omega
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;(where $p_f$ and $p_i$ are the magnitude of the initial and final momentum
+respectively,) and integrating over $E_f$, we obtain $E_f=E_i=E$ and
+$p_f = p_i$. Thus, the differential cross section is&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\dfrac{d\sigma}{d\Omega}
+= \dfrac{1}{4Ev_i(2\pi)^2}
+\dfrac{2Z^2e^4}{|\vec{p}&amp;rsquo;-\vec{p}|^4}p_f
+\left[E^2+m^2+\vec{p}\cdot\vec{p}&amp;rsquo;\right]
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Let $\theta$ be the angle between $\vec{p}&amp;rsquo;$ and $\vec{p}$. Then,&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+|\vec{p}&amp;rsquo;-\vec{p}|^4 &amp;amp; = \left(p_i^2+p_f^2-2p_fp_i\cos\theta\right)^2 \\
+&amp;amp; = \left(2p_i^2-2p_i^2\cos\theta\right)^2       \\
+&amp;amp; = 4p_i^4\left(1-\cos\theta\right)^2            \\
+&amp;amp; = 16p_i^4\sin^4(\theta/2)
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Now, in the non-relativistic limit, the momentum is $p_i=mv_i$ and $E=m$.
+Hence, the differential cross section is&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\dfrac{d\sigma}{d\Omega}
+&amp;amp; = \dfrac{1}{4mv_i(2\pi)^2}
+\dfrac{2Z^2e^4mv_i}{(16)m^4v_i^4\sin^4(\theta/2)}
+\left[E^2+m^2+\vec{p}\cdot\vec{p}&amp;rsquo;\right]\\
+&amp;amp; = \dfrac{1}{8\pi^2}
+\dfrac{Z^2e^4}{(16)m^4v_i^4\sin^4(\theta/2)}
+\left[2m^2+m^2v_i^2\cos\theta\right]
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;Since $v_i\ll 1$, we find that&lt;/p&gt;
+&lt;p&gt;$$\begin{align}
+\dfrac{d\sigma}{d\Omega}
+&amp;amp; =\dfrac{Z^2\alpha^2}{4m^2v_i^4\sin^4(\theta/2)}
+\end{align}$$&lt;/p&gt;
+&lt;p&gt;where we used $e^2=4\pi\alpha$.&lt;/p&gt;
 </description>
     </item>
     

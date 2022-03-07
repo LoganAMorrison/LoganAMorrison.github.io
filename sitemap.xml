@@ -4,130 +4,134 @@
   
   
   <url>
-    <loc>https://example.com/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/talk/example-talk/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/talk/example-talk/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/event/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/event/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/publication-type/2/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/publication-type/2/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:20:29-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/publication/matching-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/publication/matching-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/publication_types/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/publication_types/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/publication/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:20:29-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/publication/asymptotic-boltzman-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/publication/cpt-rhn-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/publication/large-nightmare-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/publication/hawking-rad-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/publication-type/0/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/publication/gecco-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/publication/one-loop-thdm-2020/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/publication/hazma-2020/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/categories/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/post/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/tags/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/tag/teaching/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/category/teaching/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/post/visualizing-fourier-series/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/publication/melanopogenesis-2019/</loc><lastmod>2022-03-04T23:20:29-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/publication/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:20:29-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/slides/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/slides/example/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/publication/asymptotic-boltzman-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/tag/deep-learning/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/project/example/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/project/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/tag/ambient-crystal-growth/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/publication/cpt-rhn-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/publication/large-nightmare-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/publication/hawking-rad-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/publication-type/0/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/publication/gecco-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/publication/one-loop-thdm-2020/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/publication/hazma-2020/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/categories/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tags/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/teaching/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/category/teaching/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/visualizing-fourier-series/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/functional-det-heat-kernel/</loc><lastmod>2019-09-02T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/category/field-theory/</loc><lastmod>2019-09-02T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/finite-temperature-field-theory/</loc><lastmod>2019-09-02T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/quantum-field-theory/</loc><lastmod>2019-09-02T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/effective-potential-scalar-ft/</loc><lastmod>2019-08-26T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/effective-potential/</loc><lastmod>2019-08-26T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/cosmology/</loc><lastmod>2019-08-25T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/category/dark-matter/</loc><lastmod>2019-08-25T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/numerics/</loc><lastmod>2019-08-25T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/solving-boltzman-equation/</loc><lastmod>2019-08-25T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/temp-evolution-decoupled/</loc><lastmod>2019-08-25T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/thermal-distributions/</loc><lastmod>2019-08-21T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/publication/melanopogenesis-2019/</loc><lastmod>2022-03-04T23:20:29-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc></loc><lastmod>2022-03-04T23:20:29-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/slides/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/slides/example/</loc><lastmod>2019-02-05T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/rutherford-scattering/</loc><lastmod>2018-02-25T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/deep-learning/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/project/example/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/project/</loc><lastmod>2016-04-27T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/ambient-crystal-growth/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/publication/ovls-2016/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/publication/ovls-2016/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/tag/ofet/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/tag/ofet/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/tag/organic-electronics/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/tag/organic-electronics/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/tag/organic-vapor-liquid-solid-deposition/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/tag/organic-vapor-liquid-solid-deposition/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/tag/tetracene/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/tag/tetracene/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://example.com/tag/cosmology/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/post/effective-potential-scalar-ft/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/tag/effective-potential/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/post/functional-det-heat-kernel/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/tag/finite-temperature-field-theory/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/tag/numerics/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/tag/quantum-field-theory/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/post/rutherford-scattering/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/post/solving-boltzman-equation/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/post/temp-evolution-decoupled/</loc><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://example.com/post/thermal-distributions/</loc><changefreq>weekly</changefreq></url></urlset>
+    <loc></loc><changefreq>weekly</changefreq></url></urlset>

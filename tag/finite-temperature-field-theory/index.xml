@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>finite-temperature-field-theory | Academic</title>
-    <link>https://example.com/tag/finite-temperature-field-theory/</link>
-      <atom:link href="https://example.com/tag/finite-temperature-field-theory/index.xml" rel="self" type="application/rss+xml" />
+    <title>finite-temperature-field-theory | Logan A. Morrison</title>
+    <link>https://loganamorrison.github.io/tag/finite-temperature-field-theory/</link>
+      <atom:link href="https://loganamorrison.github.io/tag/finite-temperature-field-theory/index.xml" rel="self" type="application/rss+xml" />
     <description>finite-temperature-field-theory</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 02 Sep 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
+      <url>https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>finite-temperature-field-theory</title>
-      <link>https://example.com/tag/finite-temperature-field-theory/</link>
+      <link>https://loganamorrison.github.io/tag/finite-temperature-field-theory/</link>
     </image>
     
     <item>
       <title>Evaluating Functional Determinants in a Thermal Field Theory using the Heat-Kernel</title>
-      <link>https://example.com/post/functional-det-heat-kernel/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/functional-det-heat-kernel/</guid>
+      <link>https://loganamorrison.github.io/post/functional-det-heat-kernel/</link>
+      <pubDate>Mon, 02 Sep 2019 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/functional-det-heat-kernel/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;In this post, we will discuss how to compute fluctuation determinants is a
 finite temperature field theory. The general form of an operator that we will

@@ -1,94 +1,94 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Publications | Academic</title>
-    <link>https://example.com/publication/</link>
-      <atom:link href="https://example.com/publication/index.xml" rel="self" type="application/rss+xml" />
+    <title>Publications | Logan A. Morrison</title>
+    <link>https://loganamorrison.github.io/publication/</link>
+      <atom:link href="https://loganamorrison.github.io/publication/index.xml" rel="self" type="application/rss+xml" />
     <description>Publications</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sun, 01 Aug 2021 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
+      <url>https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>Publications</title>
-      <link>https://example.com/publication/</link>
+      <link>https://loganamorrison.github.io/publication/</link>
     </image>
     
     <item>
       <title>Precision gamma-ray constraints for sub-GeV dark matter models</title>
-      <link>https://example.com/publication/matching-2021/</link>
+      <link>https://loganamorrison.github.io/publication/matching-2021/</link>
       <pubDate>Sun, 01 Aug 2021 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/matching-2021/</guid>
+      <guid>https://loganamorrison.github.io/publication/matching-2021/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Asymptotic analysis of the Boltzmann equation for dark matter relic abundance</title>
-      <link>https://example.com/publication/asymptotic-boltzman-2021/</link>
+      <link>https://loganamorrison.github.io/publication/asymptotic-boltzman-2021/</link>
       <pubDate>Thu, 01 Jul 2021 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/asymptotic-boltzman-2021/</guid>
+      <guid>https://loganamorrison.github.io/publication/asymptotic-boltzman-2021/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sterile neutrino dark matter from generalized  CPT -symmetric early-Universe cosmologies</title>
-      <link>https://example.com/publication/cpt-rhn-2021/</link>
+      <link>https://loganamorrison.github.io/publication/cpt-rhn-2021/</link>
       <pubDate>Thu, 01 Jul 2021 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/cpt-rhn-2021/</guid>
+      <guid>https://loganamorrison.github.io/publication/cpt-rhn-2021/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Large N-ightmare dark matter</title>
-      <link>https://example.com/publication/large-nightmare-2021/</link>
+      <link>https://loganamorrison.github.io/publication/large-nightmare-2021/</link>
       <pubDate>Sat, 01 May 2021 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/large-nightmare-2021/</guid>
+      <guid>https://loganamorrison.github.io/publication/large-nightmare-2021/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Direct Detection of Hawking Radiation from Asteroid-Mass Primordial Black Holes</title>
-      <link>https://example.com/publication/hawking-rad-2021/</link>
+      <link>https://loganamorrison.github.io/publication/hawking-rad-2021/</link>
       <pubDate>Thu, 01 Apr 2021 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/hawking-rad-2021/</guid>
+      <guid>https://loganamorrison.github.io/publication/hawking-rad-2021/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hunting for Dark Matter and New Physics with (a) GECCO</title>
-      <link>https://example.com/publication/gecco-2021/</link>
+      <link>https://loganamorrison.github.io/publication/gecco-2021/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/gecco-2021/</guid>
+      <guid>https://loganamorrison.github.io/publication/gecco-2021/</guid>
       <description></description>
     </item>
     
     <item>
       <title>One-loop charge-breaking minima in the two-Higgs doublet model</title>
-      <link>https://example.com/publication/one-loop-thdm-2020/</link>
+      <link>https://loganamorrison.github.io/publication/one-loop-thdm-2020/</link>
       <pubDate>Wed, 01 Apr 2020 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/one-loop-thdm-2020/</guid>
+      <guid>https://loganamorrison.github.io/publication/one-loop-thdm-2020/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hazma: a python toolkit for studying indirect detection of sub-GeV dark matter</title>
-      <link>https://example.com/publication/hazma-2020/</link>
+      <link>https://loganamorrison.github.io/publication/hazma-2020/</link>
       <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/hazma-2020/</guid>
+      <guid>https://loganamorrison.github.io/publication/hazma-2020/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Melanopogenesis: dark matter of (almost) any mass and baryonic matter from the evaporation of primordial black holes weighing a ton (or less)</title>
-      <link>https://example.com/publication/melanopogenesis-2019/</link>
+      <link>https://loganamorrison.github.io/publication/melanopogenesis-2019/</link>
       <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/melanopogenesis-2019/</guid>
+      <guid>https://loganamorrison.github.io/publication/melanopogenesis-2019/</guid>
       <description></description>
     </item>
     
     <item>
       <title>High performance organic field-effect transistors using ambient deposition of tetracene single crystals</title>
-      <link>https://example.com/publication/ovls-2016/</link>
+      <link>https://loganamorrison.github.io/publication/ovls-2016/</link>
       <pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/ovls-2016/</guid>
+      <guid>https://loganamorrison.github.io/publication/ovls-2016/</guid>
       <description></description>
     </item>
     

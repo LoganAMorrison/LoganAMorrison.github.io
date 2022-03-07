@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Teaching | Academic</title>
-    <link>https://example.com/tag/teaching/</link>
-      <atom:link href="https://example.com/tag/teaching/index.xml" rel="self" type="application/rss+xml" />
+    <title>Teaching | Logan A. Morrison</title>
+    <link>https://loganamorrison.github.io/tag/teaching/</link>
+      <atom:link href="https://loganamorrison.github.io/tag/teaching/index.xml" rel="self" type="application/rss+xml" />
     <description>Teaching</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 03 Oct 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
+      <url>https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>Teaching</title>
-      <link>https://example.com/tag/teaching/</link>
+      <link>https://loganamorrison.github.io/tag/teaching/</link>
     </image>
     
     <item>
       <title>Visualizing Fourier Series</title>
-      <link>https://example.com/post/visualizing-fourier-series/</link>
+      <link>https://loganamorrison.github.io/post/visualizing-fourier-series/</link>
       <pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/visualizing-fourier-series/</guid>
+      <guid>https://loganamorrison.github.io/post/visualizing-fourier-series/</guid>
       <description>&lt;p&gt;
 
 
@@ -191,7 +191,7 @@ what we get can be interpreted as follows. Consider the following figure:&lt;/p&
                /post/visualizing-fourier-series/fourier_circles_helper_hu2ec12bafdc3e893713cfab343dc50d47_87793_aa4d27ace328e06fcfb1048d85c9dec1.webp 400w,
                /post/visualizing-fourier-series/fourier_circles_helper_hu2ec12bafdc3e893713cfab343dc50d47_87793_87f05ac6cbebc08f2fea4f80d399c19d.webp 760w,
                /post/visualizing-fourier-series/fourier_circles_helper_hu2ec12bafdc3e893713cfab343dc50d47_87793_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/visualizing-fourier-series/fourier_circles_helper_hu2ec12bafdc3e893713cfab343dc50d47_87793_aa4d27ace328e06fcfb1048d85c9dec1.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/visualizing-fourier-series/fourier_circles_helper_hu2ec12bafdc3e893713cfab343dc50d47_87793_aa4d27ace328e06fcfb1048d85c9dec1.webp&#34;
                width=&#34;760&#34;
                height=&#34;592&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>numerics | Academic</title>
-    <link>https://example.com/tag/numerics/</link>
-      <atom:link href="https://example.com/tag/numerics/index.xml" rel="self" type="application/rss+xml" />
+    <title>numerics | Logan A. Morrison</title>
+    <link>https://loganamorrison.github.io/tag/numerics/</link>
+      <atom:link href="https://loganamorrison.github.io/tag/numerics/index.xml" rel="self" type="application/rss+xml" />
     <description>numerics</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sun, 25 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
+      <url>https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>numerics</title>
-      <link>https://example.com/tag/numerics/</link>
+      <link>https://loganamorrison.github.io/tag/numerics/</link>
     </image>
     
     <item>
       <title>Solving the Boltzmann Equation</title>
-      <link>https://example.com/post/solving-boltzman-equation/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/solving-boltzman-equation/</guid>
+      <link>https://loganamorrison.github.io/post/solving-boltzman-equation/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/solving-boltzman-equation/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;In this notebook, we will investigate how to solve the Boltzmann equation in
 order to determine the relic abundance of a species. Our focus will be on
@@ -270,7 +270,7 @@ plt.gcf()
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp 400w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_56d2474567ca18be94e709899cdf0bb6.webp 760w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp&#34;
                width=&#34;578&#34;
                height=&#34;442&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -345,7 +345,7 @@ plt.gcf()
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp 400w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_412cf33d3a1dd3cf0474bbce2a0fddf1.webp 760w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp&#34;
                width=&#34;571&#34;
                height=&#34;444&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;

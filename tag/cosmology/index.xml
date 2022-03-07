@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>cosmology | Academic</title>
-    <link>https://example.com/tag/cosmology/</link>
-      <atom:link href="https://example.com/tag/cosmology/index.xml" rel="self" type="application/rss+xml" />
+    <title>cosmology | Logan A. Morrison</title>
+    <link>https://loganamorrison.github.io/tag/cosmology/</link>
+      <atom:link href="https://loganamorrison.github.io/tag/cosmology/index.xml" rel="self" type="application/rss+xml" />
     <description>cosmology</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sun, 25 Aug 2019 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
+      <url>https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>cosmology</title>
-      <link>https://example.com/tag/cosmology/</link>
+      <link>https://loganamorrison.github.io/tag/cosmology/</link>
     </image>
     
     <item>
       <title>Solving the Boltzmann Equation</title>
-      <link>https://example.com/post/solving-boltzman-equation/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/solving-boltzman-equation/</guid>
+      <link>https://loganamorrison.github.io/post/solving-boltzman-equation/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/solving-boltzman-equation/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;In this notebook, we will investigate how to solve the Boltzmann equation in
 order to determine the relic abundance of a species. Our focus will be on
@@ -270,7 +270,7 @@ plt.gcf()
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp 400w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_56d2474567ca18be94e709899cdf0bb6.webp 760w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_4_1_hu3b2444c456dd439a1d6cad1e0dd242c4_24211_10147bd2bacfaa1aa815628983cdfff4.webp&#34;
                width=&#34;578&#34;
                height=&#34;442&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -345,7 +345,7 @@ plt.gcf()
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp 400w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_412cf33d3a1dd3cf0474bbce2a0fddf1.webp 760w,
                /post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_1200x1200_fit_q75_h2_lanczos_3.webp 1200w&#34;
-               src=&#34;https://example.com/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/solving-boltzman-equation/2019-08-24-solving-the-boltzmann-equation_7_1_hu31f3b955834c97c4dd7a43520c87a52f_16602_83f099ab6a750d7c7e3358d385183d5e.webp&#34;
                width=&#34;571&#34;
                height=&#34;444&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -356,9 +356,9 @@ plt.gcf()
     
     <item>
       <title>Temperature Evolution of a Decoupled Dark Sector</title>
-      <link>https://example.com/post/temp-evolution-decoupled/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://example.com/post/temp-evolution-decoupled/</guid>
+      <link>https://loganamorrison.github.io/post/temp-evolution-decoupled/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/temp-evolution-decoupled/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;In this document, we will invesigate how to compute the temperature and
 evolution of temperature of a species which is decoupled from the standard
@@ -616,7 +616,7 @@ plt.gcf()
                /post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_465648c16ff17f05d638cef1b8af5af8.webp 400w,
                /post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_19c79573a4dd3bc451b4a5400efea480.webp 760w,
                /post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_ad933b263457463d2c623440241d445c.webp 1200w&#34;
-               src=&#34;https://example.com/post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_465648c16ff17f05d638cef1b8af5af8.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/temp-evolution-decoupled/_huf0980fb77da5da47f5c0de19f7bb20a8_29154_465648c16ff17f05d638cef1b8af5af8.webp&#34;
                width=&#34;584&#34;
                height=&#34;459&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -739,7 +739,7 @@ plt.gcf()
                /post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_1cfafb771cd77b42bf735bd6eb1b3d44.webp 400w,
                /post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_e899de8ac5b52ef75346b2468ca2caf5.webp 760w,
                /post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_e8e876b2eb307f920c9ab8f1684cfe5a.webp 1200w&#34;
-               src=&#34;https://example.com/post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_1cfafb771cd77b42bf735bd6eb1b3d44.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/temp-evolution-decoupled/_hu715cf947b10252ae81e167eb1502f2d6_28611_1cfafb771cd77b42bf735bd6eb1b3d44.webp&#34;
                width=&#34;606&#34;
                height=&#34;459&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
@@ -801,7 +801,7 @@ plt.gcf()
                /post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_0ee9f2531fadfe6013936d7924b40a12.webp 400w,
                /post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_d97dddc04d7e5e12feb3e8f9011b965c.webp 760w,
                /post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_c7838c58a55715770b7a77a8e37d4bc4.webp 1200w&#34;
-               src=&#34;https://example.com/post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_0ee9f2531fadfe6013936d7924b40a12.webp&#34;
+               src=&#34;https://loganamorrison.github.io/post/temp-evolution-decoupled/_hu84cbee5f7cfe9364418fc072b085e6b7_15690_0ee9f2531fadfe6013936d7924b40a12.webp&#34;
                width=&#34;576&#34;
                height=&#34;442&#34;
                loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;

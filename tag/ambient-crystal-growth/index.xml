@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ambient crystal growth | Academic</title>
-    <link>https://example.com/tag/ambient-crystal-growth/</link>
-      <atom:link href="https://example.com/tag/ambient-crystal-growth/index.xml" rel="self" type="application/rss+xml" />
+    <title>Ambient crystal growth | Logan A. Morrison</title>
+    <link>https://loganamorrison.github.io/tag/ambient-crystal-growth/</link>
+      <atom:link href="https://loganamorrison.github.io/tag/ambient-crystal-growth/index.xml" rel="self" type="application/rss+xml" />
     <description>Ambient crystal growth</description>
     <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Fri, 01 Jan 2016 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>https://example.com/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
+      <url>https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url>
       <title>Ambient crystal growth</title>
-      <link>https://example.com/tag/ambient-crystal-growth/</link>
+      <link>https://loganamorrison.github.io/tag/ambient-crystal-growth/</link>
     </image>
     
     <item>
       <title>High performance organic field-effect transistors using ambient deposition of tetracene single crystals</title>
-      <link>https://example.com/publication/ovls-2016/</link>
+      <link>https://loganamorrison.github.io/publication/ovls-2016/</link>
       <pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
-      <guid>https://example.com/publication/ovls-2016/</guid>
+      <guid>https://loganamorrison.github.io/publication/ovls-2016/</guid>
       <description></description>
     </item>
     
