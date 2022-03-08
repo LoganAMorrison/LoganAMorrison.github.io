@@ -17,213 +17,361 @@
       <link>https://loganamorrison.github.io/post/boosting/</link>
       <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
       <guid>https://loganamorrison.github.io/post/boosting/</guid>
-      <description>&lt;h1 id=&#34;starting-from-rest-frame&#34;&gt;Starting from Rest Frame&lt;/h1&gt;
-&lt;p&gt;Suppose we know the energy spectrum $dN_{f}/{dE_{1}}$ of some product $f$ from the
-decay of a state $I$ in the rest frame of $I$. From this spectum, we
-would like to obtain the corresponding spectrum, ${dN_{f}}/{dE_{2}}$ in
-a boosted frame. First, assume that the four-momentum of $f$ in the
-initial frame is:&lt;/p&gt;
+      <description>&lt;details class=&#34;toc-inpage d-print-none  &#34; open&gt;
+  &lt;summary class=&#34;font-weight-bold&#34;&gt;Table of Contents&lt;/summary&gt;
+  &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#starting-from-rest-frame&#34;&gt;&lt;strong&gt;Starting from Rest Frame&lt;/strong&gt;&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#boost-integral-in-terms-of-scaleless-varibles&#34;&gt;Boost Integral in terms of Scaleless Varibles&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#examples&#34;&gt;&lt;strong&gt;Examples&lt;/strong&gt;&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#dirac-delta-function-spectrum&#34;&gt;&lt;em&gt;Dirac-Delta Function Spectrum&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#muon-decay&#34;&gt;&lt;em&gt;Muon Decay&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/details&gt;
+
+&lt;h2 id=&#34;starting-from-rest-frame&#34;&gt;&lt;strong&gt;Starting from Rest Frame&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Suppose we know the energy spectrum \(\dv*{N_{f}}{E_{1}}\) of some product \(f\)
+from the decay of a state \(I\) in the rest frame of \(I\).
+From this spectum,
+we would like to obtain the corresponding spectrum, \(\dv*{N_{f}}{E_{2}}\) in a
+boosted frame. First, assume that the
+four-momentum of \(f\) in the initial
+frame is:&lt;/p&gt;
 &lt;p&gt;$$
-\begin{aligned}
-p^{\mu}_{1} &amp;amp; = \left(E_{1}; \vec{p}_{1}\right)
-\end{aligned}
+\begin{align}
+p^{\mu}_{1} &amp;amp; = (E_{1}; \mathbf{p}_{1})
+\end{align}
 $$&lt;/p&gt;
-&lt;p&gt;where $\vec{p}_{1}$ is the three-momentum of $f$. without loss of generality,
-let&amp;rsquo;s assume that $\vec{p}_{1}$ lies in the $xz$-plane:
-$
-\vec{p}_{1} = \left(|\vec{p}_{1}|\tilde{z}_{1}, 0, |\vec{p}_{1}|z_{1}\right),
-$ with $z_{1}$
-equal to the cosine of the angle $\vec{p}_{1}$ makes with the $z$ axis
-and $\tilde{z}_{1} = \sqrt{1-z_{1}^2}$. Assume we boost along the
-$z$-axis, we can translate this four-momentum in the new frame using
-$p^{\mu}&lt;em&gt;{2} = {\Lambda}{^\mu&lt;/em&gt;\nu}p^{\nu}&lt;em&gt;{1}$ with
-$$\begin{aligned}
-\tensor[]{\Lambda}{^\mu&lt;/em&gt;\nu} = \mqty(\gamma &amp;amp; 0 &amp;amp; 0 &amp;amp; \gamma\beta \0&amp;amp;1&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;1&amp;amp;0\\beta\gamma&amp;amp;0&amp;amp;0&amp;amp;\gamma)\end{aligned}$$
-Explicity, $p^{\mu}&lt;em&gt;{2}$ is given by: $$\begin{aligned}
-p^{\mu}&lt;/em&gt;{2} &amp;amp; = \qty(E_{2}; \bm{p}&lt;em&gt;{2})                         \
-E&lt;/em&gt;{2}       &amp;amp; = \gamma E_{1} + \beta\gamma\abs{\bm{p}&lt;em&gt;{1}}z&lt;/em&gt;{1} \
-\bm{p}&lt;em&gt;{2}  &amp;amp; =
-\qty(\abs{\bm{p}&lt;/em&gt;{1}}\tilde{z}&lt;em&gt;{1}, 0, \beta\gamma E&lt;/em&gt;{1} + \gamma\abs{\bm{p}&lt;em&gt;{1}}z&lt;/em&gt;{1})\end{aligned}$$
-Notice that $E_{2}$ explicity depends on $z_{1}$, which we have
-integrated over in obtaining $\dv*{N_{f}}{E_{1}}$. To reintroduce
-$z_{1}$, we use: $$\begin{aligned}
+&lt;p&gt;where \(\mathbf{p}_{1}\) is the three-momentum of \(f\). without loss of generality,
+let&amp;rsquo;s assume that \(\mathbf{p}_{1}\) lies in the \(xz\)-plane:&lt;/p&gt;
+&lt;p&gt;$$
+\mathbf{p}_{1} = (|{\mathbf{p}_{1}}| \tilde{z}_{1}, 0, |\mathbf{p}_{1}|z_{1}),
+$$&lt;/p&gt;
+&lt;p&gt;with \(z_{1}\) equal to the cosine of the angle \(\mathbf{p}_{1}\) makes with the \(z\) axis and
+\(\tilde{z}_{1} = \sqrt{1-z_{1}^2}\). Assume we boost along the \(z\)-axis, we can translate this four-momentum
+in the new frame using \(p^{\mu}_{2} = {\Lambda}{^\mu_\nu}p^{\nu}_{1}\) with&lt;/p&gt;
+&lt;p&gt;$$
+{\Lambda}{^\mu_\nu} = \begin{pmatrix}
+\gamma &amp;amp; 0 &amp;amp; 0 &amp;amp; \gamma\beta \\
+0&amp;amp;1&amp;amp;0&amp;amp;0\\
+0&amp;amp;0&amp;amp;1&amp;amp;0\\
+\beta\gamma&amp;amp;0&amp;amp;0&amp;amp;\gamma
+\end{pmatrix}
+$$&lt;/p&gt;
+&lt;p&gt;Explicity, \(p^{\mu}_{2}\) is given by:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+p^{\mu}_{2} &amp;amp; = (E_{2}; \mathbf{p}_{2})                         \\
+E_{2}       &amp;amp; = \gamma E_{1} + \beta\gamma|{\mathbf{p}_{1}}|z_{1} \\
+\mathbf{p}_{2}  &amp;amp; =
+(|{\mathbf{p}_{1}}|\tilde{z}_{1}, 0, \beta\gamma E_{1} + \gamma|{\mathbf{p}_{1}}|z_{1})
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;Notice that \(E_{2}\) explicity depends on \(z_{1}\), which we have integrated over in obtaining \(\dv*{N_{f}}{E_{1}}\). To
+reintroduce \(z_{1}\), we use:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
 {\dv{N_{f}}{E_{1}}}(E_{1}) &amp;amp; = \int_{-1}^{1}\dd{z} \pdv{N_{f}}{E_{1}}{z_{1}}, &amp;amp;
-\pdv{N_{f}}{E_{1}}{z_{1}}  &amp;amp; = \frac{1}{2} \dv{N_{f}}{E_{1}}\end{aligned}$$
-In order to translate this expression into $\dv*{N_{f}}{E_{2}}$, we have
-two options. The first is to introduce a $\delta$-function enforcing the
-correct relation between $E_{2}$ and $E_{1}$ and integrate over $E_{1}$
-in addition to $z_{1}$ [@ElorRoddSlatyer2015]. The trick is to first
-use: $$\begin{aligned}
-N_{f} = \int\dd{z_{1}}\dd{E_{1}}\pdv{N_{f}}{E_{1}}{z_{1}}\end{aligned}$$
-and insert: $$\begin{aligned}
-1 &amp;amp; = \int\dd{E_{2}}\delta(E_{2} - E_{2}(E_{1}, z_{1}))\end{aligned}$$
-where
-$E_{2}(E_{1},z_{1}) = \gamma E_{1} + \beta\gamma\abs{\bm{p}&lt;em&gt;{1}}z&lt;/em&gt;{1}$
-Inserting this factor of unity, we obtain: $$\begin{aligned}
+\pdv{N_{f}}{E_{1}}{z_{1}}  &amp;amp; = \frac{1}{2} \dv{N_{f}}{E_{1}}
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;In order to translate this expression into \(\dv*{N_{f}}{E_{2}}\), we have two options. The first is to introduce a \(\delta\)-function enforcing the
+correct relation between \(E_{2}\) and \(E_{1}\) and integrate over \(E_{1}\) in addition to \(z_{1}))&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;
+. The trick is to
+first use:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+N_{f} = \int\dd{z_{1}}\dd{E_{1}}\pdv{N_{f}}{E_{1}}{z_{1}}
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;and insert:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+1 &amp;amp; = \int\dd{E_{2}}\delta(E_{2} - E_{2}(E_{1}, z_{1}))
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;where \(E_{2}(E_{1},z_{1}) = \gamma E_{1} + \beta\gamma|{\mathbf{p}_{1}}|z_{1}\)
+Inserting this factor of unity, we obtain:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
 N_{f}
-= \int\dd{E_{2}}\int\dd{z_{1}}\int\dd{E_{1}}\pdv{N_{f}}{E_{1}}{z_{1}} \delta(E_{2} - E_{2}(E_{1}, z_{1}))\end{aligned}$$
-Differentiating with respect to $E_{2}$, we find: $$\begin{aligned}
+= \int\dd{E_{2}}\int\dd{z_{1}}\int\dd{E_{1}}\pdv{N_{f}}{E_{1}}{z_{1}} \delta(E_{2} - E_{2}(E_{1}, z_{1}))
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;Differentiating with respect to \(E_{2}\), we find:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
 \dv{N_{f}}{E_{2}}
-= \int\dd{z_{1}}\int\dd{E_{1}}\pdv{N_{f}}{E_{1}}{z_{1}} \delta(E_{2} - E_{2}(E_{1}, z_{1}))\end{aligned}$$
-The second method is to use one of the following (which is equivalent;
-see Ref. ([@kim2020derivation])) $$\begin{aligned}
+= \int\dd{z_{1}}\int\dd{E_{1}}\pdv{N_{f}}{E_{1}}{z_{1}} \delta(E_{2} - E_{2}(E_{1}, z_{1}))
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;The second method is to use one of the following (which is equivalent; see &lt;sup id=&#34;fnref:2&#34;&gt;&lt;a href=&#34;#fn:2&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;)&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
 \dd[2]{N}
 = \pdv{N_{f}}{E_{1}}{z_{1}}\dd{E_{1}}\dd{z_{1}}
 = \pdv{N_{f}}{E_{1}}{z_{1}} \mathcal{J} \dd{E_{2}}\dd{z_{2}}
-= \pdv{N_{f}}{E_{1}}{z_{1}} \tilde{\mathcal{J}} \dd{E_{2}}\dd{z_{1}}\end{aligned}$$
-with the Jacobians, $\mathcal{J}$ or $\tilde{\mathcal{J}}$, given by:
-$$\begin{aligned}
+= \pdv{N_{f}}{E_{1}}{z_{1}} \tilde{\mathcal{J}} \dd{E_{2}}\dd{z_{1}}
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;with the Jacobians, \(\mathcal{J}\) or \(\tilde{\mathcal{J}}\), given by:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
 \mathcal{J}               &amp;amp; =
 \mqty| \pdv{E_{1}}{E_{2}} &amp;amp; \pdv{E_{1}}{z_{2}}             \ \pdv{z_{1}}{E_{2}} &amp;amp; \pdv{z_{1}}{z_{2}} |, &amp;amp;
-\tilde{\mathcal{J}}       &amp;amp; =  \mqty| \pdv{E_{1}}{E_{2}} |\end{aligned}$$
-depending on if one wishes to convert $z_{1}$ into $z_{2}$ (since the
-angular varibles will ultimately be integrated over, either choice is
-fine.) We will focus on the $\delta$-function approach since it is
-easiest to deal with.&lt;/p&gt;
-&lt;p&gt;In computing $\dv*{N_{f}}{E_{2}}$, we need to perform one integration.
-But we have the choice of either integration over $E_{1}$ or $z_{1}$.
-The differences in the two will appear in the limits of integration.
-Suppose we integrate over $z_{1}$. Then, the $\delta$-function can be
-casted to&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; $$\begin{aligned}
-\delta(\gamma E_{1} + \beta\gamma\abs{\bm{p}&lt;em&gt;{1}}z&lt;/em&gt;{1} - E_{2})
-&amp;amp; =
-\frac{1}{\gamma\beta\abs{\bm{p}&lt;em&gt;{1}}}\delta(z&lt;/em&gt;{1} - z^{0}&lt;em&gt;{1}),
-&amp;amp;
-z^{0}&lt;/em&gt;{1}
-&amp;amp; =
-\frac{E_{2}-\gamma E_{1}}{\gamma\beta\abs{\bm{p}&lt;em&gt;{1}}}\end{aligned}$$
-Since $-1 &amp;lt; z&lt;/em&gt;{1} &amp;lt; 1$, the $\delta$-function only has support if
-$$\begin{aligned}
--1 &amp;lt; \frac{E_{2}-\gamma E_{1}}{\gamma\beta\abs{\bm{p}&lt;em&gt;{1}}} &amp;lt; 1\end{aligned}$$
-or $$\begin{aligned}
-\gamma\qty(E&lt;/em&gt;{2}-\beta\sqrt{E_{2}^{2}-m_{f}^{2}}) &amp;lt; E_{1} &amp;lt;
-\gamma\qty(E_{2}+\beta\sqrt{E_{2}^{2}-m_{f}^{2}})\end{aligned}$$
-Defining $E^{\pm}&lt;em&gt;{1} = \gamma\qty(E&lt;/em&gt;{2}\pm\beta\abs{\bm{p}&lt;em&gt;{2}})$ with
-$\abs{\bm{p}&lt;/em&gt;{2}} = \sqrt{E_{2}^{2}-m_{f}^{2}}$, we find:
-$$\begin{aligned}
-\label{eqn:boost_e}
-\dv{N_{f}}{E_{2}}
-= \frac{1}{2\gamma\beta}\int^{E^{+}&lt;em&gt;{1}}&lt;/em&gt;{E^{-}&lt;em&gt;{1}} \frac{\dd{E&lt;/em&gt;{1}}}{\abs{\bm{p}&lt;em&gt;{1}}} \dv{N&lt;/em&gt;{f}}{E_{1}}
-= \frac{1}{2\gamma\beta}\int^{E^{+}&lt;em&gt;{1}}&lt;/em&gt;{E^{-}&lt;em&gt;{1}} \frac{\dd{E&lt;/em&gt;{1}}}{\sqrt{E_{1}^{2}-m^2_{f}}} \dv{N_{f}}{E_{1}}\end{aligned}$$
-Note that the bounds may be different that $E^{\pm}&lt;em&gt;{1}$, depending on
-$E&lt;/em&gt;{2}$. The function $\dv*{dN_{f}}{E_{1}}$ itself has limits
-$E^{\mathrm{min}}&lt;em&gt;{1}$ and $E^{\mathrm{max}}&lt;/em&gt;{1}$. Thus, the actual
-limits of integration are: $$\begin{aligned}
-\mathrm{max}(E^{\mathrm{min}}&lt;em&gt;{1}, E^{-}&lt;/em&gt;{1}) \leq E_{1} \leq \mathrm{min}(E^{\mathrm{max}}&lt;em&gt;{1}, E^{+}&lt;/em&gt;{1})\end{aligned}$$&lt;/p&gt;
-&lt;p&gt;-3.5ex -1.3ex -.7ex 2.3ex .4ex .4ex Boost Integral in terms of Scaleless
-Varibles It is sometimes advantagous to deal with scaleless varibles
-when working with spectra. For example, it is common to define
-$x_{i} \equiv 2E_{i}/Q_i$, where $Q_i$ is the center-of-mass energy. If,
-in addition, we define a scaleless mass $\mu_i = 2m_{f}/Q_i$, then we
-can write: $$\begin{aligned}
-\dv{N_{f}}{x_{i}} &amp;amp; = \frac{Q_{i}}{2}\dv{N_{f}}{E_{i}}\end{aligned}$$
-and hence: $$\begin{aligned}
-\dv{N_{f}}{x_{i}} &amp;amp;
-= \frac{Q_{2}}{2}\frac{1}{2\gamma\beta}\int^{x^{+}&lt;em&gt;{1}}&lt;/em&gt;{x^{-}&lt;em&gt;{1}} \frac{(Q&lt;/em&gt;{1}/2)\dd{x_{1}}}{\sqrt{(Q_{1}^2/4)x_{1}^{2}-(Q_{1}^2/4)\mu^2_{f}}}
-\frac{2}{Q_{1}}\dv{N_{f}}{x_{1}}\end{aligned}$$ Simplifying and
-using $Q_{2} = \gamma Q_{1}$, we find: $$\begin{aligned}
-\label{eqn:boost_x}
-\dv{N_{f}}{x_{2}} &amp;amp;
-= \frac{1}{2\beta}\int^{x^{+}&lt;em&gt;{1}}&lt;/em&gt;{x^{-}&lt;em&gt;{1}} \frac{\dd{x&lt;/em&gt;{1}}}{\sqrt{x_{1}^{2}-\mu^2_{1}}}
-\dv{N_{f}}{x_{1}}\end{aligned}$$ In this case, the integration
-bounds are given by: $$\begin{aligned}
-x^{-}&lt;em&gt;{1} &amp;amp; \equiv \mathrm{max}\qty(x^{\mathrm{min}}&lt;/em&gt;{1}, \gamma^{2}\qty(x_{2}-\beta\sqrt{x_{2}^2-\mu_{2}^2})) \
-x^{+}&lt;em&gt;{1} &amp;amp; \equiv \mathrm{min}\qty(x^{\mathrm{max}}&lt;/em&gt;{1}, \gamma^{2}\qty(x_{2}+\beta\sqrt{x_{2}^2-\mu_{2}^2}))\end{aligned}$$&lt;/p&gt;
-&lt;p&gt;-3.5ex -1.3ex -.7ex 2.3ex .4ex .4ex Examples&lt;/p&gt;
-&lt;p&gt;-2.3ex-1ex -.5ex 1.2ex .3ex .3ex Dirac-Delta Function Spectrum In the
-case where $\dv*{N_{f}}{E_{1}} = N \delta(E_{1}-\bar{E})$, we can
-exactly perform the integral in
-Eqn. (&lt;a href=&#34;#eqn:boost_e&#34;&gt;[eqn:boost_e]&lt;/a&gt;{reference-type=&amp;ldquo;ref&amp;rdquo;
-reference=&amp;ldquo;eqn:boost_e&amp;rdquo;}). In this case, we find $$\begin{aligned}
-\dv{N_{f}}{E_{2}}
-= \frac{1}{2\gamma\beta}\int^{E^{+}&lt;em&gt;{1}}&lt;/em&gt;{E^{-}&lt;em&gt;{1}} \frac{\dd{E&lt;/em&gt;{1}}}{\sqrt{E_{1}^{2}-m^2_{f}}} N \delta(E_{1} - \bar{E})
-= \frac{1}{2\gamma\beta}\frac{N}{\sqrt{\bar{E}^{2}-m^2_{f}}}
-\begin{cases}
-1 &amp;amp; \qq*{if} E^{+}&lt;em&gt;{1}\leq \bar{E} \leq E^{+}&lt;/em&gt;{1}, \
-0 &amp;amp; \mathrm{otherwise}
-\end{cases}\end{aligned}$$ As an example, take
-$\pi^{0} \to \gamma + \gamma$. In this case,
-$\dv*{N_{f}}{E_{1}} = 2\delta(E_{1} - m_{\pi^{0}}/2)$, and the spectrum
-is $$\begin{aligned}
-\dv{N_{f}}{E_{2}}
-= \frac{2}{\gamma\beta m_{\pi^{0}}}
-\begin{cases}
-1 &amp;amp; \qq*{if} \gamma E_{2}(1-\beta)\leq m_{\pi^{0}}/2 \leq \gamma E_{2}(1+\beta), \
-0 &amp;amp; \mathrm{otherwise}
-\end{cases}\end{aligned}$$&lt;/p&gt;
-&lt;p&gt;-2.3ex-1ex -.5ex 1.2ex .3ex .3ex Muon Decay The muon decays via
-$\mu^{\pm} \to e^{\pm} + \nu_{e} + \nu_{\mu}$. This decay can also
-proceed radiatively. The result has been worked out in
-Ref. ([@muonDecay2001]). The result for an unpolarized muon is:
-$$\begin{aligned}
-\dv{N}{x} &amp;amp; = \frac{\alpha}{3\pi}\sum_{n=0}^{4}\qty(a_{n} + b_{n}L(y))x^{n-1}\end{aligned}$$
-where $x\equiv 2E_{\gamma}/m_{\mu}$, $L(x) \equiv \log((1-x)/r)$,
-$r = (m_{e}/m_{\mu})^2$ and $$\begin{aligned}
-a_0 &amp;amp; = -\frac{17}{2},     &amp;amp;
-a_1 &amp;amp; = \frac{37}{3},      &amp;amp;
-a_2 &amp;amp; = -\frac{49}{4},     &amp;amp;
-a_3 &amp;amp; = 13,                &amp;amp;
-a_4 &amp;amp; = -\frac{55}{12}        \
-b_0 &amp;amp; = 3,                 &amp;amp;
-b_1 &amp;amp; = -5,                &amp;amp;
-b_2 &amp;amp; = 6,                 &amp;amp;
-b_3 &amp;amp; = -6,                &amp;amp;
-b_4 &amp;amp; = 2                 \end{aligned}$$ Note the limits on $x$ are
-$0 \leq x \leq 1 - r$. Since the photon is massless,
-Eqn. (&lt;a href=&#34;#eqn:boost_x&#34;&gt;[eqn:boost_x]&lt;/a&gt;{reference-type=&amp;ldquo;ref&amp;rdquo;
-reference=&amp;ldquo;eqn:boost_x&amp;rdquo;}) takes the form: $$\begin{aligned}
-\dv{N_{f}}{x_{2}} &amp;amp;
-= \frac{1}{2\beta}\int^{x^{+}}&lt;em&gt;{x^{-}} \frac{\dd{x&lt;/em&gt;{1}}}{x_{1}}
-\dv{N_{f}}{x_{1}}\end{aligned}$$ with $$\begin{aligned}
-x^{-} &amp;amp; \equiv \gamma^{2}x_{2}\qty(1 - \beta),                       &amp;amp;
-x^{+} &amp;amp; \equiv \mathrm{min}\qty(1-r, \gamma^{2}x_{2}\qty(1 + \beta))\end{aligned}$$
-First, the integral of the polynomial part of $\dv*{N}{x}$ is given by:
-$$\begin{aligned}
-\frac{1}{2\beta}\sum_{n=0}^{4}a_{n}\int^{x^{+}}&lt;em&gt;{x^{-}} \dd{x&lt;/em&gt;{1}}x_{1}^{n-2}
-=
-\frac{1}{2\beta}\qty[
-a_0\frac{x^{+} - x^{-}}{x^{+}x^{-}} +
-a_1\log(\frac{x^{+}}{x^{-}}) + \sum_{n=2}^{4}a_n \frac{  \qty(x^{+})^{n} - \qty(x^{-})^{n}  }{n}]\end{aligned}$$
-The log terms have the form: $$\begin{aligned}
-\int^{x^{+}&lt;em&gt;{1}}&lt;/em&gt;{x^{-}&lt;em&gt;{1}} \dd{x&lt;/em&gt;{1}}x_{1}^{n-2} L(x_1)\end{aligned}$$
-To integrate, we use: $$\begin{aligned}
-\int\dd{x}x^{-2}L(x) &amp;amp; = \log(1-x) - log(x) - \frac{1}{x}L(x)                                          \
-\int\dd{x}x^{-1}L(x) &amp;amp; = L(x)\log(x) + \mathrm{Li}&lt;em&gt;{2}(1-x)                                            \
-\int\dd{x}L(x)       &amp;amp; = -x - (1-x) L(x)                                                               \
-\int\dd{x}x L(x)     &amp;amp; = \frac{1}{4}x (2 + x) -\frac{1}{2}\log(1-x) + \frac{1}{2}x^2 L(x)              \
-\int\dd{x}x^2L(x)    &amp;amp; = -\frac{1}{18}x (6 + 3 x + 2 x^2) - \frac{1}{3}\log(1-x) + \frac{1}{3}x^3 L(x)\end{aligned}$$
-Using the definitions of $b&lt;/em&gt;{n}$, we find: $$\begin{aligned}
-&amp;amp; \frac{1}{2\beta}\sum_{n=0}^{4}b_{n}\int^{x^{+}&lt;em&gt;{1}}&lt;/em&gt;{x^{-}&lt;em&gt;{1}} \dd{x&lt;/em&gt;{1}}x_{1}^{n-2} L(x_1)                                              \
-&amp;amp; \quad = \frac{1}{2\beta}\bigg{[} -3\log(x) + \frac{16}{3}\log(1-x) - \frac{1}{18} x (66 - 21 x + 4 x^2) - 5 \mathrm{Li}&lt;em&gt;{2}(1-x)          \&lt;br&gt;
-&amp;amp; \hspace{2cm}    \log(\frac{1-x}{r})\qty(-6 - \frac{3}{x} + 6 x - 3 x^2 + \frac{2}{3}x^3 - 5\log(x))\bigg{]}\notag\bigg{|}^{x^{+}}&lt;/em&gt;{x^{-}}\end{aligned}$$&lt;/p&gt;
-&lt;p&gt;-3.5ex -1.3ex -.7ex 2.3ex .4ex .4ex Jacobian Approach Suppose instead we
-took the Jacobian approach instead of using the $\delta$-function
-approach.&lt;/p&gt;
-&lt;p&gt;$$\begin{aligned}
-\dd{E_{1}}\dd{z_{1}} = \mqty|\pdv{z_{1}}{E_{2}}|\dd{E_{1}}\dd{E_{2}} =
-\frac{1}{\gamma\beta\abs{\bm{p}}&lt;em&gt;{1}}\dd{E&lt;/em&gt;{1}}\dd{E_{2}}\end{aligned}$$&lt;/p&gt;
-&lt;p&gt;$$\begin{aligned}
-\Gamma_1(z) &amp;amp; = \Gamma_0(z) + A\delta(z-z_{0}) \
-\Gamma_2(z) &amp;amp; = \Gamma_0(z) (1 + A)\end{aligned}$$&lt;/p&gt;
-&lt;p&gt;$$\begin{aligned}
-\int\dd{z}\Gamma_1(z) &amp;amp; = A + \int_{z_1}^{z_2}\dd{z}\Gamma_{0} = A + B             \
-\int\dd{z}\Gamma_2(z) &amp;amp; = (1+A)\int_{z_1}^{z_2}\dd{z}\Gamma_{0} = (1+A)B = B + A B \
-B                     &amp;amp; \equiv \int\dd{z}\Gamma_0(z)\end{aligned}$$&lt;/p&gt;
-&lt;p&gt;-3.5ex -1.3ex -.7ex 2.3ex .4ex .4ex *Acknowledgments&lt;/p&gt;
-&lt;p&gt;This is the most common positions for acknowledgments. A macro is
-available to maintain the same layout and spelling of the heading.&lt;/p&gt;
-&lt;p&gt;1.75ex 1ex .2ex -1em Note added. This is also a good position for notes
-added after the paper has been written.&lt;/p&gt;
+\tilde{\mathcal{J}}       &amp;amp; =  \mqty| \pdv{E_{1}}{E_{2}} |
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;depending on if one wishes to convert \(z_{1}\) into \(z_{2}\) (since the
+angular varibles will ultimately be integrated over, either choice is fine.) We
+will focus on the \(\delta\)-function approach since it is easiest to deal with.&lt;/p&gt;
+&lt;p&gt;In computing \(\dv*{N_{f}}{E_{2}}\), we need to perform one integration. But we
+have the choice of either integration over \(E_{1}\) or \(z_{1}\). The differences
+in the two will appear in the limits of integration. Suppose we integrate over
+\(z_{1}\). Then, the \(\delta\)-function can be casted to&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \delta(\gamma E\_{1} + \beta\gamma|{\mathbf{p}_{1}}|z_{1} - E_{2})
+     &amp; = 
+    \frac{1}{\gamma\beta\abs{\mathbf{p}_{1}}}\delta(z_{1} - z^{0}_{1}), 
+     &amp; 
+    z^{0}_{1}
+     &amp; =
+    \frac{E_{2}-\gamma E_{1}}{\gamma\beta\abs{\mathbf{p}_{1}}}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;As a side note, if we used the Jacobian for $ (E_{1},z_{1}) \to (E_{1},E_{2})$, which is given by:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \dd{E_{1}}\dd{z_{1}} = \mqty|\pdv{z_{1}}{E_{2}}|\dd{E_{1}}\dd{E_{2}} = 
+    \frac{1}{\gamma\beta\abs{\mathbf{p}}_{1}}\dd{E_{1}}\dd{E_{2}}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;then we get the same factor of $ 1/\gamma\beta\abs{\mathbf{p}_{1}}$.&lt;/p&gt;
+&lt;p&gt;Since $ -1 &amp;lt; z_{1} &amp;lt; 1$, the $ \delta$-function only has support if&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    -1 &lt; \frac{E_{2}-\gamma E_{1}}{\gamma\beta\abs{\mathbf{p}_{1}}} &lt; 1
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;or&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \gamma\qty(E_{2}-\beta\sqrt{E_{2}^{2}-m_{f}^{2}}) &lt; E_{1} &lt; 
+    \gamma\qty(E_{2}+\beta\sqrt{E_{2}^{2}-m_{f}^{2}})
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;Defining $E^{\pm}_{1} = \gamma\qty(E_{2}\pm\beta\abs{\mathbf{p}_{2}})$ with $\abs{\mathbf{p}_{2}} = \sqrt{E_{2}^{2}-m_{f}^{2}}$, we find:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+\boxed{
+    \dv{N_{f}}{E_{2}}
+    = \frac{1}{2\gamma\beta}\int^{E^{+}_{1}}_{E^{-}_{1}} \frac{\dd{E_{1}}}{\abs{\mathbf{p}_{1}}} \dv{N_{f}}{E_{1}}
+    = \frac{1}{2\gamma\beta}\int^{E^{+}_{1}}_{E^{-}_{1}} \frac{\dd{E_{1}}}{\sqrt{E_{1}^{2}-m^2_{f}}} \dv{N_{f}}{E_{1}}
+    }
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;Note that the bounds may be different that $E^{\pm}_{1}$, depending on $E_{2}$. The function $\dv*{N_{f}}{E_{1}}$ itself has
+limits $E^{\mathrm{min}}_{1}$ and $E^{\mathrm{max}}_{1}$. Thus, the actual limits of integration are:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \mathrm{max}(E^{\mathrm{min}}_{1}, E^{-}_{1}) \leq E_{1} \leq \mathrm{min}(E^{\mathrm{max}}_{1}, E^{+}_{1})
+\end{align}
+$$
+&lt;/p&gt;
+&lt;h3 id=&#34;boost-integral-in-terms-of-scaleless-varibles&#34;&gt;Boost Integral in terms of Scaleless Varibles&lt;/h3&gt;
+&lt;p&gt;It is sometimes advantagous to deal with scaleless varibles when working with
+spectra. For example, it is common to define $x_{i} \equiv 2E_{i}/Q_i$, where
+$Q_i$ is the center-of-mass energy. If, in addition, we define a scaleless mass
+$\mu_i = 2m_{f}/Q_i$, then we can write:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \dv{N_{f}}{x_{i}} &amp; = \frac{Q_{i}}{2}\dv{N_{f}}{E_{i}}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;and hence:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \dv{N_{f}}{x_{i}} &amp; 
+    = \frac{Q_{2}}{2}\frac{1}{2\gamma\beta}\int^{x^{+}_{1}}_{x^{-}_{1}} \frac{(Q_{1}/2)\dd{x_{1}}}{\sqrt{(Q_{1}^2/4)x_{1}^{2}-(Q_{1}^2/4)\mu^2_{f}}} 
+    \frac{2}{Q_{1}}\dv{N_{f}}{x_{1}}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;Simplifying and using $ Q_{2} = \gamma Q_{1}$, we find:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+\boxed{
+    \dv{N_{f}}{x_{2}}  
+    = \frac{1}{2\beta}\int^{x^{+}_{1}}_{x^{-}_{1}} \frac{\dd{x_{1}}}{\sqrt{x_{1}^{2}-\mu^2_{1}}} 
+    \dv{N_{f}}{x_{1}}
+    }
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;In this case, the integration bounds are given by:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    x^{-}_{1} &amp; \equiv \mathrm{max}\qty(x^{\mathrm{min}}_{1}, \gamma^{2}\qty(x_{2}-\beta\sqrt{x_{2}^2-\mu_{2}^2})) \\
+    x^{+}_{1} &amp; \equiv \mathrm{min}\qty(x^{\mathrm{max}}_{1}, \gamma^{2}\qty(x_{2}+\beta\sqrt{x_{2}^2-\mu_{2}^2}))
+\end{align}
+$$
+&lt;/p&gt;
+&lt;h2 id=&#34;examples&#34;&gt;&lt;strong&gt;Examples&lt;/strong&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;dirac-delta-function-spectrum&#34;&gt;&lt;em&gt;Dirac-Delta Function Spectrum&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;In the case where $\dv*{N_{f}}{E_{1}} = N \delta(E_{1}-\bar{E})$, we can
+exactly perform the integral in \EqnRef{eqn:boost_e}. In this case, we find&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \dv{N_{f}}{E_{2}}
+    = \frac{1}{2\gamma\beta}\int^{E^{+}_{1}}_{E^{-}_{1}} \frac{\dd{E_{1}}}{\sqrt{E_{1}^{2}-m^2_{f}}} N \delta(E_{1} - \bar{E})
+    = \frac{1}{2\gamma\beta}\frac{N}{\sqrt{\bar{E}^{2}-m^2_{f}}} 
+    \begin{cases}
+        1 &amp; \qq*{if} E^{+}_{1}\leq \bar{E} \leq E^{+}_{1}, \\
+        0 &amp; \mathrm{otherwise}
+    \end{cases}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;As an example, take $ \pi^{0} \to \gamma + \gamma$. In this case,
+$ \dv*{N_{f}}{E_{1}} = 2\delta(E_{1} - m_{\pi^{0}}/2)$, and the spectrum is&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \dv{N_{f}}{E_{2}}
+    = \frac{2}{\gamma\beta m_{\pi^{0}}}
+    \begin{cases}
+        1 &amp; \qq*{if} \gamma E_{2}(1-\beta)\leq m_{\pi^{0}}/2 \leq \gamma E_{2}(1+\beta), \\
+        0 &amp; \mathrm{otherwise}
+    \end{cases}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;h3 id=&#34;muon-decay&#34;&gt;&lt;em&gt;Muon Decay&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;The muon decays via $ \mu^{\pm} \to e^{\pm} + \nu_{e} + \nu_{\mu}$. This decay
+can also proceed radiatively. The result has been worked out in &lt;sup id=&#34;fnref:3&#34;&gt;&lt;a href=&#34;#fn:3&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;.
+The result for an unpolarized muon is:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \dv{N}{x} &amp; = \frac{\alpha}{3\pi}\sum_{n=0}^{4}\qty(a_{n} + b_{n}L(y))x^{n-1}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;where $ x\equiv 2E_{\gamma}/m_{\mu}$, $ L(x) \equiv \log((1-x)/r)$, $ r = (m_{e}/m_{\mu})^2$ and&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    a_0 &amp; = -\frac{17}{2},     &amp; 
+    a_1 &amp; = \frac{37}{3},      &amp; 
+    a_2 &amp; = -\frac{49}{4},     &amp; 
+    a_3 &amp; = 13,                &amp; 
+    a_4 &amp; = -\frac{55}{12}        \\
+    b_0 &amp; = 3,                 &amp; 
+    b_1 &amp; = -5,                &amp; 
+    b_2 &amp; = 6,                 &amp; 
+    b_3 &amp; = -6,                &amp; 
+    b_4 &amp; = 2                 
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;Note the limits on $ x$ are $ 0 \leq x \leq 1 - r$. Since the photon is
+massless, \EqnRef{eqn:boost_x} takes the form:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \dv{N_{f}}{x_{2}} &amp; 
+    = \frac{1}{2\beta}\int^{x^{+}}_{x^{-}} \frac{\dd{x_{1}}}{x_{1}}
+    \dv{N_{f}}{x_{1}}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;with&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    x^{-} &amp; \equiv \gamma^{2}x_{2}\qty(1 - \beta),                       &amp; 
+    x^{+} &amp; \equiv \mathrm{min}\qty(1-r, \gamma^{2}x_{2}\qty(1 + \beta))
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;First, the integral of the polynomial part of $ \dv*{N}{x}$ is given by:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \frac{1}{2\beta}\sum_{n=0}^{4}a_{n}\int^{x^{+}}_{x^{-}} \dd{x_{1}}x_{1}^{n-2}
+    =
+    \frac{1}{2\beta}\qty[
+    a_0\frac{x^{+} - x^{-}}{x^{+}x^{-}} + 
+    a_1\log(\frac{x^{+}}{x^{-}}) + \sum_{n=2}^{4}a_n \frac{  \qty(x^{+})^{n} - \qty(x^{-})^{n}  }{n}]
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;The log terms have the form:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \int^{x^{+}_{1}}_{x^{-}_{1}} \dd{x_{1}}x_{1}^{n-2} L(x_1)
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;To integrate, we use:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \int\dd{x}x^{-2}L(x) &amp; = \log(1-x) - log(x) - \frac{1}{x}L(x)                                          \\
+    \int\dd{x}x^{-1}L(x) &amp; = L(x)\log(x) + \mathrm{Li}_{2}(1-x)                                            \\
+    \int\dd{x}L(x)       &amp; = -x - (1-x) L(x)                                                               \\
+    \int\dd{x}x L(x)     &amp; = \frac{1}{4}x (2 + x) -\frac{1}{2}\log(1-x) + \frac{1}{2}x^2 L(x)              \\
+    \int\dd{x}x^2L(x)    &amp; = -\frac{1}{18}x (6 + 3 x + 2 x^2) - \frac{1}{3}\log(1-x) + \frac{1}{3}x^3 L(x)
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;Using the definitions of $ b_{n}$, we find:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+     &amp; \frac{1}{2\beta}\sum_{n=0}^{4}b_{n}\int^{x^{+}_{1}}_{x^{-}_{1}} \dd{x_{1}}x_{1}^{n-2} L(x_1)                                              \\
+     &amp; \quad = \frac{1}{2\beta}\bigg{[} -3\log(x) + \frac{16}{3}\log(1-x) - \frac{1}{18} x (66 - 21 x + 4 x^2) - 5 \mathrm{Li}_{2}(1-x)          \\   
+     &amp; \hspace{2cm}    \log(\frac{1-x}{r})\qty(-6 - \frac{3}{x} + 6 x - 3 x^2 + \frac{2}{3}x^3 - 5\log(x))\bigg{]}\notag\bigg{|}^{x^{+}}_{x^{-}}
+\end{align}
+$$
+&lt;/p&gt;
 &lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
 &lt;hr&gt;
 &lt;ol&gt;
 &lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
-&lt;p&gt;Note that, if we used the Jacobian for
-$(E_{1},z_{1}) \to (E_{1},z_{1})$, which is given by:
-$$\begin{aligned}
-\dd{E_{1}}\dd{z_{1}} = \mqty|\pdv{z_{1}}{E_{2}}|\dd{E_{1}}\dd{E_{2}} =
-\frac{1}{\gamma\beta\abs{\bm{p}}&lt;em&gt;{1}}\dd{E&lt;/em&gt;{1}}\dd{E_{2}}\end{aligned}$$
-then we get the same factor of $1/\gamma\beta\abs{\bm{p}_{1}}$.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Elor, G., Rodd, N. L., &amp;amp; Slatyer, T. R. (2015). Multistep cascade annihilations of dark matter and the Galactic Center Excess. Physical Review D, 91(10). &lt;a href=&#34;https://doi.org/10.1103/physrevd.91.103531&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://doi.org/10.1103/physrevd.91.103531&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:2&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Kim, D., Ee, J.-H., Yu, C., &amp;amp; Lee, J. (2021). Derivation of jacobian formula with Dirac delta function. European Journal of Physics, 42(3), 035006. &lt;a href=&#34;https://doi.org/10.1088/1361-6404/abdca9&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://doi.org/10.1088/1361-6404/abdca9&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:2&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&#34;fn:3&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Kuno, Y., &amp;amp; Okada, Y. (2001). Muon decay and physics beyond the standard model. Reviews of Modern Physics, 73(1), 151–202. &lt;a href=&#34;https://doi.org/10.1103/revmodphys.73.151&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://doi.org/10.1103/revmodphys.73.151&lt;/a&gt;&amp;#160;&lt;a href=&#34;#fnref:3&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;/section&gt;
@@ -416,7 +564,7 @@ $$&lt;/p&gt;
 &lt;p&gt;Now it is clear how to proceed. We expand this expression in inverse powers of $T$. If we expand in inverse powers of $T$ and integrate over $s$, we find that, for bosons:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-&amp;amp;\dfrac{T}{2}\sum_{n=-\infty}^{\infty} \mathrm{tr}\log(-{\nabla^2}+(2\pi n T)^2 + m^2 +V({x}))\\
+&amp;amp;\dfrac{T}{2}\sum_{n=-\infty}^{\infty} \mathrm{tr}\log(-{\nabla^2}+(2\pi n T)^2 + m^2 +V({x}))\\\
 &amp;amp;\hspace{1cm}= -\dfrac{T}{2}\sum_{n=\infty}^{\infty} \int d^{d}{x}\left(\dfrac{T}{4\pi}\right)^{d/2}\int_{0}^{\infty}dz\dfrac{K(z,{x},{x})}{z^{d/2+1}}\notag\\
 &amp;amp;\hspace{1cm}\underset{d\to3-2\epsilon}{=} \int d^{3}{x}\bigg{[}
 -\frac{\pi^2 T^4}{90}+\frac{T^2(m^2 + V)}{24} -\frac{\left(m^2 + V\right)^2 \left(\frac{1}{\epsilon}+\log(\frac{\mu^2}{4\pi T^2e^{-\gamma_{E}}})\right)}{64\pi^2}+ \mathrm{O}({T^{-2}})
@@ -429,7 +577,7 @@ $$&lt;/p&gt;
 &lt;p&gt;and for fermions:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-&amp;amp;-\dfrac{T}{2}\sum_{n=-\infty}^{\infty} \mathrm{tr}\log(-{\nabla^2}+(2\pi (n+1/2) T)^2 + m^2 +V({x}))\\
+&amp;amp;-\dfrac{T}{2}\sum_{n=-\infty}^{\infty} \mathrm{tr}\log(-{\nabla^2}+(2\pi (n+1/2) T)^2 + m^2 +V({x}))\\\
 &amp;amp;\hspace{1cm}=\dfrac{T}{2}\sum_{n=\infty}^{\infty} \int d^{d}{x}\left(\dfrac{T}{4\pi}\right)^{d/2}\int_{0}^{\infty}dz\dfrac{K(z,{x},{x})}{z^{d/2+1}}\notag\\
 &amp;amp;\hspace{1cm}\underset{d\to3-2\epsilon}{=}
 \int d^{3}{x}\bigg{[} -\frac{7\pi^2 T^4}{720}
@@ -521,7 +669,7 @@ $$&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
 S[\phi] + \int d^{4}y J(y)(\phi(y) +\phi_{\text{cl}}) &amp;amp; = S[\phi_{\text{cl}}] + \int d^{4}y J(y)\phi_{\text{cl}} +
-\int d^{4}y \eta(y)\left(\dfrac{\delta S[\phi]}{\delta\phi(y)} + J(y)\right)\\
+\int d^{4}y \eta(y)\left(\dfrac{\delta S[\phi]}{\delta\phi(y)} + J(y)\right)\\\
 &amp;amp; \qquad + \int d^{4}y\int d^{4}z \eta(y)\dfrac{\delta^{2} S[\phi]}{\delta\phi(y)\delta\phi(z)}\eta(z) + \cdots\notag
 \end{align}
 $$&lt;/p&gt;
@@ -573,16 +721,16 @@ $$&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s examine this process of computing the effective action for a simple example. Consider the linear sigma model:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-\mathcal{L} = \dfrac{1}{2}\left(\partial_{\mu}\vec{\Phi}\right)\cdot\left(\partial^{\mu}\vec{\Phi}\right) + \dfrac{1}{2}\mu^{2}\left(\vec{\Phi}\cdot\vec{\Phi}\right) - \dfrac{\lambda}{4}\left(\vec{\Phi}\cdot\vec{\Phi}\right)^{2}
+\mathcal{L} = \dfrac{1}{2}\left(\partial_{\mu}\mathbf{\Phi}\right)\cdot\left(\partial^{\mu}\mathbf{\Phi}\right) + \dfrac{1}{2}\mu^{2}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right) - \dfrac{\lambda}{4}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right)^{2}
 \end{align}
 $$&lt;/p&gt;
-&lt;p&gt;where $\vec{\Phi}$ is a vector containing $N$ scalar fields. We now expand these fields about the classical fields:&lt;/p&gt;
+&lt;p&gt;where $\mathbf{\Phi}$ is a vector containing $N$ scalar fields. We now expand these fields about the classical fields:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-\vec{\Phi} = \vec{\Phi}_{\text{cl}} + \vec{\eta}
+\mathbf{\Phi} = \mathbf{\Phi}_{\text{cl}} + \mathbf{\eta}
 \end{align}
 $$&lt;/p&gt;
-&lt;p&gt;where $\vec{\Phi}_{\text{cl}}$ are space-time independent fields. Now, we would
+&lt;p&gt;where $\mathbf{\Phi}_{\text{cl}}$ are space-time independent fields. Now, we would
 like to take the second functional derivative with respect to the fields of the
 action. Let&amp;rsquo;s first look at the derivative term:&lt;/p&gt;
 &lt;p&gt;$$
@@ -638,7 +786,7 @@ $$&lt;/p&gt;
 &lt;p&gt;Denoting $\delta^{4}(x-y)$ as $\delta_{xy}$, we find that&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\vec{\Phi}=\vec{\Phi}_{\text{cl}}}
+\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\mathbf{\Phi}=\mathbf{\Phi}_{\text{cl}}}
 &amp;amp; =-\delta_{xz}\partial^{2}\delta_{xy}\delta^{ij}                                                                       \\
 &amp;amp; \qquad + \mu^{2}\delta_{xy}\delta_{xz}\delta^{ij} -\lambda\delta^{ij}\Phi_{\text{cl}}^{2}\delta_{xy}\delta_{xz}\notag \\
 &amp;amp; \qquad -2\Phi_{\text{cl}}^{2}\delta^{iN}\delta^{jN}\delta_{xy}\delta_{xz}\notag
@@ -646,15 +794,15 @@ $$&lt;/p&gt;
 $$&lt;/p&gt;
 &lt;p&gt;Now,&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-\int\mathcal{D}\vec{\eta} &amp;amp; \exp(\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\vec{\Phi}=\vec{\Phi}_{\text{cl}}}\eta^{j}(z))\\
-&amp;amp; = \int\mathcal{D}\vec{\eta}\exp\bigg{(}-\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{1}(y)\delta_{xz}\left(\partial^{2} + \lambda\Phi_{\text{cl}}^{2} -\mu^{2} \right)\delta_{xy}\eta^{1}(z)\notag \\
+\int\mathcal{D}\mathbf{\eta} &amp;amp; \exp(\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\mathbf{\Phi}=\mathbf{\Phi}_{\text{cl}}}\eta^{j}(z))\\\
+&amp;amp; = \int\mathcal{D}\mathbf{\eta}\exp\bigg{(}-\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{1}(y)\delta_{xz}\left(\partial^{2} + \lambda\Phi_{\text{cl}}^{2} -\mu^{2} \right)\delta_{xy}\eta^{1}(z)\notag \\
 &amp;amp; \qquad +\cdots\notag\\
 &amp;amp; \qquad -\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{N-1}(y)\delta_{xz}\left(\partial^{2} + \lambda\Phi_{\text{cl}}^{2} -\mu^{2} \right)\delta_{xy}\eta^{N-1}(z)\notag\\
 &amp;amp; \qquad -\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{N}(y)\delta_{xz}\left(\partial^{2} + 3\lambda\Phi_{\text{cl}}^{2} -\mu^{2} \right)\delta_{xy}\eta^{N}(z)\bigg{)}\notag
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;Each of these terms in going to produce a term proportional to the inverse square root of the determinant of the operator sandwiched between the $\eta$&amp;rsquo;s:&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-\int\mathcal{D}\vec{\eta} &amp;amp; \exp(-\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)M(y,z)\eta^{j}(z)) \propto \left(\det M(y,z)\right)^{-1/2}
+\int\mathcal{D}\mathbf{\eta} &amp;amp; \exp(-\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)M(y,z)\eta^{j}(z)) \propto \left(\det M(y,z)\right)^{-1/2}
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;Each of these operators has a Klein-Gordon operator: $\partial^{2} + m^{2}$. Using&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
@@ -666,7 +814,7 @@ $$&lt;/p&gt;
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;we have&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-\int\mathcal{D}\vec{\eta} &amp;amp; \exp(\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\vec{\Phi}=\vec{\Phi}_{\text{cl}}}\eta^{j}(z)) \\
+\int\mathcal{D}\mathbf{\eta} &amp;amp; \exp(\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\mathbf{\Phi}=\mathbf{\Phi}_{\text{cl}}}\eta^{j}(z)) \\
 &amp;amp; \qquad =
 \exp(-\dfrac{1}{2}\mathrm{tr}\log\left(
 \left(\partial^{2} + \lambda\Phi_{\text{cl}}^{2} -\mu^{2}\right)^{N-1}
@@ -689,9 +837,9 @@ $$&lt;/p&gt;
 &amp;amp; = \int d^{4}x\int \dfrac{d^{4}k}{(2\pi)^{4}}\int \dfrac{d^{4}p}{(2\pi)^{4}} \langle{x}\rangle{p}(2\pi)^{4}\delta^{4}(k-p)\log
 \left(-k^{2} + m^{2}\right)\langle{k}\rangle{x}\\
 &amp;amp; = \int d^{4}x\int \dfrac{d^{4}p}{(2\pi)^{4}} \left|\langle{x}\rangle{p}\right|^{2}\log
-\left(-p^{2} + m^{2}\right)\\
+\left(-p^{2} + m^{2}\right)\\\
 &amp;amp; = \int d^{4}x\int \dfrac{d^{4}p}{(2\pi)^{4}} \log
-\left(-p^{2} + m^{2}\right)\\
+\left(-p^{2} + m^{2}\right)\\\
 &amp;amp; = VT\int \dfrac{d^{4}p}{(2\pi)^{4}} \log
 \left(-p^{2} + m^{2}\right)
 \end{align}$$&lt;/p&gt;
@@ -746,8 +894,8 @@ The renormalizable parameters are $Z_{a}$, the wave function
 renormalizations, $\mu$, the masses and $\lambda$, the quartic
 couplings. We thus augment the Lagrangian by the following counterterms:&lt;/p&gt;
 &lt;p&gt;$$\begin{aligned}
-\mathcal{L}&amp;amp; = \dfrac{1}{2}\left(\partial_{\mu}\vec{\Phi}\right)\cdot\left(\partial^{\mu}\vec{\Phi}\right) + \dfrac{1}{2}\mu^{2}\left(\vec{\Phi}\cdot\vec{\Phi}\right) - \dfrac{\lambda}{4}\left(\vec{\Phi}\cdot\vec{\Phi}\right)^{2}\\
-&amp;amp; \qquad + \dfrac{1}{2}\delta_{Z}\left(\partial_{\mu}\vec{\Phi}\right)\cdot\left(\partial^{\mu}\vec{\Phi}\right) - \dfrac{1}{2}\delta_{\mu}\mu^{2}\left(\vec{\Phi}\cdot\vec{\Phi}\right) - \dfrac{\delta_{\lambda}}{4}\left(\vec{\Phi}\cdot\vec{\Phi}\right)^{2}\notag\end{aligned}$$&lt;/p&gt;
+\mathcal{L}&amp;amp; = \dfrac{1}{2}\left(\partial_{\mu}\mathbf{\Phi}\right)\cdot\left(\partial^{\mu}\mathbf{\Phi}\right) + \dfrac{1}{2}\mu^{2}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right) - \dfrac{\lambda}{4}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right)^{2}\\
+&amp;amp; \qquad + \dfrac{1}{2}\delta_{Z}\left(\partial_{\mu}\mathbf{\Phi}\right)\cdot\left(\partial^{\mu}\mathbf{\Phi}\right) - \dfrac{1}{2}\delta_{\mu}\mu^{2}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right) - \dfrac{\delta_{\lambda}}{4}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right)^{2}\notag\end{aligned}$$&lt;/p&gt;
 &lt;p&gt;The Feynmann rules for the vertices and there corresponding counter terms
 are given by:&lt;/p&gt;
 &lt;table&gt;
@@ -1808,19 +1956,19 @@ value for $T_{d}$.&lt;/p&gt;
 fermions and bosons. The functions we wish to compute are the equilibirium
 number, energy, pressure and entropy densities. In full form, these are given by:
 $$\begin{align}
-n(T) &amp;amp;= g\int\dfrac{d^3k}{(2\pi)^2}f(\vec{k})\\
-\rho(T) &amp;amp;= g\int\dfrac{d^3k}{(2\pi)^2}E(\vec{k})f(\vec{k})\\
-P(T) &amp;amp;= g\int\dfrac{d^3k}{(2\pi)^2}\dfrac{|\vec{k}|^2}{3E(\vec{k})}f(\vec{k})
+n(T) &amp;amp;= g\int\dfrac{d^3k}{(2\pi)^2}f(\mathbf{k})\\\
+\rho(T) &amp;amp;= g\int\dfrac{d^3k}{(2\pi)^2}E(\mathbf{k})f(\mathbf{k})\\\
+P(T) &amp;amp;= g\int\dfrac{d^3k}{(2\pi)^2}\dfrac{|\mathbf{k}|^2}{3E(\mathbf{k})}f(\mathbf{k})
 \end{align}$$
 with $g$ representing the number of internal degrees of freedom (d.o.f),
-$E^2 = k^2 + m^2$ and $f(\vec{k})$ is the phase-space distribution
+$E^2 = k^2 + m^2$ and $f(\mathbf{k})$ is the phase-space distribution
 function. For a species in kinetic equilibirium, the phase space distribution
 is given by:
 $$\begin{align}
-f(\vec{k}) &amp;amp;= \dfrac{1}{e^{E/T}\pm1}
+f(\mathbf{k}) &amp;amp;= \dfrac{1}{e^{E/T}\pm1}
 \end{align}$$
 where one takes the $+$ for fermions and $-$ for bosons. Note that we have
-ignored the chemical potential in writing down $f$. Since $f(\vec{k})$ is
+ignored the chemical potential in writing down $f$. Since $f(\mathbf{k})$ is
 independent of angles, we can integrate of the solid angle and obtain:
 $$\begin{align}
 n(T) &amp;amp;= \dfrac{g}{2\pi^2}\int_{m}^{\infty} dE \dfrac{E\sqrt{E^2-m^2}}{e^{E/T}\pm1}\\
@@ -1830,8 +1978,8 @@ P(T) &amp;amp;= \dfrac{g}{6\pi^2}\int_{m}^{\infty} dE \dfrac{(E^2-m^2)^{3/2}}{e^
 We can further simplify these functions by defining: $z = E / T$ and
 $x = m / T$. Doing so, we find&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-n(T) &amp;amp;= gT^3\bar{n}_{\pm}(x)\\
-\rho(T) &amp;amp;= gT^4\bar{\rho}_{\pm}(x)\\
+n(T) &amp;amp;= gT^3\bar{n}_{\pm}(x)\\\
+\rho(T) &amp;amp;= gT^4\bar{\rho}_{\pm}(x)\\\
 P(T) &amp;amp;= gT^4\bar{P}_{\pm}(x)
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;where we defined the &amp;lsquo;barred&amp;rsquo; quantities as:&lt;/p&gt;
@@ -2138,7 +2286,7 @@ $$&lt;/p&gt;
 kind:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-\bar{n}_{\pm}(x) &amp;amp;= \dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\dfrac{(\mp 1)^{n+1}}{n}K_{2}(nx)\\
+\bar{n}_{\pm}(x) &amp;amp;= \dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\dfrac{(\mp 1)^{n+1}}{n}K_{2}(nx)\\\
 \bar{\rho}_{\pm}(x) &amp;amp;= \dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\frac{(\mp 1)^{n+1}}{n^2}\left[n x K_{1}(nx)+3K_{2}(nx)\right]\\
 \bar{P}_{\pm}(x) &amp;amp;= \dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\frac{(\mp 1)^{n+1}}{n^2}K_{2}(nx)
 \end{align}
@@ -2282,7 +2430,7 @@ plt.gcf()
 thermal functions quite well. In practice, it is a good approximation to take:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-\bar{n}_{\pm}(x) &amp;amp;= \dfrac{x^2}{2\pi^2}K_{2}(x)\\
+\bar{n}_{\pm}(x) &amp;amp;= \dfrac{x^2}{2\pi^2}K_{2}(x)\\\
 \bar{\rho}_{\pm}(x) &amp;amp;= \dfrac{x^2}{2\pi^2}\left[xK_{1}(x)+3K_{2}(x)\right]\\
 \bar{P}_{\pm}(x) &amp;amp;= \dfrac{x^2}{2\pi^2}K_{2}(x)
 \end{align}
@@ -2406,7 +2554,7 @@ $$&lt;/p&gt;
 d.o.f. stored in energy and entropy $g_{\mathrm{eff}}$, $h_{\mathrm{eff}}$ are:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-g_{\mathrm{eff}}(T) &amp;amp;= \dfrac{30}{\pi^2}\sum_{i}g_{i}\bar{\rho}_{i}(x)\\
+g_{\mathrm{eff}}(T) &amp;amp;= \dfrac{30}{\pi^2}\sum_{i}g_{i}\bar{\rho}_{i}(x)\\\
 h_{\mathrm{eff}}(T) &amp;amp;= \dfrac{45}{2\pi^2}\sum_{i}g_{i}\bar{s}_{i}(x)
 \end{align}
 $$&lt;/p&gt;
@@ -2414,9 +2562,9 @@ $$&lt;/p&gt;
 &lt;p&gt;Lastly, let&amp;rsquo;s investigate the derivatives of the various functions. The
 derivatives are:
 $$\begin{align}
-\dfrac{dn}{dT} &amp;amp;= gT^2\left(3T\bar{n}(x)-x\dfrac{d\bar{n}}{dx}\right)\\
-\dfrac{d\rho}{dT} &amp;amp;= gT^3\left(4T\bar{\rho}(x)-x\dfrac{d\bar{\rho}}{dx}\right)\\
-\dfrac{dP}{dT} &amp;amp;= gT^3\left(4T\bar{P}(x)-x\dfrac{d\bar{P}}{dx}\right)\\
+\dfrac{dn}{dT} &amp;amp;= gT^2\left(3T\bar{n}(x)-x\dfrac{d\bar{n}}{dx}\right)\\\
+\dfrac{d\rho}{dT} &amp;amp;= gT^3\left(4T\bar{\rho}(x)-x\dfrac{d\bar{\rho}}{dx}\right)\\\
+\dfrac{dP}{dT} &amp;amp;= gT^3\left(4T\bar{P}(x)-x\dfrac{d\bar{P}}{dx}\right)\\\
 \dfrac{ds}{dT} &amp;amp;= gT^2\left(3T\bar{s}(x)-x\dfrac{d\bar{s}}{dx}\right)
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;We will want to compute derivatives of the barred quantities. All of the barred
@@ -2563,7 +2711,7 @@ plt.gcf()
 &lt;p&gt;Next, let&amp;rsquo;s investigate the sum-over-bessel function representation of the
 derivatives. These are:&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-\bar{n}_{\pm}(x) &amp;amp;= -\dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}(\mp1)^{n+1}K_{1}(nx)\\
+\bar{n}_{\pm}(x) &amp;amp;= -\dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}(\mp1)^{n+1}K_{1}(nx)\\\
 \bar{\rho}_{\pm}(x) &amp;amp;= -\dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\frac{(\mp1)^{n+1}}{n}\left[nxK_{0}(nx)+K_{1}(nx)\right]\\
 \bar{P}_{\pm}(x) &amp;amp;= -\dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\frac{(\mp1)^{n+1}}{n}K_{1}(nx)
 \end{align}$$&lt;/p&gt;
@@ -2692,15 +2840,15 @@ nucleus. Let the impact parameter be $b$ and the energy of the impinging
 particle be $E$. The classical Lagrangian for a particle with charge $e$
 scattering off a heavy nucleus of charge $eZ$ is:
 $$\begin{align}
-\mathcal{L}= T - V = \dfrac{1}{2}m \left(\dfrac{d\vec{r}}{dt}\right)^2 - V(r)
+\mathcal{L}= T - V = \dfrac{1}{2}m \left(\dfrac{d\mathbf{r}}{dt}\right)^2 - V(r)
 \end{align}$$
 with
 $$\begin{align}
 V(r) = \dfrac{e^2Z}{4\pi r}
 \end{align}$$
-In the plane of scattering, we need only to consider two variables - $|\vec{r}| = r$ and $\theta$. We can write the derivative of $\vec{r}$ as:
+In the plane of scattering, we need only to consider two variables - $|\mathbf{r}| = r$ and $\theta$. We can write the derivative of $\mathbf{r}$ as:
 $$\begin{align}
-\dfrac{d\vec{r}}{dt} = \dfrac{dr}{dt}\hat{\vec{r}} + r \dfrac{d\theta}{dt}\hat{\vec{\theta}}
+\dfrac{d\mathbf{r}}{dt} = \dfrac{dr}{dt}\hat{\mathbf{r}} + r \dfrac{d\theta}{dt}\hat{\mathbf{\theta}}
 \end{align}$$
 Our Lagrangian then reads:
 $$\begin{align}
@@ -2795,7 +2943,7 @@ the electromagnetic coupling constant, is&lt;/p&gt;
 \langle{p&amp;rsquo;}|iT|\rangle{p}
 &amp;amp; = \bra{p&amp;rsquo;,s&amp;rsquo;}T\exp\left[-i\int d^4x \mathcal{L}_{I}(x)\right]\ket{p,s} \\
 &amp;amp; = ie\int d^4x \bra{p&amp;rsquo;,s&amp;rsquo;}A_{\mu}(x)\overline{\Psi}(x)\gamma^{\mu}\Psi(x)\ket{p,s}+
-\mathcal{O}(e^2)\\
+\mathcal{O}(e^2)\\\
 &amp;amp; = ie\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)
 \int d^4xA_{\mu}(x)e^{i(p&amp;rsquo;-p)x}
 \end{align}$$&lt;/p&gt;
@@ -2818,9 +2966,9 @@ A_{\mu}(x) = \int \dfrac{d^4q}{(2\pi)^4}\tilde{A}_{\mu}(q)e^{-iqx}
 &lt;p&gt;Now, suppose the photon field is time-independent. Then, the fourier
 transform of the photon field is&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-\tilde{A}_{\mu}(p&amp;rsquo;-p) &amp;amp; = \int d^3zA_{\mu}(\vec{z}) e^{i(\vec{p}&amp;rsquo;-\vec{p})\cdot\vec{z}}\int_{-\infty}^{\infty}dt&amp;rsquo;e^{i(E_{p&amp;rsquo;}-E_{p})t&amp;rsquo;}\\
-&amp;amp; = (2\pi)\delta(E_{p&amp;rsquo;}-E_{p})\int d^3zA_{\mu}(\vec{z})
-e^{i(\vec{p}&amp;rsquo;-\vec{p})\cdot\vec{z}}
+\tilde{A}_{\mu}(p&amp;rsquo;-p) &amp;amp; = \int d^3zA_{\mu}(\mathbf{z}) e^{i(\mathbf{p}&amp;rsquo;-\mathbf{p})\cdot\mathbf{z}}\int_{-\infty}^{\infty}dt&amp;rsquo;e^{i(E_{p&amp;rsquo;}-E_{p})t&amp;rsquo;}\\
+&amp;amp; = (2\pi)\delta(E_{p&amp;rsquo;}-E_{p})\int d^3zA_{\mu}(\mathbf{z})
+e^{i(\mathbf{p}&amp;rsquo;-\mathbf{p})\cdot\mathbf{z}}
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;We now define the matrix element as&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
@@ -2829,7 +2977,7 @@ e^{i(\vec{p}&amp;rsquo;-\vec{p})\cdot\vec{z}}
 &lt;p&gt;Through this definition, we can see that $\mathcal{M}$ is&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
 \mathcal{M}= e\overline{u}^{s&amp;rsquo;}(p&amp;rsquo;)\gamma^{\mu}u^s(p)
-\tilde{A}_{\mu}(\vec{p}&amp;rsquo;-\vec{p})
+\tilde{A}_{\mu}(\mathbf{p}&amp;rsquo;-\mathbf{p})
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;where it is understood that $E_{p&amp;rsquo;} = E_{p}$. Let&amp;rsquo;s square this matrix element and average over the initial spin and sum over final spin of the electron:&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
@@ -2839,29 +2987,29 @@ e^{i(\vec{p}&amp;rsquo;-\vec{p})\cdot\vec{z}}
 \left(\cancel{p}+m\right)\gamma^{\nu}\right]\\
 &amp;amp; =\dfrac{1}{2}e^2\tilde{A}_{\mu}\tilde{A}_{\nu}
 \left(\Tr\left[\cancel{p}&amp;rsquo;\gamma^{\mu}\cancel{p}\gamma^{\nu}\right]
-+m^2\Tr\left[\gamma^{\mu}\gamma^{\nu}\right]\right)\\
++m^2\Tr\left[\gamma^{\mu}\gamma^{\nu}\right]\right)\\\
 &amp;amp; = 2e^2\tilde{A}_{\mu}\tilde{A}_{\nu}
 \left(p&amp;rsquo;^{\mu}p^{\nu}+p&amp;rsquo;^{\nu}p^{\mu}-(p&amp;rsquo;\cdot p)g^{\mu\nu}
-+m^2g^{\mu\nu}\right)\\
++m^2g^{\mu\nu}\right)\\\
 &amp;amp; = 2e^2\left[2\left(\tilde{A}\cdot p&amp;rsquo;\right)\left(\tilde{A}\cdot p\right)
 +(m^2-p&amp;rsquo;\cdot p)\left(\tilde{A}\cdot\tilde{A}\right)\right]
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;Now, let&amp;rsquo;s assume that the four-potential is generated by a charged
 particle of charge $Ze$. Then, the vector potential is given by&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-A^0(\vec{x}) = \dfrac{Ze}{4\pi r} \qquad \text{and}\qquad\vec{A}(\vec{x}) = 0
+A^0(\mathbf{x}) = \dfrac{Ze}{4\pi r} \qquad \text{and}\qquad\mathbf{A}(\mathbf{x}) = 0
 \end{align}$$&lt;/p&gt;
-&lt;p&gt;where $r = \left|\vec{x}\right|$. Now, let&amp;rsquo;s compute the fourier transform of
+&lt;p&gt;where $r = \left|\mathbf{x}\right|$. Now, let&amp;rsquo;s compute the fourier transform of
 this potential. To do so, we need to regulate the integrate. We modify
 it in the following way:&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-A^0(\vec{x}) = \dfrac{Ze}{4\pi r}e^{-\lambda r}
+A^0(\mathbf{x}) = \dfrac{Ze}{4\pi r}e^{-\lambda r}
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;where $\lambda$ will be taken to zero at the end of the calculation. The
 Fourier transform of this vector potential is&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
 \tilde{A}^0(k)
-&amp;amp;= \int d^3\vec{x}\dfrac{Ze}{4\pi r}e^{-\lambda r}e^{i k r\cos(\theta)}\\
+&amp;amp;= \int d^3\mathbf{x}\dfrac{Ze}{4\pi r}e^{-\lambda r}e^{i k r\cos(\theta)}\\
 &amp;amp;= \dfrac{Ze}{2}\int_{0}^{\infty}dr\int_{-1}^{1}d(\cos\theta)re^{-\lambda r}
 e^{i k r\cos(\theta)}\\
 &amp;amp;= \dfrac{Ze}{2ik}\left[\dfrac{e^{(ik-\lambda) r}}{ik-\lambda}+
@@ -2869,19 +3017,19 @@ e^{i k r\cos(\theta)}\\
 &amp;amp;= -\dfrac{Ze}{2ik}\left[\dfrac{(-ik-\lambda)+(-ik+\lambda)}{k^2+\lambda^2}\right]\\
 &amp;amp; = \dfrac{Ze}{k^2+\lambda^2}
 \end{align}$$&lt;/p&gt;
-&lt;p&gt;where $k = |\vec{p}&amp;rsquo;-\vec{p}|$. Taking $\lambda$ to zero, we obtain&lt;/p&gt;
+&lt;p&gt;where $k = |\mathbf{p}&amp;rsquo;-\mathbf{p}|$. Taking $\lambda$ to zero, we obtain&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-\tilde{A}^0(\vec{p}&amp;rsquo;-\vec{p}) = \dfrac{Ze}{|\vec{p}&amp;rsquo;-\vec{p}|^2}
+\tilde{A}^0(\mathbf{p}&amp;rsquo;-\mathbf{p}) = \dfrac{Ze}{|\mathbf{p}&amp;rsquo;-\mathbf{p}|^2}
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s use this to simplify the matrix element. The matrix element is&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
 \sum_{s,s&amp;rsquo;}\left|\mathcal{M}\right|^2
 &amp;amp; = 2e^2
-\left[2 \dfrac{Z^2e^2E_iE_f}{|\vec{p}&amp;rsquo;-\vec{p}|^4}
-+(m^2-E_iE_f+\vec{p}\cdot\vec{p}&amp;rsquo;)
-\dfrac{Z^2e^2}{|\vec{p}&amp;rsquo;-\vec{p}|^4}\right]\\
-&amp;amp; =  \dfrac{2Z^2e^4}{|\vec{p}&amp;rsquo;-\vec{p}|^4}
-\left[E_iE_f+m^2+\vec{p}\cdot\vec{p}&amp;rsquo;\right]
+\left[2 \dfrac{Z^2e^2E_iE_f}{|\mathbf{p}&amp;rsquo;-\mathbf{p}|^4}
++(m^2-E_iE_f+\mathbf{p}\cdot\mathbf{p}&amp;rsquo;)
+\dfrac{Z^2e^2}{|\mathbf{p}&amp;rsquo;-\mathbf{p}|^4}\right]\\
+&amp;amp; =  \dfrac{2Z^2e^4}{|\mathbf{p}&amp;rsquo;-\mathbf{p}|^4}
+\left[E_iE_f+m^2+\mathbf{p}\cdot\mathbf{p}&amp;rsquo;\right]
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;We are now ready to compute the differential cross section. The
 differential cross section is given by&lt;/p&gt;
@@ -2899,12 +3047,12 @@ $p_f = p_i$. Thus, the differential cross section is&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
 \dfrac{d\sigma}{d\Omega}
 = \dfrac{1}{4Ev_i(2\pi)^2}
-\dfrac{2Z^2e^4}{|\vec{p}&amp;rsquo;-\vec{p}|^4}p_f
-\left[E^2+m^2+\vec{p}\cdot\vec{p}&amp;rsquo;\right]
+\dfrac{2Z^2e^4}{|\mathbf{p}&amp;rsquo;-\mathbf{p}|^4}p_f
+\left[E^2+m^2+\mathbf{p}\cdot\mathbf{p}&amp;rsquo;\right]
 \end{align}$$&lt;/p&gt;
-&lt;p&gt;Let $\theta$ be the angle between $\vec{p}&amp;rsquo;$ and $\vec{p}$. Then,&lt;/p&gt;
+&lt;p&gt;Let $\theta$ be the angle between $\mathbf{p}&amp;rsquo;$ and $\mathbf{p}$. Then,&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-|\vec{p}&amp;rsquo;-\vec{p}|^4 &amp;amp; = \left(p_i^2+p_f^2-2p_fp_i\cos\theta\right)^2 \\
+|\mathbf{p}&amp;rsquo;-\mathbf{p}|^4 &amp;amp; = \left(p_i^2+p_f^2-2p_fp_i\cos\theta\right)^2 \\
 &amp;amp; = \left(2p_i^2-2p_i^2\cos\theta\right)^2       \\
 &amp;amp; = 4p_i^4\left(1-\cos\theta\right)^2            \\
 &amp;amp; = 16p_i^4\sin^4(\theta/2)
@@ -2915,7 +3063,7 @@ Hence, the differential cross section is&lt;/p&gt;
 \dfrac{d\sigma}{d\Omega}
 &amp;amp; = \dfrac{1}{4mv_i(2\pi)^2}
 \dfrac{2Z^2e^4mv_i}{(16)m^4v_i^4\sin^4(\theta/2)}
-\left[E^2+m^2+\vec{p}\cdot\vec{p}&amp;rsquo;\right]\\
+\left[E^2+m^2+\mathbf{p}\cdot\mathbf{p}&amp;rsquo;\right]\\
 &amp;amp; = \dfrac{1}{8\pi^2}
 \dfrac{Z^2e^4}{(16)m^4v_i^4\sin^4(\theta/2)}
 \left[2m^2+m^2v_i^2\cos\theta\right]

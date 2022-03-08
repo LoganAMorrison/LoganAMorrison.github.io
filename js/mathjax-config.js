@@ -1,22 +1,19 @@
-// MathJax Configuration
-//
-// v2 to v3 upgrade notes:
-// - The CommonHTML.linebreaks option is not yet implemented (but may be in a future release)
-// - The TeX.noUndefined.attributes option is not yet implemented (but may be in a future release)
-window.MathJax = {
-  tex: {
-    inlineMath: [
-      ['$', '$'],
-      ['\\(', '\\)'],
-    ],
-    displayMath: [
-      ['$$', '$$'],
-      ['\\[', '\\]'],
-    ],
-    processEscapes: false,
-    packages: {'[+]': ['noerrors']},
-  },
-  loader: {
-    load: ['[tex]/noerrors'],
-  },
+MathJax = {
+    svg: {
+        fontCache: 'global'
+    },
+    loader: { load: ['[tex]/physics', '[tex]/cancel', '[tex]/boldsymbol'] },
+    tex: {
+        packages: { '[+]': ['physics', 'cancel', 'boldsymbol'] },
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
 };
+
+/*
+(function () {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.j';
+    script.async = true;
+    document.head.appendChild(script);
+})();
+*/

@@ -751,19 +751,19 @@
 fermions and bosons. The functions we wish to compute are the equilibirium
 number, energy, pressure and entropy densities. In full form, these are given by:
 $$\begin{align}
-n(T) &amp;= g\int\dfrac{d^3k}{(2\pi)^2}f(\vec{k})\\
-\rho(T) &amp;= g\int\dfrac{d^3k}{(2\pi)^2}E(\vec{k})f(\vec{k})\\
-P(T) &amp;= g\int\dfrac{d^3k}{(2\pi)^2}\dfrac{|\vec{k}|^2}{3E(\vec{k})}f(\vec{k})
+n(T) &amp;= g\int\dfrac{d^3k}{(2\pi)^2}f(\mathbf{k})\\\
+\rho(T) &amp;= g\int\dfrac{d^3k}{(2\pi)^2}E(\mathbf{k})f(\mathbf{k})\\\
+P(T) &amp;= g\int\dfrac{d^3k}{(2\pi)^2}\dfrac{|\mathbf{k}|^2}{3E(\mathbf{k})}f(\mathbf{k})
 \end{align}$$
 with $g$ representing the number of internal degrees of freedom (d.o.f),
-$E^2 = k^2 + m^2$ and $f(\vec{k})$ is the phase-space distribution
+$E^2 = k^2 + m^2$ and $f(\mathbf{k})$ is the phase-space distribution
 function. For a species in kinetic equilibirium, the phase space distribution
 is given by:
 $$\begin{align}
-f(\vec{k}) &amp;= \dfrac{1}{e^{E/T}\pm1}
+f(\mathbf{k}) &amp;= \dfrac{1}{e^{E/T}\pm1}
 \end{align}$$
 where one takes the $+$ for fermions and $-$ for bosons. Note that we have
-ignored the chemical potential in writing down $f$. Since $f(\vec{k})$ is
+ignored the chemical potential in writing down $f$. Since $f(\mathbf{k})$ is
 independent of angles, we can integrate of the solid angle and obtain:
 $$\begin{align}
 n(T) &amp;= \dfrac{g}{2\pi^2}\int_{m}^{\infty} dE \dfrac{E\sqrt{E^2-m^2}}{e^{E/T}\pm1}\\
@@ -773,8 +773,8 @@ P(T) &amp;= \dfrac{g}{6\pi^2}\int_{m}^{\infty} dE \dfrac{(E^2-m^2)^{3/2}}{e^{E/T
 We can further simplify these functions by defining: $z = E / T$ and
 $x = m / T$. Doing so, we find</p>
 <p>$$\begin{align}
-n(T) &amp;= gT^3\bar{n}_{\pm}(x)\\
-\rho(T) &amp;= gT^4\bar{\rho}_{\pm}(x)\\
+n(T) &amp;= gT^3\bar{n}_{\pm}(x)\\\
+\rho(T) &amp;= gT^4\bar{\rho}_{\pm}(x)\\\
 P(T) &amp;= gT^4\bar{P}_{\pm}(x)
 \end{align}$$</p>
 <p>where we defined the &lsquo;barred&rsquo; quantities as:</p>
@@ -1081,7 +1081,7 @@ $$</p>
 kind:</p>
 <p>$$
 \begin{align}
-\bar{n}_{\pm}(x) &amp;= \dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\dfrac{(\mp 1)^{n+1}}{n}K_{2}(nx)\\
+\bar{n}_{\pm}(x) &amp;= \dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\dfrac{(\mp 1)^{n+1}}{n}K_{2}(nx)\\\
 \bar{\rho}_{\pm}(x) &amp;= \dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\frac{(\mp 1)^{n+1}}{n^2}\left[n x K_{1}(nx)+3K_{2}(nx)\right]\\
 \bar{P}_{\pm}(x) &amp;= \dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\frac{(\mp 1)^{n+1}}{n^2}K_{2}(nx)
 \end{align}
@@ -1225,7 +1225,7 @@ plt.gcf()
 thermal functions quite well. In practice, it is a good approximation to take:</p>
 <p>$$
 \begin{align}
-\bar{n}_{\pm}(x) &amp;= \dfrac{x^2}{2\pi^2}K_{2}(x)\\
+\bar{n}_{\pm}(x) &amp;= \dfrac{x^2}{2\pi^2}K_{2}(x)\\\
 \bar{\rho}_{\pm}(x) &amp;= \dfrac{x^2}{2\pi^2}\left[xK_{1}(x)+3K_{2}(x)\right]\\
 \bar{P}_{\pm}(x) &amp;= \dfrac{x^2}{2\pi^2}K_{2}(x)
 \end{align}
@@ -1349,7 +1349,7 @@ $$</p>
 d.o.f. stored in energy and entropy $g_{\mathrm{eff}}$, $h_{\mathrm{eff}}$ are:</p>
 <p>$$
 \begin{align}
-g_{\mathrm{eff}}(T) &amp;= \dfrac{30}{\pi^2}\sum_{i}g_{i}\bar{\rho}_{i}(x)\\
+g_{\mathrm{eff}}(T) &amp;= \dfrac{30}{\pi^2}\sum_{i}g_{i}\bar{\rho}_{i}(x)\\\
 h_{\mathrm{eff}}(T) &amp;= \dfrac{45}{2\pi^2}\sum_{i}g_{i}\bar{s}_{i}(x)
 \end{align}
 $$</p>
@@ -1357,9 +1357,9 @@ $$</p>
 <p>Lastly, let&rsquo;s investigate the derivatives of the various functions. The
 derivatives are:
 $$\begin{align}
-\dfrac{dn}{dT} &amp;= gT^2\left(3T\bar{n}(x)-x\dfrac{d\bar{n}}{dx}\right)\\
-\dfrac{d\rho}{dT} &amp;= gT^3\left(4T\bar{\rho}(x)-x\dfrac{d\bar{\rho}}{dx}\right)\\
-\dfrac{dP}{dT} &amp;= gT^3\left(4T\bar{P}(x)-x\dfrac{d\bar{P}}{dx}\right)\\
+\dfrac{dn}{dT} &amp;= gT^2\left(3T\bar{n}(x)-x\dfrac{d\bar{n}}{dx}\right)\\\
+\dfrac{d\rho}{dT} &amp;= gT^3\left(4T\bar{\rho}(x)-x\dfrac{d\bar{\rho}}{dx}\right)\\\
+\dfrac{dP}{dT} &amp;= gT^3\left(4T\bar{P}(x)-x\dfrac{d\bar{P}}{dx}\right)\\\
 \dfrac{ds}{dT} &amp;= gT^2\left(3T\bar{s}(x)-x\dfrac{d\bar{s}}{dx}\right)
 \end{align}$$</p>
 <p>We will want to compute derivatives of the barred quantities. All of the barred
@@ -1506,7 +1506,7 @@ plt.gcf()
 <p>Next, let&rsquo;s investigate the sum-over-bessel function representation of the
 derivatives. These are:</p>
 <p>$$\begin{align}
-\bar{n}_{\pm}(x) &amp;= -\dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}(\mp1)^{n+1}K_{1}(nx)\\
+\bar{n}_{\pm}(x) &amp;= -\dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}(\mp1)^{n+1}K_{1}(nx)\\\
 \bar{\rho}_{\pm}(x) &amp;= -\dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\frac{(\mp1)^{n+1}}{n}\left[nxK_{0}(nx)+K_{1}(nx)\right]\\
 \bar{P}_{\pm}(x) &amp;= -\dfrac{x^2}{2\pi^2}\sum_{n=1}^{\infty}\frac{(\mp1)^{n+1}}{n}K_{1}(nx)
 \end{align}$$</p>

@@ -72,7 +72,7 @@ b_{n} &amp;amp;= \dfrac{1}{\pi}\int_{-\pi}^{\pi}f(t)\sin(nt)dt
 \end{align}$$
 Given these simple formulas, we can then easily compute Fourier series of any function we might like. Before doing so, I&amp;rsquo;d like to present an alternate form of the real Fourier series consisting of just cosines (which will be useful for us later on). To get rid of the sines, one can make use of the following identity:
 $$\begin{align}
-c_{n}\cos(nt + \phi_{n}) &amp;amp;= a_{n}\cos(nt) + b_{n}\sin(nt)\\
+c_{n}\cos(nt + \phi_{n}) &amp;amp;= a_{n}\cos(nt) + b_{n}\sin(nt)\\\
 c_{n} &amp;amp;= \sqrt{a_{n}^2 + b_{n}^2}\\
 \phi_{n} &amp;amp;= -\tan^{-1}(b_{n}/a_{n})
 \end{align}$$

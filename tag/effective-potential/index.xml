@@ -66,7 +66,7 @@ $$&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
 S[\phi] + \int d^{4}y J(y)(\phi(y) +\phi_{\text{cl}}) &amp;amp; = S[\phi_{\text{cl}}] + \int d^{4}y J(y)\phi_{\text{cl}} +
-\int d^{4}y \eta(y)\left(\dfrac{\delta S[\phi]}{\delta\phi(y)} + J(y)\right)\\
+\int d^{4}y \eta(y)\left(\dfrac{\delta S[\phi]}{\delta\phi(y)} + J(y)\right)\\\
 &amp;amp; \qquad + \int d^{4}y\int d^{4}z \eta(y)\dfrac{\delta^{2} S[\phi]}{\delta\phi(y)\delta\phi(z)}\eta(z) + \cdots\notag
 \end{align}
 $$&lt;/p&gt;
@@ -118,16 +118,16 @@ $$&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s examine this process of computing the effective action for a simple example. Consider the linear sigma model:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-\mathcal{L} = \dfrac{1}{2}\left(\partial_{\mu}\vec{\Phi}\right)\cdot\left(\partial^{\mu}\vec{\Phi}\right) + \dfrac{1}{2}\mu^{2}\left(\vec{\Phi}\cdot\vec{\Phi}\right) - \dfrac{\lambda}{4}\left(\vec{\Phi}\cdot\vec{\Phi}\right)^{2}
+\mathcal{L} = \dfrac{1}{2}\left(\partial_{\mu}\mathbf{\Phi}\right)\cdot\left(\partial^{\mu}\mathbf{\Phi}\right) + \dfrac{1}{2}\mu^{2}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right) - \dfrac{\lambda}{4}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right)^{2}
 \end{align}
 $$&lt;/p&gt;
-&lt;p&gt;where $\vec{\Phi}$ is a vector containing $N$ scalar fields. We now expand these fields about the classical fields:&lt;/p&gt;
+&lt;p&gt;where $\mathbf{\Phi}$ is a vector containing $N$ scalar fields. We now expand these fields about the classical fields:&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-\vec{\Phi} = \vec{\Phi}_{\text{cl}} + \vec{\eta}
+\mathbf{\Phi} = \mathbf{\Phi}_{\text{cl}} + \mathbf{\eta}
 \end{align}
 $$&lt;/p&gt;
-&lt;p&gt;where $\vec{\Phi}_{\text{cl}}$ are space-time independent fields. Now, we would
+&lt;p&gt;where $\mathbf{\Phi}_{\text{cl}}$ are space-time independent fields. Now, we would
 like to take the second functional derivative with respect to the fields of the
 action. Let&amp;rsquo;s first look at the derivative term:&lt;/p&gt;
 &lt;p&gt;$$
@@ -183,7 +183,7 @@ $$&lt;/p&gt;
 &lt;p&gt;Denoting $\delta^{4}(x-y)$ as $\delta_{xy}$, we find that&lt;/p&gt;
 &lt;p&gt;$$
 \begin{align}
-\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\vec{\Phi}=\vec{\Phi}_{\text{cl}}}
+\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\mathbf{\Phi}=\mathbf{\Phi}_{\text{cl}}}
 &amp;amp; =-\delta_{xz}\partial^{2}\delta_{xy}\delta^{ij}                                                                       \\
 &amp;amp; \qquad + \mu^{2}\delta_{xy}\delta_{xz}\delta^{ij} -\lambda\delta^{ij}\Phi_{\text{cl}}^{2}\delta_{xy}\delta_{xz}\notag \\
 &amp;amp; \qquad -2\Phi_{\text{cl}}^{2}\delta^{iN}\delta^{jN}\delta_{xy}\delta_{xz}\notag
@@ -191,15 +191,15 @@ $$&lt;/p&gt;
 $$&lt;/p&gt;
 &lt;p&gt;Now,&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-\int\mathcal{D}\vec{\eta} &amp;amp; \exp(\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\vec{\Phi}=\vec{\Phi}_{\text{cl}}}\eta^{j}(z))\\
-&amp;amp; = \int\mathcal{D}\vec{\eta}\exp\bigg{(}-\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{1}(y)\delta_{xz}\left(\partial^{2} + \lambda\Phi_{\text{cl}}^{2} -\mu^{2} \right)\delta_{xy}\eta^{1}(z)\notag \\
+\int\mathcal{D}\mathbf{\eta} &amp;amp; \exp(\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\mathbf{\Phi}=\mathbf{\Phi}_{\text{cl}}}\eta^{j}(z))\\\
+&amp;amp; = \int\mathcal{D}\mathbf{\eta}\exp\bigg{(}-\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{1}(y)\delta_{xz}\left(\partial^{2} + \lambda\Phi_{\text{cl}}^{2} -\mu^{2} \right)\delta_{xy}\eta^{1}(z)\notag \\
 &amp;amp; \qquad +\cdots\notag\\
 &amp;amp; \qquad -\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{N-1}(y)\delta_{xz}\left(\partial^{2} + \lambda\Phi_{\text{cl}}^{2} -\mu^{2} \right)\delta_{xy}\eta^{N-1}(z)\notag\\
 &amp;amp; \qquad -\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{N}(y)\delta_{xz}\left(\partial^{2} + 3\lambda\Phi_{\text{cl}}^{2} -\mu^{2} \right)\delta_{xy}\eta^{N}(z)\bigg{)}\notag
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;Each of these terms in going to produce a term proportional to the inverse square root of the determinant of the operator sandwiched between the $\eta$&amp;rsquo;s:&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-\int\mathcal{D}\vec{\eta} &amp;amp; \exp(-\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)M(y,z)\eta^{j}(z)) \propto \left(\det M(y,z)\right)^{-1/2}
+\int\mathcal{D}\mathbf{\eta} &amp;amp; \exp(-\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)M(y,z)\eta^{j}(z)) \propto \left(\det M(y,z)\right)^{-1/2}
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;Each of these operators has a Klein-Gordon operator: $\partial^{2} + m^{2}$. Using&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
@@ -211,7 +211,7 @@ $$&lt;/p&gt;
 \end{align}$$&lt;/p&gt;
 &lt;p&gt;we have&lt;/p&gt;
 &lt;p&gt;$$\begin{align}
-\int\mathcal{D}\vec{\eta} &amp;amp; \exp(\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\vec{\Phi}=\vec{\Phi}_{\text{cl}}}\eta^{j}(z)) \\
+\int\mathcal{D}\mathbf{\eta} &amp;amp; \exp(\dfrac{i}{2}\int d^{4}y\int d^{4}z\eta^{i}(y)\dfrac{\delta^{2}S}{\delta\Phi^{i}(y)\delta\Phi^{j}(z)}\bigg{|}_{\mathbf{\Phi}=\mathbf{\Phi}_{\text{cl}}}\eta^{j}(z)) \\
 &amp;amp; \qquad =
 \exp(-\dfrac{1}{2}\mathrm{tr}\log\left(
 \left(\partial^{2} + \lambda\Phi_{\text{cl}}^{2} -\mu^{2}\right)^{N-1}
@@ -234,9 +234,9 @@ $$&lt;/p&gt;
 &amp;amp; = \int d^{4}x\int \dfrac{d^{4}k}{(2\pi)^{4}}\int \dfrac{d^{4}p}{(2\pi)^{4}} \langle{x}\rangle{p}(2\pi)^{4}\delta^{4}(k-p)\log
 \left(-k^{2} + m^{2}\right)\langle{k}\rangle{x}\\
 &amp;amp; = \int d^{4}x\int \dfrac{d^{4}p}{(2\pi)^{4}} \left|\langle{x}\rangle{p}\right|^{2}\log
-\left(-p^{2} + m^{2}\right)\\
+\left(-p^{2} + m^{2}\right)\\\
 &amp;amp; = \int d^{4}x\int \dfrac{d^{4}p}{(2\pi)^{4}} \log
-\left(-p^{2} + m^{2}\right)\\
+\left(-p^{2} + m^{2}\right)\\\
 &amp;amp; = VT\int \dfrac{d^{4}p}{(2\pi)^{4}} \log
 \left(-p^{2} + m^{2}\right)
 \end{align}$$&lt;/p&gt;
@@ -291,8 +291,8 @@ The renormalizable parameters are $Z_{a}$, the wave function
 renormalizations, $\mu$, the masses and $\lambda$, the quartic
 couplings. We thus augment the Lagrangian by the following counterterms:&lt;/p&gt;
 &lt;p&gt;$$\begin{aligned}
-\mathcal{L}&amp;amp; = \dfrac{1}{2}\left(\partial_{\mu}\vec{\Phi}\right)\cdot\left(\partial^{\mu}\vec{\Phi}\right) + \dfrac{1}{2}\mu^{2}\left(\vec{\Phi}\cdot\vec{\Phi}\right) - \dfrac{\lambda}{4}\left(\vec{\Phi}\cdot\vec{\Phi}\right)^{2}\\
-&amp;amp; \qquad + \dfrac{1}{2}\delta_{Z}\left(\partial_{\mu}\vec{\Phi}\right)\cdot\left(\partial^{\mu}\vec{\Phi}\right) - \dfrac{1}{2}\delta_{\mu}\mu^{2}\left(\vec{\Phi}\cdot\vec{\Phi}\right) - \dfrac{\delta_{\lambda}}{4}\left(\vec{\Phi}\cdot\vec{\Phi}\right)^{2}\notag\end{aligned}$$&lt;/p&gt;
+\mathcal{L}&amp;amp; = \dfrac{1}{2}\left(\partial_{\mu}\mathbf{\Phi}\right)\cdot\left(\partial^{\mu}\mathbf{\Phi}\right) + \dfrac{1}{2}\mu^{2}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right) - \dfrac{\lambda}{4}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right)^{2}\\
+&amp;amp; \qquad + \dfrac{1}{2}\delta_{Z}\left(\partial_{\mu}\mathbf{\Phi}\right)\cdot\left(\partial^{\mu}\mathbf{\Phi}\right) - \dfrac{1}{2}\delta_{\mu}\mu^{2}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right) - \dfrac{\delta_{\lambda}}{4}\left(\mathbf{\Phi}\cdot\mathbf{\Phi}\right)^{2}\notag\end{aligned}$$&lt;/p&gt;
 &lt;p&gt;The Feynmann rules for the vertices and there corresponding counter terms
 are given by:&lt;/p&gt;
 &lt;table&gt;
