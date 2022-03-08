@@ -4,13 +4,35 @@
   
   
   <url>
+    <loc>https://loganamorrison.github.io/post/learning_to_play_space_invaders/</loc><lastmod>2022-03-07T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/learning_to_play_space_invaders/making_the_game/</loc><lastmod>2022-03-07T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
     <loc>https://loganamorrison.github.io/talk/example-talk/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc>https://loganamorrison.github.io/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc>https://loganamorrison.github.io/event/</loc><lastmod>2030-06-01T13:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
+    <loc>https://loganamorrison.github.io/post/learning_to_play_space_invaders/deep-q/</loc><lastmod>2022-03-07T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/</loc><lastmod>2022-03-07T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc></loc><lastmod>2022-03-06T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/post/boosting/</loc><lastmod>2022-03-06T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/categories/</loc><lastmod>2022-03-06T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/category/field-theory/</loc><lastmod>2022-03-06T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/finite-temperature-field-theory/</loc><lastmod>2022-03-06T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc></loc><lastmod>2022-03-06T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tag/quantum-field-theory/</loc><lastmod>2022-03-06T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
+  <url>
+    <loc>https://loganamorrison.github.io/tags/</loc><lastmod>2022-03-06T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc>https://loganamorrison.github.io/publication-type/2/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
@@ -33,8 +55,6 @@
     <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc></loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc></loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc>https://loganamorrison.github.io/publication/cpt-rhn-2021/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
@@ -60,12 +80,6 @@
   <url>
     <loc>https://loganamorrison.github.io/publication/hazma-2020/</loc><lastmod>2022-03-04T23:20:28-08:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
-    <loc>https://loganamorrison.github.io/categories/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://loganamorrison.github.io/post/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://loganamorrison.github.io/tags/</loc><lastmod>2022-03-04T23:25:08-08:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
     <loc>https://loganamorrison.github.io/tag/teaching/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc>https://loganamorrison.github.io/category/teaching/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
@@ -73,12 +87,6 @@
     <loc>https://loganamorrison.github.io/post/visualizing-fourier-series/</loc><lastmod>2019-10-03T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc>https://loganamorrison.github.io/post/functional-det-heat-kernel/</loc><lastmod>2019-09-02T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://loganamorrison.github.io/category/field-theory/</loc><lastmod>2019-09-02T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://loganamorrison.github.io/tag/finite-temperature-field-theory/</loc><lastmod>2019-09-02T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
-  <url>
-    <loc>https://loganamorrison.github.io/tag/quantum-field-theory/</loc><lastmod>2019-09-02T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>
     <loc>https://loganamorrison.github.io/post/effective-potential-scalar-ft/</loc><lastmod>2019-08-26T00:00:00+00:00</lastmod><changefreq>weekly</changefreq></url>
   <url>

@@ -64,10 +64,10 @@
   
     
   
-  <meta name="description" content="An example of using the in-built project page." />
+  <meta name="description" content="A set of notes on building a Deep Q network to learn to play Space Invaders" />
 
   
-  <link rel="alternate" hreflang="en-us" href="https://loganamorrison.github.io/project/example/" />
+  <link rel="alternate" hreflang="en-us" href="https://loganamorrison.github.io/post/learning_to_play_space_invaders/" />
 
   
   
@@ -277,6 +277,8 @@
   
 
   
+    <link rel="alternate" href="/post/learning_to_play_space_invaders/index.xml" type="application/rss+xml" title="Logan A. Morrison" />
+  
 
   
     <link rel="manifest" href="/manifest.webmanifest" />
@@ -285,7 +287,7 @@
   <link rel="icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png" />
   <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_180x180_fill_lanczos_center_3.png" />
 
-  <link rel="canonical" href="https://loganamorrison.github.io/project/example/" />
+  <link rel="canonical" href="https://loganamorrison.github.io/post/learning_to_play_space_invaders/" />
 
   
   
@@ -296,6 +298,7 @@
   
   
     
+    
   
   
 
@@ -304,76 +307,25 @@
     
     
   
-  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:card" content="summary" />
   
     <meta property="twitter:site" content="@wowchemy" />
     <meta property="twitter:creator" content="@wowchemy" />
   
   <meta property="og:site_name" content="Logan A. Morrison" />
-  <meta property="og:url" content="https://loganamorrison.github.io/project/example/" />
-  <meta property="og:title" content="Example Project | Logan A. Morrison" />
-  <meta property="og:description" content="An example of using the in-built project page." /><meta property="og:image" content="https://loganamorrison.github.io/project/example/featured.jpg" />
-    <meta property="twitter:image" content="https://loganamorrison.github.io/project/example/featured.jpg" /><meta property="og:locale" content="en-us" />
+  <meta property="og:url" content="https://loganamorrison.github.io/post/learning_to_play_space_invaders/" />
+  <meta property="og:title" content="Learning to Play Space Invaders | Logan A. Morrison" />
+  <meta property="og:description" content="A set of notes on building a Deep Q network to learn to play Space Invaders" /><meta property="og:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
     
-      <meta
-        property="article:published_time"
-        content="2016-04-27T00:00:00&#43;00:00"
-      />
+      <meta property="og:updated_time" content="2022-03-07T00:00:00&#43;00:00" />
     
-    <meta property="article:modified_time" content="2016-04-27T00:00:00&#43;00:00">
   
 
   
 
 
-    
-
-
-
-
-
-
-
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://loganamorrison.github.io/project/example/"
-  },
-  "headline": "Example Project",
-  
-  "image": [
-    "https://loganamorrison.github.io/project/example/featured.jpg"
-  ],
-  
-  "datePublished": "2016-04-27T00:00:00Z",
-  "dateModified": "2016-04-27T00:00:00Z",
-  
-  "author": {
-    "@type": "Person",
-    "name": "Logan A. Morrison"
-  },
-  
-  "publisher": {
-    "@type": "Organization",
-    "name": "Logan A. Morrison",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_3.png"
-    }
-  },
-  "description": "An example of using the in-built project page."
-}
-</script>
-
-  
-
-  
 
   
 
@@ -383,11 +335,11 @@
 
 
 
-  <title>Example Project | Logan A. Morrison</title>
+  <title>Learning to Play Space Invaders | Logan A. Morrison</title>
 </head>
 
 
-<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="e8f8d235e8e7f2efd912bfe865363fc3" >
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="654d075143268c26259ad499130cf019" >
 
   
   
@@ -656,382 +608,196 @@
     
     
 
-    <article class="article article-project">
+    
+
+
+
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          Posts
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
 
   
+  <button class="form-control sidebar-search js-search d-none d-md-flex">
+    <i class="fas fa-search pr-2"></i>
+    <span class="sidebar-search-text">Search...</span>
+    <span class="sidebar-search-shortcut">/</span>
+  </button>
+  
+</form>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<nav class="collapse docs-links" id="docs-nav">
   
   
-
-
-<div class="article-container pt-3">
-  <h1>Example Project</h1>
-
   
-
   
-
-
-<div class="article-metadata">
-
   
   
 
   
-  <span class="article-date">
+  
+    
+
+    
+      
+
+      <ul class="nav docs-sidenav">
+        <li><a href="/post/"><i class="fas fa-arrow-left pr-1"></i>Posts</a></li>
+      </ul>
+
+      
+      
+
+
+  
+    
+    
     
     
       
     
-    Apr 27, 2016
-  </span>
-  
+    
 
-  
-
-  
-
-  
-  
-  
-  
-
-  
-  
-
-</div>
-
-  
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link  active" href="/post/learning_to_play_space_invaders/">Deep-Q Space Invaders</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
 
 
-
-
-<div class="btn-links mb-3">
-  
-  
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <a class="btn btn-outline-primary btn-page-header" href="/slides/example/" target="_blank">
-    Slides
-  </a>
-  
-
-
-
-
-
-  
-  
   
     
-  
-  
-  
-  
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/post/learning_to_play_space_invaders/making_the_game/">Making the game</a>
+    
+
+    
+      </div>
+    
+
+
+
   
     
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/post/learning_to_play_space_invaders/deep-q/">Implementing the Deep-Q Agent</a>
+    
+
+    
+      </div>
+    
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+    
   
-  <a class="btn btn-outline-primary btn-page-header" href="https://twitter.com/georgecushen" target="_blank" rel="noopener">
-    <i class="fab fa-twitter mr-1"></i>Follow</a>
-
-
-</div>
-
-
-</div>
-
-
-<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 720px; max-height: 405px;">
-  <div style="position: relative">
-    <img src="/project/example/featured_hu3d03a01dcc18bc5be0e67db3d8d209a6_224363_720x2500_fit_q75_h2_lanczos.webp" width="720" height="405" alt="" class="featured-image">
-    <span class="article-header-caption">Photo by rawpixel on Unsplash</span>
-  </div>
-</div>
-
-
-
-  <div class="article-container">
-
-    <div class="article-style">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.</p>
-<p>Nullam vel molestie justo. Curabitur vitae efficitur leo. In hac habitasse platea dictumst. Sed pulvinar mauris dui, eget varius purus congue ac. Nulla euismod, lorem vel elementum dapibus, nunc justo porta mi, sed tempus est est vel tellus. Nam et enim eleifend, laoreet sem sit amet, elementum sem. Morbi ut leo congue, maximus velit ut, finibus arcu. In et libero cursus, rutrum risus non, molestie leo. Nullam congue quam et volutpat malesuada. Sed risus tortor, pulvinar et dictum nec, sodales non mi. Phasellus lacinia commodo laoreet. Nam mollis, erat in feugiat consectetur, purus eros egestas tellus, in auctor urna odio at nibh. Mauris imperdiet nisi ac magna convallis, at rhoncus ligula cursus.</p>
-<p>Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.</p>
-<p>Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.</p>
-<p>Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.</p>
+</nav>
 
     </div>
 
     
-
-
-
-
-<div class="article-tags">
-  
-  <a class="badge badge-light" href="/tag/deep-learning/">Deep Learning</a>
-  
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-
-
-
-  
-  
-  
     
-  
-  
-  
-  <div class="media author-card content-widget-hr">
-    
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
       
-      <a href="https://loganamorrison.github.io/"><img class="avatar mr-3 avatar-circle" src="/authors/admin/avatar_hu7d1642819821a1dacf0e38d5b4a3be48_147256_270x270_fill_q75_lanczos_center.jpg" alt="Logan A. Morrison"></a>
+
+      <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">Contents</a></li>
+      </ul>
+
+      <nav id="TableOfContents"></nav>
+
+      
+    </div>
     
 
-    <div class="media-body">
-      <h5 class="card-title"><a href="https://loganamorrison.github.io/">Logan A. Morrison</a></h5>
-      <h6 class="card-subtitle">Junior Specialist</h6>
-      <p class="card-text">My research interests include distributed robotics, mobile computing and programmable matter.</p>
-      <ul class="network-icon" aria-hidden="true">
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="/#contact" >
-        <i class="fas fa-envelope"></i>
-      </a>
-    </li>
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="https://scholar.google.com/citations?user=7of5OWcAAAAJ&amp;hl=en" target="_blank" rel="noopener">
-        <i class="fas fa-graduation-cap"></i>
-      </a>
-    </li>
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="https://github.com/LoganAMorrison" target="_blank" rel="noopener">
-        <i class="fab fa-github"></i>
-      </a>
-    </li>
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="https://www.linkedin.com/in/logan-morrison-a0a70a72/" target="_blank" rel="noopener">
-        <i class="fab fa-linkedin"></i>
-      </a>
-    </li>
-  
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          
+
+          <h1>Learning to Play Space Invaders</h1>
+
+          <div class="article-style">
+            <ul>
+<li><a href="making_the_game/_index.md">Making the game</a></li>
 </ul>
 
-    </div>
-  </div>
+          </div>
+
+          
 
 
 
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>Last updated on Mar 7, 2022</p>
+
+          
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="project-related-pages content-widget-hr">
-      
-      
-
-      
-      
-      
-
-      
-      
-      
-
-      
-      
-      
-        <h2>Events</h2>
-        
           
 
 
 
 
+          
 
 
+        </div>
 
-  
+      </article>
 
-
-
-
-
-
-
-  
-
-
-<div class="media stream-item view-compact">
-  <div class="media-body">
-
-    <div class="section-subheading article-title mb-0 mt-0">
-      <a href="/talk/example-talk/" >Example Talk</a>
-    </div>
-
-    
-    <a href="/talk/example-talk/"  class="summary-link">
-      <div class="article-style">
-        An example talk using Wowchemy&rsquo;s Markdown slides feature.
-      </div>
-    </a>
-    
-
-    <div class="stream-meta article-metadata">
-
-      
-      <div>
-        <span>
-          Jun 1, 2030 1:00 PM &mdash; 3:00 PM
-        </span>
-        
-        <span class="middot-divider"></span>
-        <span>Wowchemy HQ</span>
-        
-      </div>
-      
-
-      
-    </div>
-
-    
-
-  </div>
-  <div class="ml-3">
-    
-    
-    
-    <a href="/talk/example-talk/" >
-      <img src="/talk/example-talk/featured_hu3d03a01dcc18bc5be0e67db3d8d209a6_620088_150x0_resize_q75_h2_lanczos.webp" height="107" width="150"
-           alt="Example Talk" loading="lazy">
-    </a>
-    
-  </div>
-</div>
-
-        
-      
-    </div>
-  </div>
-</article>
-  </div>
-
-  <div class="page-footer">
-    
-    
-    <div class="container">
       <footer class="site-footer">
 
   
@@ -1103,7 +869,15 @@
   </p>
 </footer>
 
-    </div>
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
     
   </div>
 
@@ -1153,6 +927,11 @@
 
     
     
+    <script src="https://cdn.jsdelivr.net/gh/bryanbraun/anchorjs@4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
 
     
     
@@ -1199,11 +978,10 @@
     
     
     
-    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+    <script id="page-data" type="application/json">{"use_headroom":false}</script>
 
     
     
-      <script src="/js/wowchemy-headroom.e8fd2d733eef6a8bbbe0539398fc0547.js" type="module"></script>
     
     
     

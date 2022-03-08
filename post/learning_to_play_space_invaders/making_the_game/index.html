@@ -1,0 +1,1948 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Logan A. Morrison" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Junior Specialist" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://loganamorrison.github.io/post/learning_to_play_space_invaders/making_the_game/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.1083c5683d81b407a892a791e534f8a7.css" />
+
+  
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+    <link rel="alternate" href="/post/learning_to_play_space_invaders/making_the_game/index.xml" type="application/rss+xml" title="Logan A. Morrison" />
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://loganamorrison.github.io/post/learning_to_play_space_invaders/making_the_game/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@wowchemy" />
+    <meta property="twitter:creator" content="@wowchemy" />
+  
+  <meta property="og:site_name" content="Logan A. Morrison" />
+  <meta property="og:url" content="https://loganamorrison.github.io/post/learning_to_play_space_invaders/making_the_game/" />
+  <meta property="og:title" content="Making the game | Logan A. Morrison" />
+  <meta property="og:description" content="Junior Specialist" /><meta property="og:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta property="og:updated_time" content="2022-03-07T00:00:00&#43;00:00" />
+    
+  
+
+  
+
+
+
+  
+
+  
+
+
+
+
+
+  <title>Making the game | Logan A. Morrison</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="7797ab5cc4c037ba473cff643ba9c6a9" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.63a793a0158e186da77f80f308d537e2.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#publications"><span>Publications</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    
+
+
+
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          Deep-Q Space Invaders
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+  <button class="form-control sidebar-search js-search d-none d-md-flex">
+    <i class="fas fa-search pr-2"></i>
+    <span class="sidebar-search-text">Search...</span>
+    <span class="sidebar-search-shortcut">/</span>
+  </button>
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      <ul class="nav docs-sidenav">
+        <li><a href="/post/"><i class="fas fa-arrow-left pr-1"></i>Posts</a></li>
+      </ul>
+
+      
+      
+        
+          
+        
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/post/learning_to_play_space_invaders/">Deep-Q Space Invaders</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link  active" href="/post/learning_to_play_space_invaders/making_the_game/">Making the game</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/post/learning_to_play_space_invaders/deep-q/">Implementing the Deep-Q Agent</a>
+    
+
+    
+      </div>
+    
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+    
+  
+</nav>
+
+    </div>
+
+    
+    
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
+      
+
+      <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">Contents</a></li>
+      </ul>
+
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#entity-class"><strong>Entity Class</strong></a></li>
+    <li><a href="#the-game-logic">The game logic</a></li>
+    <li><a href="#rendering-the-game">Rendering the game</a></li>
+    <li><a href="#full-listing">Full Listing</a></li>
+  </ul>
+</nav>
+
+      
+    </div>
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          
+
+          <h1>Making the game</h1>
+
+          <div class="article-style">
+            <p>Our first goal will be to make a space-invaders-like game. For simplicity, we
+will be using <a href="https://www.pygame.org/" target="_blank" rel="noopener">pygame</a>, as it provides a lot of
+functionality and is easy to use. Before getting into how we will make the game,
+let&rsquo;s take a look at the final product:</p>
+<p align="center">
+  <img width="600" height="450" src="./final_game_image.png">
+</p>
+<p>In this game, we have some number of &ldquo;enemies&rdquo; (in this case 3) and a player
+(the space ship). The enemies will move around the screen while making their way
+downwards. The player can move around the screen as well (both in the x and y)
+directions. The space ship is equipped with an arsenel of missiles which it can
+fire at the enemies. Each time an ememy is struck by a missile, the player is
+reward with a certain number of points. However, if an enemy crosses the bottom
+of the screen, the player is penalized, and their score is reduced. If the enemy
+touches the spaceship, the game ends. Clearly, the goal of the game is to obtain
+as high a score as possible. To do this, the player must hit as many enemies as
+possible and stay alive as long as possible.</p>
+<p>Implementing the game is straightforward. We will have a loop that runs code for
+a single game &lsquo;step&rsquo; while the player is still alive. The game will terminate
+once the player dies. The &lsquo;step&quot; will do a number of things, such as: move the
+game pieces (enemies, player and bullets), add/remove pieces, parse inputs by
+the user, determine if enemy is struck or player is struck, determine rewards,
+etc. The algorithm for the &lsquo;step&rsquo; will be as follows:</p>
+<ul>
+<li>Determine the player action (move, fire bullet, quit)</li>
+<li>Update the positions of all game pieces</li>
+<li>Determine if player/enemy is hit, if enemy has left the window
+<ul>
+<li>If player is hit, signal end of game and penalize player</li>
+<li>If enemy is hit, remove enemy and add new one and reward the player</li>
+<li>If enemy has left window, remove and add new one and penalize player</li>
+</ul>
+</li>
+<li>If the player is a human, step is done. If the player is a network, return the
+new game state, reward and other needed information.</li>
+</ul>
+<p>Let&rsquo;s now dig down into the details of implementing this. The first thing we
+will implement is a class the hold information about the game pieces.</p>
+<p>To get it out of the way, let&rsquo;s import all the items we will need:</p>
+<pre><code class="language-python">from typing import List, Optional, NamedTuple
+from enum import Enum
+
+import pygame
+from random import randint, choice
+import numpy as np
+</code></pre>
+<h2 id="entity-class"><strong>Entity Class</strong></h2>
+<p>To make things a bit cleaner, we will make a class to hold information about
+each of the dynamic pieces of our game. These dynamic pieces are the enemies,
+the player and bullets fired by the player. We call these dynamic pieces
+&rsquo;entities&rsquo;. We will want to know where the entity is, what its velocity is and
+some information about the shape and look of the entity. Let&rsquo;s first make some
+small classes to store coordinates and attributes of the entities:</p>
+<pre><code class="language-python">class Coordinate:
+    __slots__ = (&quot;x&quot;, &quot;y&quot;)
+
+    def __init__(self, x: float, y: float):
+        self.x: float = x
+        self.y: float = y
+
+    def __add__(self, c: Coordinate):
+        return Coordinate(self.x + c.x, self.y + c.y)
+
+    def __iadd__(self, c: Coordinate):
+        self.x += c.x
+        self.y += c.y
+
+
+class EnityDimensions(NamedTuple):
+    x: float
+    y: float
+</code></pre>
+<p>Next, let&rsquo;s write our <code>Entity</code> initialization:</p>
+<pre><code class="language-python">class Entity:
+    __slot__ = (&quot;x&quot;, &quot;y&quot;, &quot;vx&quot;, &quot;vy&quot;, &quot;dims&quot;)
+
+    def __init__(self, x, y, vx, vy, dims):
+        self.x = x
+        self.y = y
+        self.vx = vx
+        self.vy = vy
+        self.dims = dims
+
+</code></pre>
+<p>Next, let&rsquo;s add a method for moving the entity around the game given the
+velocity of the entity. The change is position is related to the velocity via:</p>
+<p>$$
+x_{\mathrm{new}} - x_{\mathrm{old}} = \Delta x = \frac{dx}{dt}\Delta t = v_{x}\Delta t
+$$</p>
+<p>We will take $\Delta t = 1$, so that $x_{\mathrm{new}} = x_{\mathrm{old}} +
+v_{x}$ (with an identical expression for $y$.)</p>
+<pre><code class="language-python">class Entity:
+    ...
+
+    def move(self):
+        &quot;&quot;&quot;
+        Move the player by adding velocity to position.
+        &quot;&quot;&quot;
+        self.x += self.vx
+        self.y += self.vy
+
+</code></pre>
+<h2 id="the-game-logic">The game logic</h2>
+<p>Now let&rsquo;s begin with the game itself. We will make a class for the game called
+<code>SpaceInvaderGame</code>. This class will hold the entire state of the game and handel
+the dynamics. The state will contain <code>Entity</code> objects for the player, enemies
+and bullets, the score and other aspects that we will get into later on.</p>
+<p>We will also load in some images for our player, the enemies and the bullet:</p>
+<div class="row">
+    <style>
+        .column {
+            float: left;
+            width:33%;
+            padding: 5px;
+        }
+    </style>
+    <div class="column">
+        <img width="64" height="64" src="./enemy.png" alt=""/>
+        <p align="center">Enemy</p>
+    </div>
+    <div class="column">
+        <img width="32" height="32" src="./player.png" alt=""/>
+        <p align="center">Player</p>
+    </div>
+    <div class="column">
+        <img width="32" height="32" src="./bullet.png" alt=""/>
+        <p align="center">Bullet</p>
+    </div>
+</div> 
+<p>We load these using <code>pygame.image.load(...)</code>.</p>
+<pre><code class="language-python">PLAYER_IMAGE = pygame.image.load(&quot;player.png&quot;)
+ENEMY_IMAGE = pygame.image.load(&quot;enemy.png&quot;)
+BULLET_IMAGE = pygame.image.load(&quot;bullet.png&quot;)
+
+PLAYER_DIMS = EnityDimensions(64, 64)
+ENEMY_DIMS = EnityDimensions(32, 32)
+BULLET_DIMS = EnityDimensions(32, 32)
+
+
+class SpaceInvaderGame:
+    # Default window sizes
+    WINDOW_HEIGHT = 600
+    WINDOW_WIDTH = 800
+
+
+    # Default speed of enemies
+    ENEMY_VELOCITY_X = 0.5
+    ENEMY_VELOCITY_Y = 0.2
+
+    NUM_ENEMIES = 3
+
+    # Rewards
+    REWARD_HIT_ENEMY = 100
+    REWARD_ALIVE = 0.0
+    REWARD_ENEMY_PASS = -100
+    REWARD_PLAYER_DEAD = -1000
+
+    # Player starting position
+    PLAYER_START_X = 370.0
+    PLAYER_START_Y = 480.0
+    # Default speed of player
+    MOVE_STRIDE = 1
+
+    BULLET_VELOCITY = -10.0
+
+    def __init__(self, player_type=0, num_enemies=3):
+        # Initialize pygame
+        pygame.init()
+        self.screen: Optional[pygame.surface.Surface] = None
+
+        # Runtime variables
+        self.player: Entity = Entity(
+            self.PLAYER_START_X,
+            self.PLAYER_START_Y,
+            0.0,
+            0.0,
+            PLAYER_DIMS,
+        )
+        self.enemies: List[Entity] = []
+        self.bullet: Optional[Entity] = None
+        self.score = 0
+        self.player_type = player_type
+
+        self.n_actions = 6
+        self.obs_size = 2 + 4 * self.NUM_ENEMIES
+
+        self.reset()
+</code></pre>
+<p>Next let&rsquo;s add a method the create new enemies. Starting the enemies at the same position each time would make the game too predictable (and too easy.) So instead, we will randomize the start position in the horizontal direction and give them a velocity pointing either to the left or right:</p>
+<pre><code class="language-python">class SpaceInvaderGame:
+    ...
+
+    def add_enemy(self):
+        &quot;&quot;&quot;
+        Add an new enemy to the list of enemies.
+        &quot;&quot;&quot;
+        # position enemy with random horizontal position along screen
+        # but with fixed poition in vertical direction
+        x = randint(0, self.WINDOW_WIDTH - 64)
+        y = 50
+        vx = choice([-1, 1]) * self.ENEMY_VELOCITY_X
+        vy = self.ENEMY_VELOCITY_Y
+        self.enemies.append(Entity(x, y, vx, vy, ENEMY_DIMS))
+
+</code></pre>
+<p>Let&rsquo;s also add a function to insert a bullet. The bullet will start at the tip of the spaceship:</p>
+<pre><code class="language-python">class SpaceInvaderGame:
+    ...
+    def add_bullet(self):
+        if self.bullet is None:
+            self.bullet = Entity(
+                self.player.x + 16, self.player.y - 16, 0.0, -10.0, BULLET_DIMS
+            )
+</code></pre>
+<p>Next, let&rsquo;s write a function that will update the positions of all the entities.
+There is one aspect that needed thought. What do we do if an entity reaches a
+boundary? We don&rsquo;t want the player to be able to cross the boundaries. We will
+therefore force the player&rsquo;s position to be within the boundaries.</p>
+<p>For the enemy, we will allow passing through the bottom of the screen (and if it
+does, remove it and add a new enemy). But if an enemy reach a horizontal
+boundary, we will reflect the enemy (change the sign of $v_{x}$.)</p>
+<pre><code class="language-python">
+def clip(x, a, b):
+    if x &gt; b:
+        return b
+    if x &lt; a:
+        return a
+    return x
+
+
+class SpaceInvaderGame:
+    ...
+
+    def update_positions(self):
+        &quot;&quot;&quot;
+        Update the positions and velocities of all entities in enviornment
+        and return reward.
+        &quot;&quot;&quot;
+        reward = 0
+
+        # Move player but for position to be within screen
+        self.player.move()
+        self.player.x = clip(self.player.x, 0.0, self.WINDOW_WIDTH - 64)
+        self.player.y = clip(self.player.y, 0.0, self.WINDOW_HEIGHT - 64)
+
+        # Update the enemies
+        remove = []
+        for i, ent in enumerate(self.enemies):
+            # If enemy moves outside the window, change its velocity so it
+            # bounces
+            if ent.x &lt; 0 or ent.x &gt; self.WINDOW_WIDTH - 64:
+                ent.vx = -ent.vx
+            # If the enemy moves below the bottom of the screen, flag it for
+            # removal and decrement the score.
+            if ent.y &gt; self.WINDOW_HEIGHT - 64:
+                reward += self.REWARD_ENEMY_PASS
+                remove.append(i)
+            # Move and draw
+            ent.move()
+
+        # Remove all flagged enemies
+        for i in remove:
+            self.enemies.pop(i)
+            self.add_enemy()
+
+        # Update the bullet
+        if self.bullet is not None:
+            self.bullet.move()
+            # If bullet leaves the screen, reset, otherwise draw it.
+            if self.bullet.y &lt; 0:
+                self.bullet = None
+
+        return reward
+</code></pre>
+<p>The next item we will implement is the collision logic. We say that two entities
+have collided if there is some overlap.</p>
+<pre><code class="language-python">def is_collision(e1: Entity, e2: Entity):
+    e1l, e1r = e1.x, e1.x + e1.attrs.size_x
+    e1d, e1u = e1.y, e1.y + e1.attrs.size_y
+
+    e2l, e2r = e2.x, e2.x + e2.attrs.size_x
+    e2d, e2u = e2.y, e2.y + e2.attrs.size_y
+
+    return (e1l &lt; e2r) and (e2l &lt; e1r) and (e1d &lt; e2u) and (e2d &lt; e1u)
+</code></pre>
+<p>Now let&rsquo;s write some helper functions to determine if the player has collided
+with and enemy or if a bullet has collided with an enemy:</p>
+<pre><code class="language-python">class SpaceInvaderGame:
+    ...
+
+    def is_player_dead(self) -&gt; bool:
+        &quot;&quot;&quot;
+        Returns True is player has collided with an enemy and False otherwise.
+        &quot;&quot;&quot;
+        for enemy in self.enemies:
+            if is_collision(self.player, enemy):
+                return True
+        return False
+
+    def find_bullet_hit(self) -&gt; Optional[int]:
+        &quot;&quot;&quot;
+        Determine if a bullet has hit and enemy. If so, return the position in
+        the enemy array of the hit enemy.
+        &quot;&quot;&quot;
+        if self.bullet is not None:
+            for i, enemy in enumerate(self.enemies):
+                if is_collision(self.bullet, enemy):
+                    return i
+        return None
+</code></pre>
+<p>We are nearly ready to implement the full step method. Before we do, we need to
+implement a method to parse the input from a human user and a method to
+implement the action.</p>
+<p>To parse the action, we simply need to detect which key has been pressed on the keyboard.
+PyGame makes this easy: we just need to use <code>pygame.event.get()</code> to get the
+keypress (if there is one), then determine which key was pressed.</p>
+<pre><code class="language-python">class Action(Enum):
+    MOVE_UP = 0
+    MOVE_DOWN = 1
+    MOVE_LEFT = 2
+    MOVE_RIGHT = 3
+    SHOOT = 4
+    NOTHING = 5
+    QUIT = 6
+
+
+class SpaceInvaderGame:
+    ...
+        
+    def events_to_actions(self):
+        &quot;&quot;&quot;
+        Parse all of the pygame events, i.e. key presses and button clicks.
+        &quot;&quot;&quot;
+        action = Action.NOTHING
+        for event in pygame.event.get():
+            # Check if the quit button has been pressed
+            if event.type == pygame.QUIT:
+                action = Action.QUIT
+            # If key is pressed, check if left or right arrow
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    action = Action.MOVE_LEFT
+                elif event.key == pygame.K_RIGHT:
+                    action = Action.MOVE_RIGHT
+                elif event.key == pygame.K_UP:
+                    action = Action.MOVE_UP
+                elif event.key == pygame.K_DOWN:
+                    action = Action.MOVE_DOWN
+                if event.key == pygame.K_SPACE:
+                    action = Action.SHOOT
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    self.player.vx = 0.0
+                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                    self.player.vy = 0.0
+
+        return action
+</code></pre>
+<p>Next, let&rsquo;s write a function to perform the action:</p>
+<pre><code class="language-python">
+class SpaceInvaderGame:
+    ...
+
+    def act(self, action: Action):
+        # Check if the quit button has been pressed
+        if action == Action.QUIT:
+            self.running = False
+        elif action == Action.MOVE_LEFT:
+            self.player.vx = -self.PLAYER_STRIDE
+        elif action == Action.MOVE_RIGHT:
+            self.player.vx = self.PLAYER_STRIDE
+        elif action == Action.MOVE_UP:
+            self.player.vy = -self.PLAYER_STRIDE
+        elif action == Action.MOVE_DOWN:
+            self.player.vy = self.PLAYER_STRIDE
+        elif action == Action.SHOOT:
+            self.add_bullet()
+
+</code></pre>
+<pre><code class="language-python">class SpaceInvaderGame:
+    ...
+
+    def __observation(self):
+        # The observation will be the position of the player, positions of the
+        # enemies and the velocities of the enemies
+        observation = [
+            self.player.x / self.WINDOW_WIDTH,
+            self.player.y / self.WINDOW_HEIGHT,
+        ]
+        for enemy in self.enemies:
+            observation.append(enemy.x / self.WINDOW_WIDTH)
+            observation.append(enemy.y / self.WINDOW_HEIGHT)
+            observation.append(enemy.vx)
+            observation.append(enemy.vy)
+
+        return np.array(observation)
+</code></pre>
+<p>Now it&rsquo;s time to implement to <code>step</code> function.</p>
+<pre><code class="language-python">class SpaceInvaderGame:
+    ...
+
+    def step(self, action=Action.NOTHING):
+        &quot;&quot;&quot;
+        Step the game to the next state, returning the current state, score
+        &quot;&quot;&quot;
+        reward = 0
+
+        # Handle pygame events
+        if self.player_type == 0:
+            action = self.events_to_actions()
+
+        if action != Action.QUIT:
+            # Implement actions
+            self.act(action)
+            # Update the positions of all the entities
+            reward += self.update_positions()
+            # Detect collision
+            hit = self.find_bullet_hit()
+            if hit is not None:
+                reward += self.REWARD_HIT_ENEMY
+                self.bullet = None
+                self.enemies.pop(hit)
+                self.add_enemy()
+
+            # Determine if enemy and player have collided
+            done = False
+            if self.is_player_dead() or self.score &lt; 0:
+                reward += self.REWARD_PLAYER_DEAD
+                done = True
+            else:
+                reward += self.REWARD_ALIVE
+        else:
+            done = True
+
+        # The observation will be the position of the player, positions of the
+        # enemies and the velocities of the enemies
+        observation = self.__observation()
+        info = None
+        self.score += reward
+        return np.array(observation), reward, done, info
+
+</code></pre>
+<p>Before moving on to rendering the game, let&rsquo;s add a method to reset the game to it&rsquo;s starting state.</p>
+<pre><code class="language-python">class SpaceInvaderGame:
+    ...
+    def __reset_player(self):
+        self.player: Entity = Entity(
+            self.PLAYER_START_X,
+            self.PLAYER_START_Y,
+            0.0,
+            0.0,
+            PLAYER_DIMS,
+        )
+
+    def __reset_enemies(self):
+        self.enemies = []
+        for _ in range(self.NUM_ENEMIES):
+            self.add_enemy()
+
+
+    def reset(self):
+        self.__reset_player()
+        self.__reset_enemies()
+        self.__reset_screen() # See next section
+        self.bullet = None
+
+        self.time = 0
+        self.score = 0
+
+        return self.__observation()
+</code></pre>
+<h2 id="rendering-the-game">Rendering the game</h2>
+<pre><code class="language-python">
+BACKGROUND_IMAGE = pygame.image.load(&quot;background.jpg&quot;)
+GAME_OVER_IMAGE = pygame.image.load(&quot;game_over.jpg&quot;)
+ICON = pygame.image.load(&quot;icon.png&quot;)
+
+# Create font for the score
+FONT = pygame.font.Font(&quot;freesansbold.ttf&quot;, 32)
+
+class SpaceInvaderGame:
+    ...
+
+    def __reset_screen(self):
+        self.screen = None
+        self.is_screen_initialized = False
+
+
+    def render(self):
+        &quot;&quot;&quot;
+        Render the enviornment.
+        &quot;&quot;&quot;
+        if self.screen is None:
+            # Initialize the screen
+            self.screen = pygame.display.set_mode(
+                (SpaceInvaderGame.WINDOW_WIDTH, SpaceInvaderGame.WINDOW_HEIGHT)
+            )
+            # Set the title and icon
+            pygame.display.set_caption(&quot;Space Invader&quot;)
+            pygame.display.set_icon(ICON)
+            self.is_screen_initialized = True
+
+        # Set the background color
+        self.screen.fill((0, 0, 0))
+        # Add background
+        self.screen.blit(BACKGROUND_IMAGE, (0, 0))
+
+        # Draw player
+        self.screen.blit(PLAYER_IMAGE, (self.player.x, self.player.y))
+        # Draw enemies
+        for enemy in self.enemies:
+            self.screen.blit(ENEMY_IMAGE, (enemy.x, enemy.y))
+        # Draw the bullet
+        if self.bullet is not None:
+            self.screen.blit(BULLET_IMAGE, (self.bullet.x, self.bullet.y))
+
+        # Show the score
+        score = FONT.render(f&quot;Score: {int(self.score)}&quot;, True, (255, 255, 255))
+        self.screen.blit(score, (0, 0))
+
+        # Update the screen
+        pygame.display.update()
+</code></pre>
+<h2 id="full-listing">Full Listing</h2>
+<pre><code class="language-python">from typing import List, Optional, NamedTuple
+from enum import Enum
+
+import pygame
+from random import randint, choice
+import numpy as np
+
+
+class Action(Enum):
+    MOVE_UP = 0
+    MOVE_DOWN = 1
+    MOVE_LEFT = 2
+    MOVE_RIGHT = 3
+    SHOOT = 4
+    NOTHING = 5
+    QUIT = 6
+
+
+def clip(x, a, b):
+    if x &gt; b:
+        return b
+    if x &lt; a:
+        return a
+    return x
+
+
+class EnityDimensions(NamedTuple):
+    x: float
+    y: float
+
+
+PLAYER_IMAGE = pygame.image.load(&quot;player.png&quot;)
+ENEMY_IMAGE = pygame.image.load(&quot;enemy.png&quot;)
+BULLET_IMAGE = pygame.image.load(&quot;bullet.png&quot;)
+
+BACKGROUND_IMAGE = pygame.image.load(&quot;background.jpg&quot;)
+GAME_OVER_IMAGE = pygame.image.load(&quot;game_over.jpg&quot;)
+ICON = pygame.image.load(&quot;icon.png&quot;)
+
+# Create font for the score
+FONT = pygame.font.Font(&quot;freesansbold.ttf&quot;, 32)
+
+PLAYER_DIMS = EnityDimensions(64, 64)
+ENEMY_DIMS = EnityDimensions(32, 32)
+BULLET_DIMS = EnityDimensions(32, 32)
+
+
+class Entity:
+    __slot__ = (&quot;x&quot;, &quot;y&quot;, &quot;vx&quot;, &quot;vy&quot;, &quot;dims&quot;)
+
+    def __init__(self, x, y, vx, vy, dims):
+        self.x = x
+        self.y = y
+        self.vx = vx
+        self.vy = vy
+        self.dims = dims
+
+    def move(self):
+        &quot;&quot;&quot;
+        Move the player by adding velocity to position.
+        &quot;&quot;&quot;
+        self.x += self.vx
+        self.y += self.vy
+
+
+def is_collision(e1: Entity, e2: Entity):
+    e1l, e1r = e1.x, e1.x + e1.dims.x
+    e1d, e1u = e1.y, e1.y + e1.dims.y
+
+    e2l, e2r = e2.x, e2.x + e2.dims.x
+    e2d, e2u = e2.y, e2.y + e2.dims.y
+
+    return (e1l &lt; e2r) and (e2l &lt; e1r) and (e1d &lt; e2u) and (e2d &lt; e1u)
+
+
+class SpaceInvaderGame:
+
+    WINDOW_HEIGHT = 600
+    WINDOW_WIDTH = 800
+
+    ENEMY_VELOCITY_X = 0.5
+    ENEMY_VELOCITY_Y = 0.2
+
+    NUM_ENEMIES = 3
+
+    REWARD_HIT_ENEMY = 100
+    REWARD_ALIVE = 0.0
+    REWARD_ENEMY_PASS = -100
+    REWARD_PLAYER_DEAD = -1000
+
+    PLAYER_START_X = 370.0
+    PLAYER_START_Y = 480.0
+    PLAYER_STRIDE = 1
+
+    BULLET_VELOCITY = -10.0
+
+    def __init__(self, player_type=0):
+        # Initialize the game
+        pygame.init()
+        self.screen: Optional[pygame.surface.Surface] = None
+
+        # Runtime variables
+        self.player: Entity = Entity(
+            self.PLAYER_START_X,
+            self.PLAYER_START_Y,
+            0.0,
+            0.0,
+            PLAYER_DIMS,
+        )
+        self.enemies: List[Entity] = []
+        self.bullet: Optional[Entity] = None
+        self.score = 0
+        self.player_type = player_type
+
+        self.n_actions = 6
+        self.obs_size = 2 + 4 * self.NUM_ENEMIES
+
+        self.reset()
+
+    def add_enemy(self):
+        &quot;&quot;&quot;
+        Add an new enemy to the list of enemies.
+        &quot;&quot;&quot;
+        x = randint(0, self.WINDOW_WIDTH - 64)
+        y = 50
+        vx = choice([-1, 1]) * self.ENEMY_VELOCITY_X
+        vy = self.ENEMY_VELOCITY_Y
+        self.enemies.append(Entity(x, y, vx, vy, ENEMY_DIMS))
+
+    def add_bullet(self):
+        if self.bullet is None:
+            self.bullet = Entity(
+                self.player.x + 16, self.player.y - 16, 0.0, -10.0, BULLET_DIMS
+            )
+
+    def update_positions(self):
+        &quot;&quot;&quot;
+        Update the positions and velocities of all entities in enviornment
+        and return reward.
+        &quot;&quot;&quot;
+        reward = 0
+
+        self.player.move()
+        self.player.x = clip(self.player.x, 0.0, self.WINDOW_WIDTH - 64)
+        self.player.y = clip(self.player.y, 0.0, self.WINDOW_HEIGHT - 64)
+
+        # Update the enemies
+        remove = []
+        for i, ent in enumerate(self.enemies):
+            # If enemy moves outside the window, change its velocity so it
+            # bounces
+            if ent.x &lt; 0 or ent.x &gt; self.WINDOW_WIDTH - 64:
+                ent.vx = -ent.vx
+            # If the enemy moves below the bottom of the screen, flag it for
+            # removal and decrement the score.
+            if ent.y &gt; self.WINDOW_HEIGHT - 64:
+                reward += self.REWARD_ENEMY_PASS
+                remove.append(i)
+            # Move and draw
+            ent.move()
+        # Remove all flagged enemies
+        for i in remove:
+            self.enemies.pop(i)
+            self.add_enemy()
+
+        # Update the bullet
+        if self.bullet is not None:
+            self.bullet.move()
+            # If bullet leaves the screen, reset, otherwise draw it.
+            if self.bullet.y &lt; 0:
+                self.bullet = None
+        return reward
+
+    def is_player_dead(self) -&gt; bool:
+        &quot;&quot;&quot;
+        Returns True is player has collided with an enemy and False otherwise.
+        &quot;&quot;&quot;
+        for enemy in self.enemies:
+            if is_collision(self.player, enemy):
+                return True
+        return False
+
+    def find_bullet_hit(self) -&gt; Optional[int]:
+        &quot;&quot;&quot;
+        Determine if a bullet has hit and enemy. If so, return the position in
+        the enemy array of the hit enemy.
+        &quot;&quot;&quot;
+        if self.bullet is not None:
+            for i, enemy in enumerate(self.enemies):
+                if is_collision(self.bullet, enemy):
+                    return i
+        return None
+
+    def events_to_actions(self):
+        &quot;&quot;&quot;
+        Parse all of the pygame events, i.e. key presses and button clicks.
+        &quot;&quot;&quot;
+        action = Action.NOTHING
+        for event in pygame.event.get():
+            # Check if the quit button has been pressed
+            if event.type == pygame.QUIT:
+                action = Action.QUIT
+            # If key is pressed, check if left or right arrow
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    action = Action.MOVE_LEFT
+                    # self.player.vx = -SpaceInvaderGame.MOVE_STRIDE
+                elif event.key == pygame.K_RIGHT:
+                    action = Action.MOVE_RIGHT
+                    # self.player.vx = SpaceInvaderGame.MOVE_STRIDE
+                elif event.key == pygame.K_UP:
+                    action = Action.MOVE_UP
+                    # self.player.vy = -SpaceInvaderGame.MOVE_STRIDE
+                elif event.key == pygame.K_DOWN:
+                    action = Action.MOVE_DOWN
+                    # self.player.vy = SpaceInvaderGame.MOVE_STRIDE
+                if event.key == pygame.K_SPACE:
+                    action = Action.SHOOT
+                    # self.bullet_fired = True
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    self.player.vx = 0.0
+                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                    self.player.vy = 0.0
+
+        return action
+
+    def act(self, action: Action):
+        if action == Action.MOVE_LEFT:
+            self.player.vx = -self.PLAYER_STRIDE
+        elif action == Action.MOVE_RIGHT:
+            self.player.vx = self.PLAYER_STRIDE
+        elif action == Action.MOVE_UP:
+            self.player.vy = -self.PLAYER_STRIDE
+        elif action == Action.MOVE_DOWN:
+            self.player.vy = self.PLAYER_STRIDE
+        elif action == Action.SHOOT:
+            self.add_bullet()
+
+    def __observation(self):
+        # The observation will be the position of the player, positions of the
+        # enemies and the velocities of the enemies
+        observation = [
+            self.player.x / self.WINDOW_WIDTH,
+            self.player.y / self.WINDOW_HEIGHT,
+        ]
+        for enemy in self.enemies:
+            observation.append(enemy.x / self.WINDOW_WIDTH)
+            observation.append(enemy.y / self.WINDOW_HEIGHT)
+            observation.append(enemy.vx)
+            observation.append(enemy.vy)
+
+        return np.array(observation)
+
+    def step(self, action=Action.NOTHING):
+        &quot;&quot;&quot;
+        Step the game to the next state, returning the current state, score
+        &quot;&quot;&quot;
+        reward = 0
+
+        # Handle pygame events
+        if self.player_type == 0:
+            action = self.events_to_actions()
+
+        if action != Action.QUIT:
+            # Implement actions
+            self.act(action)
+            # Update the positions of all the entities
+            reward += self.update_positions()
+            # Detect collision
+            hit = self.find_bullet_hit()
+            if hit is not None:
+                reward += self.REWARD_HIT_ENEMY
+                self.bullet = None
+                self.enemies.pop(hit)
+                self.add_enemy()
+
+            # Determine if enemy and player have collided
+            done = False
+            if self.is_player_dead() or self.score &lt; 0:
+                reward += self.REWARD_PLAYER_DEAD
+                done = True
+            else:
+                reward += self.REWARD_ALIVE
+        else:
+            done = True
+
+        # The observation will be the position of the player, positions of the
+        # enemies and the velocities of the enemies
+        observation = self.__observation()
+        info = None
+        self.score += reward
+        return np.array(observation), reward, done, info
+
+    def __reset_player(self):
+        self.player: Entity = Entity(
+            self.PLAYER_START_X,
+            self.PLAYER_START_Y,
+            0.0,
+            0.0,
+            PLAYER_DIMS,
+        )
+
+    def __reset_enemies(self):
+        # Enemy
+        self.enemies = []
+        for _ in range(self.NUM_ENEMIES):
+            self.add_enemy()
+
+    def __reset_screen(self):
+        self.screen = None
+        self.is_screen_initialized = False
+
+    def reset(self):
+        self.__reset_player()
+        self.__reset_enemies()
+        self.__reset_screen()
+
+        # Bullet
+        self.bullet = None
+        self.time = 0
+        self.score = 0
+
+        return self.__observation()
+
+    def render(self):
+        &quot;&quot;&quot;
+        Render the enviornment.
+        &quot;&quot;&quot;
+        if self.screen is None:
+            # Initialize the screen
+            self.screen = pygame.display.set_mode(
+                (SpaceInvaderGame.WINDOW_WIDTH, SpaceInvaderGame.WINDOW_HEIGHT)
+            )
+            # Set the title and icon
+            pygame.display.set_caption(&quot;Space Invader&quot;)
+            pygame.display.set_icon(ICON)
+            self.is_screen_initialized = True
+
+        # Set the background color
+        self.screen.fill((0, 0, 0))
+        # Add background
+        self.screen.blit(BACKGROUND_IMAGE, (0, 0))
+
+        # Draw player
+        self.screen.blit(PLAYER_IMAGE, (self.player.x, self.player.y))
+        # Draw enemies
+        for enemy in self.enemies:
+            self.screen.blit(ENEMY_IMAGE, (enemy.x, enemy.y))
+        # Draw the bullet
+        if self.bullet is not None:
+            self.screen.blit(BULLET_IMAGE, (self.bullet.x, self.bullet.y))
+
+        # Show the score
+        score = FONT.render(f&quot;Score: {int(self.score)}&quot;, True, (255, 255, 255))
+        self.screen.blit(score, (0, 0))
+
+        # Update the screen
+        pygame.display.update()
+
+
+if __name__ == &quot;__main__&quot;:
+    game = SpaceInvaderGame(player_type=0)
+    done = False
+    while not done:
+        a = choice(
+            [
+                Action.MOVE_UP,
+                Action.MOVE_DOWN,
+                Action.MOVE_LEFT,
+                Action.MOVE_RIGHT,
+                Action.SHOOT,
+                Action.NOTHING,
+            ]
+        )
+        observation, reward, done, info = game.step(a)
+        game.render()
+</code></pre>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>Last updated on Mar 7, 2022</p>
+
+          
+
+
+
+          
+
+
+
+
+          
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by copyright-license-text">
+    © 2022 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.3d946de2e8784a477845261d87025092.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/r.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/latex.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/rust.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+    <script src="https://cdn.jsdelivr.net/gh/bryanbraun/anchorjs@4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":false}</script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.a2ed145159dd33ad55ff402163350b5d.js"></script>
+
+    
+    
+    
+    
+    
+    
+      
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <script src="/js/wowchemy-publication.b0d291ed6d27eacec233e6cf5204f99a.js" type="module"></script>
+
+
+
+
+
+
+</body>
+</html>

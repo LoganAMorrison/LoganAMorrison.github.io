@@ -158,7 +158,7 @@ xlabel!(&amp;quot;t&amp;quot;)
     &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;../../../assets/img/fs_step_function.svg&#34; alt=&#34;Fourier series of step function&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
   &lt;/div&gt;&lt;/figure&gt;
 &lt;/p&gt;
-&lt;h1 id=&#34;fourier-circles&#34;&gt;Fourier Circles&lt;/h1&gt;
+&lt;h1 id=&#34;epicycles&#34;&gt;Epicycles&lt;/h1&gt;
 &lt;p&gt;If you&amp;rsquo;ve ever taken a physics course, you&amp;rsquo;ve likely encountered the simple harmonic oscillator (SHO). The motion of a SHO is described by the form $x(t) = A\cos(\omega t + \phi_{0})$, where $A$ is the amplitude of the oscillator, $\omega$ is the angular frequency and $\phi_{0}$ is the initial phase angle. You may have also be taught that you can visualize the motion of the oscillator as the projection of a point moving along a circle onto the &amp;ldquo;x&amp;rdquo; axis (if you haven&amp;rsquo;t seen this, you will soon!) We&amp;rsquo;d like to take this idea one step further. Because, a Fourier series is like a sum of an infinite number of SHO, each oscillating with a different frequency.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s condier the Fourier series we defined above, which we write down again here:
 $$\begin{align}

@@ -33,6 +33,224 @@
     </item>
     
     <item>
+      <title>Boosting your spectra</title>
+      <link>https://loganamorrison.github.io/post/boosting/</link>
+      <pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/boosting/</guid>
+      <description>&lt;h1 id=&#34;starting-from-rest-frame&#34;&gt;Starting from Rest Frame&lt;/h1&gt;
+&lt;p&gt;Suppose we know the energy spectrum $dN_{f}/{dE_{1}}$ of some product $f$ from the
+decay of a state $I$ in the rest frame of $I$. From this spectum, we
+would like to obtain the corresponding spectrum, ${dN_{f}}/{dE_{2}}$ in
+a boosted frame. First, assume that the four-momentum of $f$ in the
+initial frame is:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+p^{\mu}_{1} &amp;amp; = \left(E_{1}; \vec{p}_{1}\right)
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;where $\vec{p}_{1}$ is the three-momentum of $f$. without loss of generality,
+let&amp;rsquo;s assume that $\vec{p}_{1}$ lies in the $xz$-plane:
+$
+\vec{p}_{1} = \left(|\vec{p}_{1}|\tilde{z}_{1}, 0, |\vec{p}_{1}|z_{1}\right),
+$ with $z_{1}$
+equal to the cosine of the angle $\vec{p}_{1}$ makes with the $z$ axis
+and $\tilde{z}_{1} = \sqrt{1-z_{1}^2}$. Assume we boost along the
+$z$-axis, we can translate this four-momentum in the new frame using
+$p^{\mu}&lt;em&gt;{2} = {\Lambda}{^\mu&lt;/em&gt;\nu}p^{\nu}&lt;em&gt;{1}$ with
+$$\begin{aligned}
+\tensor[]{\Lambda}{^\mu&lt;/em&gt;\nu} = \mqty(\gamma &amp;amp; 0 &amp;amp; 0 &amp;amp; \gamma\beta \0&amp;amp;1&amp;amp;0&amp;amp;0\0&amp;amp;0&amp;amp;1&amp;amp;0\\beta\gamma&amp;amp;0&amp;amp;0&amp;amp;\gamma)\end{aligned}$$
+Explicity, $p^{\mu}&lt;em&gt;{2}$ is given by: $$\begin{aligned}
+p^{\mu}&lt;/em&gt;{2} &amp;amp; = \qty(E_{2}; \bm{p}&lt;em&gt;{2})                         \
+E&lt;/em&gt;{2}       &amp;amp; = \gamma E_{1} + \beta\gamma\abs{\bm{p}&lt;em&gt;{1}}z&lt;/em&gt;{1} \
+\bm{p}&lt;em&gt;{2}  &amp;amp; =
+\qty(\abs{\bm{p}&lt;/em&gt;{1}}\tilde{z}&lt;em&gt;{1}, 0, \beta\gamma E&lt;/em&gt;{1} + \gamma\abs{\bm{p}&lt;em&gt;{1}}z&lt;/em&gt;{1})\end{aligned}$$
+Notice that $E_{2}$ explicity depends on $z_{1}$, which we have
+integrated over in obtaining $\dv*{N_{f}}{E_{1}}$. To reintroduce
+$z_{1}$, we use: $$\begin{aligned}
+{\dv{N_{f}}{E_{1}}}(E_{1}) &amp;amp; = \int_{-1}^{1}\dd{z} \pdv{N_{f}}{E_{1}}{z_{1}}, &amp;amp;
+\pdv{N_{f}}{E_{1}}{z_{1}}  &amp;amp; = \frac{1}{2} \dv{N_{f}}{E_{1}}\end{aligned}$$
+In order to translate this expression into $\dv*{N_{f}}{E_{2}}$, we have
+two options. The first is to introduce a $\delta$-function enforcing the
+correct relation between $E_{2}$ and $E_{1}$ and integrate over $E_{1}$
+in addition to $z_{1}$ [@ElorRoddSlatyer2015]. The trick is to first
+use: $$\begin{aligned}
+N_{f} = \int\dd{z_{1}}\dd{E_{1}}\pdv{N_{f}}{E_{1}}{z_{1}}\end{aligned}$$
+and insert: $$\begin{aligned}
+1 &amp;amp; = \int\dd{E_{2}}\delta(E_{2} - E_{2}(E_{1}, z_{1}))\end{aligned}$$
+where
+$E_{2}(E_{1},z_{1}) = \gamma E_{1} + \beta\gamma\abs{\bm{p}&lt;em&gt;{1}}z&lt;/em&gt;{1}$
+Inserting this factor of unity, we obtain: $$\begin{aligned}
+N_{f}
+= \int\dd{E_{2}}\int\dd{z_{1}}\int\dd{E_{1}}\pdv{N_{f}}{E_{1}}{z_{1}} \delta(E_{2} - E_{2}(E_{1}, z_{1}))\end{aligned}$$
+Differentiating with respect to $E_{2}$, we find: $$\begin{aligned}
+\dv{N_{f}}{E_{2}}
+= \int\dd{z_{1}}\int\dd{E_{1}}\pdv{N_{f}}{E_{1}}{z_{1}} \delta(E_{2} - E_{2}(E_{1}, z_{1}))\end{aligned}$$
+The second method is to use one of the following (which is equivalent;
+see Ref. ([@kim2020derivation])) $$\begin{aligned}
+\dd[2]{N}
+= \pdv{N_{f}}{E_{1}}{z_{1}}\dd{E_{1}}\dd{z_{1}}
+= \pdv{N_{f}}{E_{1}}{z_{1}} \mathcal{J} \dd{E_{2}}\dd{z_{2}}
+= \pdv{N_{f}}{E_{1}}{z_{1}} \tilde{\mathcal{J}} \dd{E_{2}}\dd{z_{1}}\end{aligned}$$
+with the Jacobians, $\mathcal{J}$ or $\tilde{\mathcal{J}}$, given by:
+$$\begin{aligned}
+\mathcal{J}               &amp;amp; =
+\mqty| \pdv{E_{1}}{E_{2}} &amp;amp; \pdv{E_{1}}{z_{2}}             \ \pdv{z_{1}}{E_{2}} &amp;amp; \pdv{z_{1}}{z_{2}} |, &amp;amp;
+\tilde{\mathcal{J}}       &amp;amp; =  \mqty| \pdv{E_{1}}{E_{2}} |\end{aligned}$$
+depending on if one wishes to convert $z_{1}$ into $z_{2}$ (since the
+angular varibles will ultimately be integrated over, either choice is
+fine.) We will focus on the $\delta$-function approach since it is
+easiest to deal with.&lt;/p&gt;
+&lt;p&gt;In computing $\dv*{N_{f}}{E_{2}}$, we need to perform one integration.
+But we have the choice of either integration over $E_{1}$ or $z_{1}$.
+The differences in the two will appear in the limits of integration.
+Suppose we integrate over $z_{1}$. Then, the $\delta$-function can be
+casted to&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; $$\begin{aligned}
+\delta(\gamma E_{1} + \beta\gamma\abs{\bm{p}&lt;em&gt;{1}}z&lt;/em&gt;{1} - E_{2})
+&amp;amp; =
+\frac{1}{\gamma\beta\abs{\bm{p}&lt;em&gt;{1}}}\delta(z&lt;/em&gt;{1} - z^{0}&lt;em&gt;{1}),
+&amp;amp;
+z^{0}&lt;/em&gt;{1}
+&amp;amp; =
+\frac{E_{2}-\gamma E_{1}}{\gamma\beta\abs{\bm{p}&lt;em&gt;{1}}}\end{aligned}$$
+Since $-1 &amp;lt; z&lt;/em&gt;{1} &amp;lt; 1$, the $\delta$-function only has support if
+$$\begin{aligned}
+-1 &amp;lt; \frac{E_{2}-\gamma E_{1}}{\gamma\beta\abs{\bm{p}&lt;em&gt;{1}}} &amp;lt; 1\end{aligned}$$
+or $$\begin{aligned}
+\gamma\qty(E&lt;/em&gt;{2}-\beta\sqrt{E_{2}^{2}-m_{f}^{2}}) &amp;lt; E_{1} &amp;lt;
+\gamma\qty(E_{2}+\beta\sqrt{E_{2}^{2}-m_{f}^{2}})\end{aligned}$$
+Defining $E^{\pm}&lt;em&gt;{1} = \gamma\qty(E&lt;/em&gt;{2}\pm\beta\abs{\bm{p}&lt;em&gt;{2}})$ with
+$\abs{\bm{p}&lt;/em&gt;{2}} = \sqrt{E_{2}^{2}-m_{f}^{2}}$, we find:
+$$\begin{aligned}
+\label{eqn:boost_e}
+\dv{N_{f}}{E_{2}}
+= \frac{1}{2\gamma\beta}\int^{E^{+}&lt;em&gt;{1}}&lt;/em&gt;{E^{-}&lt;em&gt;{1}} \frac{\dd{E&lt;/em&gt;{1}}}{\abs{\bm{p}&lt;em&gt;{1}}} \dv{N&lt;/em&gt;{f}}{E_{1}}
+= \frac{1}{2\gamma\beta}\int^{E^{+}&lt;em&gt;{1}}&lt;/em&gt;{E^{-}&lt;em&gt;{1}} \frac{\dd{E&lt;/em&gt;{1}}}{\sqrt{E_{1}^{2}-m^2_{f}}} \dv{N_{f}}{E_{1}}\end{aligned}$$
+Note that the bounds may be different that $E^{\pm}&lt;em&gt;{1}$, depending on
+$E&lt;/em&gt;{2}$. The function $\dv*{dN_{f}}{E_{1}}$ itself has limits
+$E^{\mathrm{min}}&lt;em&gt;{1}$ and $E^{\mathrm{max}}&lt;/em&gt;{1}$. Thus, the actual
+limits of integration are: $$\begin{aligned}
+\mathrm{max}(E^{\mathrm{min}}&lt;em&gt;{1}, E^{-}&lt;/em&gt;{1}) \leq E_{1} \leq \mathrm{min}(E^{\mathrm{max}}&lt;em&gt;{1}, E^{+}&lt;/em&gt;{1})\end{aligned}$$&lt;/p&gt;
+&lt;p&gt;-3.5ex -1.3ex -.7ex 2.3ex .4ex .4ex Boost Integral in terms of Scaleless
+Varibles It is sometimes advantagous to deal with scaleless varibles
+when working with spectra. For example, it is common to define
+$x_{i} \equiv 2E_{i}/Q_i$, where $Q_i$ is the center-of-mass energy. If,
+in addition, we define a scaleless mass $\mu_i = 2m_{f}/Q_i$, then we
+can write: $$\begin{aligned}
+\dv{N_{f}}{x_{i}} &amp;amp; = \frac{Q_{i}}{2}\dv{N_{f}}{E_{i}}\end{aligned}$$
+and hence: $$\begin{aligned}
+\dv{N_{f}}{x_{i}} &amp;amp;
+= \frac{Q_{2}}{2}\frac{1}{2\gamma\beta}\int^{x^{+}&lt;em&gt;{1}}&lt;/em&gt;{x^{-}&lt;em&gt;{1}} \frac{(Q&lt;/em&gt;{1}/2)\dd{x_{1}}}{\sqrt{(Q_{1}^2/4)x_{1}^{2}-(Q_{1}^2/4)\mu^2_{f}}}
+\frac{2}{Q_{1}}\dv{N_{f}}{x_{1}}\end{aligned}$$ Simplifying and
+using $Q_{2} = \gamma Q_{1}$, we find: $$\begin{aligned}
+\label{eqn:boost_x}
+\dv{N_{f}}{x_{2}} &amp;amp;
+= \frac{1}{2\beta}\int^{x^{+}&lt;em&gt;{1}}&lt;/em&gt;{x^{-}&lt;em&gt;{1}} \frac{\dd{x&lt;/em&gt;{1}}}{\sqrt{x_{1}^{2}-\mu^2_{1}}}
+\dv{N_{f}}{x_{1}}\end{aligned}$$ In this case, the integration
+bounds are given by: $$\begin{aligned}
+x^{-}&lt;em&gt;{1} &amp;amp; \equiv \mathrm{max}\qty(x^{\mathrm{min}}&lt;/em&gt;{1}, \gamma^{2}\qty(x_{2}-\beta\sqrt{x_{2}^2-\mu_{2}^2})) \
+x^{+}&lt;em&gt;{1} &amp;amp; \equiv \mathrm{min}\qty(x^{\mathrm{max}}&lt;/em&gt;{1}, \gamma^{2}\qty(x_{2}+\beta\sqrt{x_{2}^2-\mu_{2}^2}))\end{aligned}$$&lt;/p&gt;
+&lt;p&gt;-3.5ex -1.3ex -.7ex 2.3ex .4ex .4ex Examples&lt;/p&gt;
+&lt;p&gt;-2.3ex-1ex -.5ex 1.2ex .3ex .3ex Dirac-Delta Function Spectrum In the
+case where $\dv*{N_{f}}{E_{1}} = N \delta(E_{1}-\bar{E})$, we can
+exactly perform the integral in
+Eqn. (&lt;a href=&#34;#eqn:boost_e&#34;&gt;[eqn:boost_e]&lt;/a&gt;{reference-type=&amp;ldquo;ref&amp;rdquo;
+reference=&amp;ldquo;eqn:boost_e&amp;rdquo;}). In this case, we find $$\begin{aligned}
+\dv{N_{f}}{E_{2}}
+= \frac{1}{2\gamma\beta}\int^{E^{+}&lt;em&gt;{1}}&lt;/em&gt;{E^{-}&lt;em&gt;{1}} \frac{\dd{E&lt;/em&gt;{1}}}{\sqrt{E_{1}^{2}-m^2_{f}}} N \delta(E_{1} - \bar{E})
+= \frac{1}{2\gamma\beta}\frac{N}{\sqrt{\bar{E}^{2}-m^2_{f}}}
+\begin{cases}
+1 &amp;amp; \qq*{if} E^{+}&lt;em&gt;{1}\leq \bar{E} \leq E^{+}&lt;/em&gt;{1}, \
+0 &amp;amp; \mathrm{otherwise}
+\end{cases}\end{aligned}$$ As an example, take
+$\pi^{0} \to \gamma + \gamma$. In this case,
+$\dv*{N_{f}}{E_{1}} = 2\delta(E_{1} - m_{\pi^{0}}/2)$, and the spectrum
+is $$\begin{aligned}
+\dv{N_{f}}{E_{2}}
+= \frac{2}{\gamma\beta m_{\pi^{0}}}
+\begin{cases}
+1 &amp;amp; \qq*{if} \gamma E_{2}(1-\beta)\leq m_{\pi^{0}}/2 \leq \gamma E_{2}(1+\beta), \
+0 &amp;amp; \mathrm{otherwise}
+\end{cases}\end{aligned}$$&lt;/p&gt;
+&lt;p&gt;-2.3ex-1ex -.5ex 1.2ex .3ex .3ex Muon Decay The muon decays via
+$\mu^{\pm} \to e^{\pm} + \nu_{e} + \nu_{\mu}$. This decay can also
+proceed radiatively. The result has been worked out in
+Ref. ([@muonDecay2001]). The result for an unpolarized muon is:
+$$\begin{aligned}
+\dv{N}{x} &amp;amp; = \frac{\alpha}{3\pi}\sum_{n=0}^{4}\qty(a_{n} + b_{n}L(y))x^{n-1}\end{aligned}$$
+where $x\equiv 2E_{\gamma}/m_{\mu}$, $L(x) \equiv \log((1-x)/r)$,
+$r = (m_{e}/m_{\mu})^2$ and $$\begin{aligned}
+a_0 &amp;amp; = -\frac{17}{2},     &amp;amp;
+a_1 &amp;amp; = \frac{37}{3},      &amp;amp;
+a_2 &amp;amp; = -\frac{49}{4},     &amp;amp;
+a_3 &amp;amp; = 13,                &amp;amp;
+a_4 &amp;amp; = -\frac{55}{12}        \
+b_0 &amp;amp; = 3,                 &amp;amp;
+b_1 &amp;amp; = -5,                &amp;amp;
+b_2 &amp;amp; = 6,                 &amp;amp;
+b_3 &amp;amp; = -6,                &amp;amp;
+b_4 &amp;amp; = 2                 \end{aligned}$$ Note the limits on $x$ are
+$0 \leq x \leq 1 - r$. Since the photon is massless,
+Eqn. (&lt;a href=&#34;#eqn:boost_x&#34;&gt;[eqn:boost_x]&lt;/a&gt;{reference-type=&amp;ldquo;ref&amp;rdquo;
+reference=&amp;ldquo;eqn:boost_x&amp;rdquo;}) takes the form: $$\begin{aligned}
+\dv{N_{f}}{x_{2}} &amp;amp;
+= \frac{1}{2\beta}\int^{x^{+}}&lt;em&gt;{x^{-}} \frac{\dd{x&lt;/em&gt;{1}}}{x_{1}}
+\dv{N_{f}}{x_{1}}\end{aligned}$$ with $$\begin{aligned}
+x^{-} &amp;amp; \equiv \gamma^{2}x_{2}\qty(1 - \beta),                       &amp;amp;
+x^{+} &amp;amp; \equiv \mathrm{min}\qty(1-r, \gamma^{2}x_{2}\qty(1 + \beta))\end{aligned}$$
+First, the integral of the polynomial part of $\dv*{N}{x}$ is given by:
+$$\begin{aligned}
+\frac{1}{2\beta}\sum_{n=0}^{4}a_{n}\int^{x^{+}}&lt;em&gt;{x^{-}} \dd{x&lt;/em&gt;{1}}x_{1}^{n-2}
+=
+\frac{1}{2\beta}\qty[
+a_0\frac{x^{+} - x^{-}}{x^{+}x^{-}} +
+a_1\log(\frac{x^{+}}{x^{-}}) + \sum_{n=2}^{4}a_n \frac{  \qty(x^{+})^{n} - \qty(x^{-})^{n}  }{n}]\end{aligned}$$
+The log terms have the form: $$\begin{aligned}
+\int^{x^{+}&lt;em&gt;{1}}&lt;/em&gt;{x^{-}&lt;em&gt;{1}} \dd{x&lt;/em&gt;{1}}x_{1}^{n-2} L(x_1)\end{aligned}$$
+To integrate, we use: $$\begin{aligned}
+\int\dd{x}x^{-2}L(x) &amp;amp; = \log(1-x) - log(x) - \frac{1}{x}L(x)                                          \
+\int\dd{x}x^{-1}L(x) &amp;amp; = L(x)\log(x) + \mathrm{Li}&lt;em&gt;{2}(1-x)                                            \
+\int\dd{x}L(x)       &amp;amp; = -x - (1-x) L(x)                                                               \
+\int\dd{x}x L(x)     &amp;amp; = \frac{1}{4}x (2 + x) -\frac{1}{2}\log(1-x) + \frac{1}{2}x^2 L(x)              \
+\int\dd{x}x^2L(x)    &amp;amp; = -\frac{1}{18}x (6 + 3 x + 2 x^2) - \frac{1}{3}\log(1-x) + \frac{1}{3}x^3 L(x)\end{aligned}$$
+Using the definitions of $b&lt;/em&gt;{n}$, we find: $$\begin{aligned}
+&amp;amp; \frac{1}{2\beta}\sum_{n=0}^{4}b_{n}\int^{x^{+}&lt;em&gt;{1}}&lt;/em&gt;{x^{-}&lt;em&gt;{1}} \dd{x&lt;/em&gt;{1}}x_{1}^{n-2} L(x_1)                                              \
+&amp;amp; \quad = \frac{1}{2\beta}\bigg{[} -3\log(x) + \frac{16}{3}\log(1-x) - \frac{1}{18} x (66 - 21 x + 4 x^2) - 5 \mathrm{Li}&lt;em&gt;{2}(1-x)          \&lt;br&gt;
+&amp;amp; \hspace{2cm}    \log(\frac{1-x}{r})\qty(-6 - \frac{3}{x} + 6 x - 3 x^2 + \frac{2}{3}x^3 - 5\log(x))\bigg{]}\notag\bigg{|}^{x^{+}}&lt;/em&gt;{x^{-}}\end{aligned}$$&lt;/p&gt;
+&lt;p&gt;-3.5ex -1.3ex -.7ex 2.3ex .4ex .4ex Jacobian Approach Suppose instead we
+took the Jacobian approach instead of using the $\delta$-function
+approach.&lt;/p&gt;
+&lt;p&gt;$$\begin{aligned}
+\dd{E_{1}}\dd{z_{1}} = \mqty|\pdv{z_{1}}{E_{2}}|\dd{E_{1}}\dd{E_{2}} =
+\frac{1}{\gamma\beta\abs{\bm{p}}&lt;em&gt;{1}}\dd{E&lt;/em&gt;{1}}\dd{E_{2}}\end{aligned}$$&lt;/p&gt;
+&lt;p&gt;$$\begin{aligned}
+\Gamma_1(z) &amp;amp; = \Gamma_0(z) + A\delta(z-z_{0}) \
+\Gamma_2(z) &amp;amp; = \Gamma_0(z) (1 + A)\end{aligned}$$&lt;/p&gt;
+&lt;p&gt;$$\begin{aligned}
+\int\dd{z}\Gamma_1(z) &amp;amp; = A + \int_{z_1}^{z_2}\dd{z}\Gamma_{0} = A + B             \
+\int\dd{z}\Gamma_2(z) &amp;amp; = (1+A)\int_{z_1}^{z_2}\dd{z}\Gamma_{0} = (1+A)B = B + A B \
+B                     &amp;amp; \equiv \int\dd{z}\Gamma_0(z)\end{aligned}$$&lt;/p&gt;
+&lt;p&gt;-3.5ex -1.3ex -.7ex 2.3ex .4ex .4ex *Acknowledgments&lt;/p&gt;
+&lt;p&gt;This is the most common positions for acknowledgments. A macro is
+available to maintain the same layout and spelling of the heading.&lt;/p&gt;
+&lt;p&gt;1.75ex 1ex .2ex -1em Note added. This is also a good position for notes
+added after the paper has been written.&lt;/p&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;Note that, if we used the Jacobian for
+$(E_{1},z_{1}) \to (E_{1},z_{1})$, which is given by:
+$$\begin{aligned}
+\dd{E_{1}}\dd{z_{1}} = \mqty|\pdv{z_{1}}{E_{2}}|\dd{E_{1}}\dd{E_{2}} =
+\frac{1}{\gamma\beta\abs{\bm{p}}&lt;em&gt;{1}}\dd{E&lt;/em&gt;{1}}\dd{E_{2}}\end{aligned}$$
+then we get the same factor of $1/\gamma\beta\abs{\bm{p}_{1}}$.&amp;#160;&lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Precision gamma-ray constraints for sub-GeV dark matter models</title>
       <link>https://loganamorrison.github.io/publication/matching-2021/</link>
       <pubDate>Sun, 01 Aug 2021 00:00:00 +0000</pubDate>
@@ -242,7 +460,7 @@ xlabel!(&amp;quot;t&amp;quot;)
     &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;../../../assets/img/fs_step_function.svg&#34; alt=&#34;Fourier series of step function&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
   &lt;/div&gt;&lt;/figure&gt;
 &lt;/p&gt;
-&lt;h1 id=&#34;fourier-circles&#34;&gt;Fourier Circles&lt;/h1&gt;
+&lt;h1 id=&#34;epicycles&#34;&gt;Epicycles&lt;/h1&gt;
 &lt;p&gt;If you&amp;rsquo;ve ever taken a physics course, you&amp;rsquo;ve likely encountered the simple harmonic oscillator (SHO). The motion of a SHO is described by the form $x(t) = A\cos(\omega t + \phi_{0})$, where $A$ is the amplitude of the oscillator, $\omega$ is the angular frequency and $\phi_{0}$ is the initial phase angle. You may have also be taught that you can visualize the motion of the oscillator as the projection of a point moving along a circle onto the &amp;ldquo;x&amp;rdquo; axis (if you haven&amp;rsquo;t seen this, you will soon!) We&amp;rsquo;d like to take this idea one step further. Because, a Fourier series is like a sum of an infinite number of SHO, each oscillating with a different frequency.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s condier the Fourier series we defined above, which we write down again here:
 $$\begin{align}
