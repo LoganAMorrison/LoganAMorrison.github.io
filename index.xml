@@ -67,11 +67,6 @@ integral over phase space. For example, for a process with an initial state of
 momentum $P$ and transitioning into $N$ final state particles with momenta
 $p_{1},\dots,p_{N}$, the phase space integral is given by the following
 expression.&lt;/p&gt;
-&lt;p&gt;In phenomenological studies of quantum field theory, it is very common compute
-cross sections or decay widths of some annihilation or decay process. These computations
-require evaluation of an integral over phase space. For a process with an initial state
-of momentum $P$ and transitioning into a final state with $N$ particles with momenta
-$p_{1},\dots,p_{N}$, the phase space integral is:&lt;/p&gt;
 &lt;p&gt;
 $$
 \begin{align}
