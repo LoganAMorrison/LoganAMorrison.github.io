@@ -61,6 +61,12 @@
 &lt;/details&gt;
 
 &lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;In phenomenological studies of quantum field theory, we often need to compute
+cross-sections or decay widths. These computations require the evaluation of an
+integral over phase space. For example, for a process with an initial state of
+momentum $P$ and transitioning into $N$ final state particles with momenta
+$p_{1},\dots,p_{N}$, the phase space integral is given by the following
+expression.&lt;/p&gt;
 &lt;p&gt;In phenomenological studies of quantum field theory, it is very common compute
 cross sections or decay widths of some annihilation or decay process. These computations
 require evaluation of an integral over phase space. For a process with an initial state
@@ -74,21 +80,22 @@ $$
 \end{align}
 $$
 &lt;/p&gt;
-&lt;p&gt;with $E_{i}$ being the energy of the $i^{\mathrm{th}}$ final state particle, and
-$\mathcal{M}$ the matrix element for the process. When the process includes more
-than two or three particles in the final state, computing the cross section or
-width becomes difficult. In these cases, we often need to resort to numerical
-integration. However, standard quadrature techniques are often much too slow.
-The standard approach is to use Monte Carlo integration (often with importance
-sampling, stratified sampling or other techniques.) For these integration to be
-reasonably fast, the code needs to be written is a compiled (or just-in-time
-compiled) language.&lt;/p&gt;
-&lt;p&gt;In this post, we will investigate how well the &lt;code&gt;jax&lt;/code&gt; library does in performing this
-integration. We will compare the &lt;code&gt;jax&lt;/code&gt; implementation to an equivalent &lt;code&gt;numpy&lt;/code&gt;
-implementation as well as a multi-threaded &lt;code&gt;c++&lt;/code&gt; implementation. This post is organized
-as follows. First, we introduce the algorithm used to perform the integration. We then
-present the &lt;code&gt;jax&lt;/code&gt; implemenation of the algorithm and demonstate with a simple example.
-Lastly, we show some simple benchmarks between &lt;code&gt;jax&lt;/code&gt;, &lt;code&gt;numpy&lt;/code&gt; and &lt;code&gt;C++&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In this expression, $E_{i}$ is the energy of the $i^{\mathrm{th}}$ final state
+particle, and $\mathcal{M}$ the matrix element for the process. When the process
+includes more than two or three particles in the final state, computing the
+cross-section or width becomes difficult. In these cases, we often need to
+resort to numerical integration. However, standard quadrature techniques are
+often much too slow. The standard approach is to use Monte Carlo integration
+(often with importance sampling, stratified sampling, or other techniques.) For
+these integrations to be reasonably fast, the implementer must write the code in
+a compiled (or just-in-time compiled) language.&lt;/p&gt;
+&lt;p&gt;This post will investigate how well the Jax library performs this integration.
+Furthermore, we will compare the Jax implementation to an equivalent NumPy
+implementation and a multi-threaded &lt;code&gt;c++&lt;/code&gt; implementation. This post is organized
+as follows. First, we introduce the algorithm used to perform the integration.
+We then present the Jax implementation of the algorithm and demonstrate it with
+a simple example. Lastly, we show some simple benchmarks between Jax, NumPy, and
+C++.&lt;/p&gt;
 &lt;h2 id=&#34;the-algorithm-rambo&#34;&gt;The algorithm: RAMBO&lt;/h2&gt;
 &lt;p&gt;The &lt;code&gt;RAMBO&lt;/code&gt; algorithm is rather simple. At a high-level, the algorithm is:&lt;/p&gt;
 &lt;ol&gt;
@@ -182,18 +189,18 @@ $$
 $$
 &lt;/p&gt;
 &lt;h2 id=&#34;the-jax-implementation&#34;&gt;The Jax implementation&lt;/h2&gt;
-&lt;p&gt;Implementing the aforementioned algorithm using &lt;code&gt;jax&lt;/code&gt; is definitely a learning
-experience on how to use &lt;code&gt;jax&lt;/code&gt;. If you&amp;rsquo;re familiar with &lt;code&gt;jax&lt;/code&gt;, the
-implementation is a breeze. We will be writing a few function that will make the
-functions we need to implement the algorithm. Before we get into it, let&amp;rsquo;s explain
-the general structure of the function we will make.&lt;/p&gt;
-&lt;p&gt;Each function we will construct will work on a tensor of shape $(4, N, M)$,
-where $N$ is the number of final state particles and $M$ is the size of a batch
-to be worked on. If &lt;code&gt;p&lt;/code&gt; is the tensor, then &lt;code&gt;p[0,:,:]&lt;/code&gt; holds the energies while
+&lt;p&gt;Implementing the algorithm above using Jax is a learning experience in using
+Jax. The implementation is a breeze if you&amp;rsquo;re familiar with Jax. We will write a
+few functions that will make the functions we need to implement the algorithm.
+Before we get into it, let&amp;rsquo;s explain the general structure of each function we
+will make.&lt;/p&gt;
+&lt;p&gt;Each function we will construct will work on a tensor of shape &lt;code&gt;(4, N, M)&lt;/code&gt;, where
+&lt;code&gt;N&lt;/code&gt; is the number of final state particles and &lt;code&gt;M&lt;/code&gt; is the size of a batch to be
+processed. If p is the tensor, then &lt;code&gt;p[0,:,:]&lt;/code&gt; holds the energies while
 &lt;code&gt;p[1,:,:], p[3,:,:], p[4,:,:]&lt;/code&gt; hold the $x,y$ and $z$ component&amp;rsquo;s of the
 3-momentum. The &lt;code&gt;p[:,0,:],...,p[:,N-1,:]&lt;/code&gt; are the moment for particles &lt;code&gt;1-N&lt;/code&gt;.
 The last dimension contains the batch.&lt;/p&gt;
-&lt;p&gt;All we will need to import is &lt;code&gt;jax&lt;/code&gt; and the &lt;code&gt;math&lt;/code&gt; module.&lt;/p&gt;
+&lt;p&gt;We will need to import &lt;code&gt;jax&lt;/code&gt; and the &lt;code&gt;math&lt;/code&gt; module.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import jax
 import jax.numpy as jnp
 import math
@@ -431,12 +438,12 @@ for this operation. First, the amount of time for the jit and a single evaluatio
 &lt;h2 id=&#34;benchmarks&#34;&gt;Benchmarks&lt;/h2&gt;
 &lt;p&gt;Now let&amp;rsquo;s take a look at some benchmarks. We will benchmark a pure &lt;code&gt;numpy&lt;/code&gt;
 version, two &lt;code&gt;jax&lt;/code&gt; versions (one on the CPU and another on the GPU), and two
-&lt;code&gt;C++&lt;/code&gt; versions, a single-threaded version and a mutli-threaded version (compiled
-with &lt;code&gt;-O3 -march=native&lt;/code&gt;). All of these computations are taking place on a
-machine with a Ryzen 3900X 12-core, 24-thread CPU and a GeForce 2060 6GB GPU. We
-use between 1 and $2^{22}$ for our &lt;code&gt;batch_size&lt;/code&gt;. We set the center-of-mass
-energy to $100$ and use a 5-body final state with masses $[1,2,3,4,5]$.
-Additionally, we use a flat matrix element $\mathcal{M} = 1$.&lt;/p&gt;
+&lt;code&gt;C++&lt;/code&gt; versions, a single-threaded and a multi-threaded version (compiled with
+&lt;code&gt;-O3 -march=native&lt;/code&gt;). These computations are taking place on a machine with a
+Ryzen 3900X 12-core, 24-thread CPU, and a GeForce 2060 6GB GPU. We use between 1
+and $2^{22}$ for our &lt;code&gt;batch_size&lt;/code&gt;. We set the center-of-mass energy to $100$ and
+use a 5-body final state with masses $[1,2,3,4,5]$. Additionally, we use a flat
+matrix element $\mathcal{M} = 1$.&lt;/p&gt;
 &lt;p align=&#34;center&#34;&gt;
   &lt;img width=&#34;600&#34; height=&#34;450&#34; src=&#34;./benchmarks.png&#34;&gt;
 &lt;/p&gt;
