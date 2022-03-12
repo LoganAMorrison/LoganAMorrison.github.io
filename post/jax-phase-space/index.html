@@ -1,0 +1,1445 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Logan A. Morrison, PhD" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="In this post, we demonstrate using the jax python library to integrate over N-body phases space and compare the performance to pure c&#43;&#43;." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://loganamorrison.github.io/post/jax-phase-space/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.1083c5683d81b407a892a791e534f8a7.css" />
+
+  
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://loganamorrison.github.io/post/jax-phase-space/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@wowchemy" />
+    <meta property="twitter:creator" content="@wowchemy" />
+  
+  <meta property="og:site_name" content="Logan A. Morrison" />
+  <meta property="og:url" content="https://loganamorrison.github.io/post/jax-phase-space/" />
+  <meta property="og:title" content="Using jax to integrate N-body phase space | Logan A. Morrison" />
+  <meta property="og:description" content="In this post, we demonstrate using the jax python library to integrate over N-body phases space and compare the performance to pure c&#43;&#43;." /><meta property="og:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2022-03-11T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-03-11T00:00:00&#43;00:00">
+  
+
+  
+
+
+    
+
+
+
+
+
+
+  
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://loganamorrison.github.io/post/jax-phase-space/"
+  },
+  "headline": "Using jax to integrate N-body phase space",
+  
+  "datePublished": "2022-03-11T00:00:00Z",
+  "dateModified": "2022-03-11T00:00:00Z",
+  
+  "author": {
+    "@type": "Person",
+    "name": "Logan A. Morrison"
+  },
+  
+  "publisher": {
+    "@type": "Organization",
+    "name": "Logan A. Morrison",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_3.png"
+    }
+  },
+  "description": "In this post, we demonstrate using the jax python library to integrate over N-body phases space and compare the performance to pure c++."
+}
+</script>
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Using jax to integrate N-body phase space | Logan A. Morrison</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="9a7e96634aef8e6fb6b2a4646e3355a3" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.63a793a0158e186da77f80f308d537e2.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#publications"><span>Publications</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Using jax to integrate N-body phase space</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+  <span >
+      Logan A. Morrison</span>
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Mar 11, 2022
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    10 min read
+  </span>
+  
+
+  
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/category/field-theory/">Field Theory</a></span>
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <details class="toc-inpage d-print-none  " open>
+  <summary class="font-weight-bold">Table of Contents</summary>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#the-algorithm-rambo">The algorithm: RAMBO</a>
+      <ul>
+        <li><a href="#1-generate-qmu_i">(1) Generate $q^{\mu}_{i}$</a></li>
+        <li><a href="#2-boost-generate-pmu_i">(2) Boost: generate $p^{\mu}_{i}$</a></li>
+        <li><a href="#3-correct-the-masses-generate-kmu_i">(3) Correct the masses: generate $k^{\mu}_{i}$</a></li>
+        <li><a href="#4-computing-the-weight">(4) Computing the weight</a></li>
+      </ul>
+    </li>
+    <li><a href="#the-jax-implementation">The Jax implementation</a>
+      <ul>
+        <li><a href="#example-muon-decay-mupm-to-epm--nu_mu--nu_e">Example: Muon decay $\mu^{\pm} \to e^{\pm} + \nu_{\mu} + \nu_{e}$</a></li>
+      </ul>
+    </li>
+    <li><a href="#benchmarks">Benchmarks</a></li>
+  </ul>
+</nav>
+</details>
+
+<h2 id="introduction">Introduction</h2>
+<p>In phenomenological studies of quantum field theory, it is very common compute
+cross sections or decay widths of some annihilation or decay process. These computations
+require evaluation of an integral over phase space. For a process with an initial state
+of momentum $P$ and transitioning into a final state with $N$ particles with momenta
+$p_{1},\dots,p_{N}$, the phase space integral is:</p>
+<p>
+$$
+\begin{align}
+    \mathrm{LIPS} &= \qty(\prod_{i=1}^{N}\int\frac{\dd[3]{\boldsymbol{p}_{i}}}{(2\pi)^{3}2E_{i}})\qty(2\pi)^{4}\delta^{4}
+    \qty(P-\sum_{i=1}^{N}p_{i})\abs{\mathcal{M}}^{2}
+\end{align}
+$$
+</p>
+<p>with $E_{i}$ being the energy of the $i^{\mathrm{th}}$ final state particle, and
+$\mathcal{M}$ the matrix element for the process. When the process includes more
+than two or three particles in the final state, computing the cross section or
+width becomes difficult. In these cases, we often need to resort to numerical
+integration. However, standard quadrature techniques are often much too slow.
+The standard approach is to use Monte Carlo integration (often with importance
+sampling, stratified sampling or other techniques.) For these integration to be
+reasonably fast, the code needs to be written is a compiled (or just-in-time
+compiled) language.</p>
+<p>In this post, we will investigate how well the <code>jax</code> library does in performing this
+integration. We will compare the <code>jax</code> implementation to an equivalent <code>numpy</code>
+implementation as well as a multi-threaded <code>c++</code> implementation. This post is organized
+as follows. First, we introduce the algorithm used to perform the integration. We then
+present the <code>jax</code> implemenation of the algorithm and demonstate with a simple example.
+Lastly, we show some simple benchmarks between <code>jax</code>, <code>numpy</code> and <code>C++</code>.</p>
+<h2 id="the-algorithm-rambo">The algorithm: RAMBO</h2>
+<p>The <code>RAMBO</code> algorithm is rather simple. At a high-level, the algorithm is:</p>
+<ol>
+<li>Generate $N$ massless, isotropic momenta $q_{i}$ with energy components distributed according to $q^{0}_{i} \exp(-q^{0}_{i})$.</li>
+<li>Lorentz boost the $q_{i}$, producing new massless momenta $p_{i}$ which conserve momenta and have the correct center-of-mass energy.</li>
+<li>Rescale the $p_{i}$, producing new momenta $k_{i}$ which have correct masses.</li>
+<li>Compute the weight of the phase-space point.</li>
+</ol>
+<p>In our first step, we enforce the energies to be distributed according to
+$q^{0}_{i} \exp(-q^{0}_{i})$ simply because it results in a simple measure,
+making the calculation of the phase space density easy. Steps two and three are
+done in such a way that the calculation of the phase space density in the final
+step is straight forward.</p>
+<p>Without much explanation, we will give the detailed algorithm.</p>
+<h3 id="1-generate-qmu_i">(1) Generate $q^{\mu}_{i}$</h3>
+<p>To generate the $q_{i}$, choose $4N$ random numbers:
+$\rho^{(1)}_{i}, \rho^{(2)}_{i}, \rho^{(3)}_{i}, \rho^{(4)}_{i}$. The $q_{i}$&rsquo;s
+are then:</p>
+<p>
+$$
+\begin{align}
+    q^{0}_{i} &= e_{i}, & 
+    q^{1}_{i} &= e \cos(\phi_{i}) \sqrt{1 - z_{i}^{2}}, &
+    q^{2}_{i} &= e \sin(\phi_{i}) \sqrt{1 - z_{i}^{2}}, &
+    q^{3}_{i} &= e \cos(\theta_{i}).\\
+\end{align}
+$$
+</p>
+<p>with $e$, $z_{i}$ and $\phi_{i}$ given by:</p>
+<p>
+$$
+\begin{align}
+    e &= -\log(\rho^{(3)}_{i} \rho^{(4)}_{i}), &
+    z_{i} &= 2\rho^{(1)}_{i}-1, &
+    \phi &= 2\pi \rho^{(2)}_{i}
+\end{align}
+$$
+</p>
+<h3 id="2-boost-generate-pmu_i">(2) Boost: generate $p^{\mu}_{i}$</h3>
+<p>The boosted momenta are:</p>
+<p>
+$$
+\begin{align}
+    p^{0}_{i} &= x \qty(\gamma q^{0}_{i} + \boldsymbol{b}\cdot\boldsymbol{q}_{i}), &
+    \boldsymbol{p}_{i} &= x \qty(\qty(a \boldsymbol{b}\cdot\boldsymbol{q}_{i} + q_{i}^{0}) \boldsymbol{b} + \boldsymbol{q}_{i}). 
+\end{align}
+$$
+</p>
+<p>where the various undeclared variables are:</p>
+<p>
+$$
+\begin{align}
+    x &= E\_{\mathrm{cme}} / M, &
+    \gamma & = Q^{0} / M, &
+    a &= \frac{1}{1+\gamma}, \\
+    Q &= \sum_{j=1}^{N}q_{i}, & 
+    M &= \sqrt{Q\cdot Q}, &
+    \boldsymbol{b} &= -\frac{1}{M}\mqty(Q^{1} & Q^{2} & Q^{3}).
+\end{align}
+$$
+</p>
+<h3 id="3-correct-the-masses-generate-kmu_i">(3) Correct the masses: generate $k^{\mu}_{i}$</h3>
+<p>The $k^{\mu}_{i}$ are computed using:</p>
+<p>
+$$
+\begin{align}
+    k^{0}_{i} &= \sqrt{\qty(\xi p^{0}_{i})^2 + m_{i}^{2}}, &
+    \boldsymbol{k}_{i} &= \xi \boldsymbol{p}_{i}
+\end{align}
+$$
+</p>
+<p>where $\xi$ is the solution to:</p>
+<p>
+$$
+\begin{align}
+    0 = E_{\mathrm{cm}} - \sum_{j=1}^{N}\sqrt{m_{j}^{2} + \qty(\xi p_{j}^{0})^{2}}
+\end{align}
+$$
+</p>
+<p>This equation can be solved using Newton or Halley iterations. Typically it converges in a few steps.</p>
+<h3 id="4-computing-the-weight">(4) Computing the weight</h3>
+<p>The weight is computed using</p>
+<p>
+$$
+\begin{align}
+    w &= \frac{\qty(\frac{\pi}{2})^{N-1} \qty(E_{\mathrm{cm}})^{2N-3} \qty(2\pi)^{4-3N}}{(N-1)! (N-2)!}
+    {\qty(\sum_{j=1}^{N}\frac{\abs{\boldsymbol{k}_{j}}}{E_{\mathrm{cm}}})}
+    {\qty(\sum_{j=1}^{N}\frac{\abs{\boldsymbol{k}_{j}}^{2}}{k^{0}_{i}})}^{-1}
+    {\qty(\prod_{j=1}^{N}\frac{\abs{\boldsymbol{k}_{j}}}{k^{0}_{i}})}
+\end{align}
+$$
+</p>
+<h2 id="the-jax-implementation">The Jax implementation</h2>
+<p>Implementing the aforementioned algorithm using <code>jax</code> is definitely a learning
+experience on how to use <code>jax</code>. If you&rsquo;re familiar with <code>jax</code>, the
+implementation is a breeze. We will be writing a few function that will make the
+functions we need to implement the algorithm. Before we get into it, let&rsquo;s explain
+the general structure of the function we will make.</p>
+<p>Each function we will construct will work on a tensor of shape $(4, N, M)$,
+where $N$ is the number of final state particles and $M$ is the size of a batch
+to be worked on. If <code>p</code> is the tensor, then <code>p[0,:,:]</code> holds the energies while
+<code>p[1,:,:], p[3,:,:], p[4,:,:]</code> hold the $x,y$ and $z$ component&rsquo;s of the
+3-momentum. The <code>p[:,0,:],...,p[:,N-1,:]</code> are the moment for particles <code>1-N</code>.
+The last dimension contains the batch.</p>
+<p>All we will need to import is <code>jax</code> and the <code>math</code> module.</p>
+<pre><code class="language-python">import jax
+import jax.numpy as jnp
+import math
+</code></pre>
+<p>To generate the $q^{\mu}_{i}$, we will create a function that takes in the
+number of final state particles and the batch size and return the function to
+compute the momenta.</p>
+<pre><code class="language-python">def make_momenta_initializer(n: int, batch_size: int):
+    def init(key):
+        keys = jax.random.split(key, 4)
+        rho1 = jax.random.uniform(keys[0], shape=(n, batch_size))
+        rho2 = jax.random.uniform(keys[1], shape=(n, batch_size))
+        rho3 = jax.random.uniform(keys[2], shape=(n, batch_size))
+        rho4 = jax.random.uniform(keys[3], shape=(n, batch_size))
+
+        ctheta = 2 * rho1 - 1.0
+        stheta = jnp.sqrt(1.0 - ctheta ** 2)
+        phi = 2.0 * jnp.pi * rho2
+        e = -jnp.log(rho3 * rho4)
+
+        return jnp.array(
+            [e, e * stheta * jnp.cos(phi), e * stheta * jnp.sin(phi), e * ctheta]
+        )
+
+    return jax.jit(init)
+</code></pre>
+<p>Next, we write a function to make the boosting function. We given the center-of-mass energy,
+this is a simple translation of the expressions given above.</p>
+<pre><code class="language-python">def make_momenta_boost(cme):
+    def boost(ps):
+        sum_ps = jnp.sum(ps, axis=1)
+        inv_mass = jnp.sqrt(
+            sum_ps[0] ** 2 - sum_ps[1] ** 2 - sum_ps[2] ** 2 - sum_ps[3] ** 2
+        )
+        inv_mass = 1.0 / inv_mass
+
+        bx = -inv_mass * sum_ps[1]
+        by = -inv_mass * sum_ps[2]
+        bz = -inv_mass * sum_ps[3]
+
+        x = cme * inv_mass
+        g = sum_ps[0] * inv_mass
+        a = 1.0 / (1.0 + g)
+
+        bdotp = bx * ps[1] + by * ps[2] + bz * ps[3]
+        fact = a * bdotp + ps[0]
+
+        return jnp.array(
+            [
+                x * (g * ps[0] + bdotp),
+                x * (fact * bx + ps[1]),
+                x * (fact * by + ps[2]),
+                x * (fact * bz + ps[3]),
+            ]
+        )
+
+    return jax.jit(boost)
+</code></pre>
+<p>Before we can make the function to correct the masses, we need a function to solve
+$f(\xi) = 0 = \sum\sqrt{m_{i}^{2} + \qty(\xi p_{i}^{0})^{2}} - E_{\mathrm{cm}}$.
+We will solve this using Newton iterations. Note that the derivative of $f(\xi)$ is
+given by:</p>
+<p>
+$$
+\begin{align}
+    \dv{f}{\xi} = \sum_{j=1}^{N} \frac{\xi\qty(p_{j}^{0})^{2} }{\sqrt{m_{j}^{2} + \qty(\xi p_{j}^{0})^{2}}}
+\end{align}
+$$
+</p>
+<p>Defining $f_{i} = \sqrt{m_{i}^{2} + \qty(\xi e_{i})^{2}}$, $e_{i} = p_{i}^{0}$, we have:</p>
+<p>
+$$
+\begin{align}
+    f(\xi) &= \sum_{i} f_{i} - E_{\mathrm{cm}}, & \dv{f}{\xi} &= \sum_{i} \frac{\xi e_{i}^{2}}{f_{i}}
+\end{align}
+$$
+</p>
+<p>Recall that the Newton iteration requires us to update $\xi$ using
+$\xi_{j+1} = \xi_{j}-f(\xi_{j})/f&rsquo;(\xi_{j})$, starting from $\xi_{0}$. We will take
+$\xi_{0}$ to be $\xi_{0} = \sqrt{1 - \qty(M/E_{\mathrm{cm}})^{2}}$ with $M = \sum_{i}m_{i}$.
+Note that we can also use <code>jax.jvp</code> to automatically perform the derivative for us. We will show
+both method. For similicity, we will use a fixed number of iterations. Usually 10 is more than enough.</p>
+<pre><code class="language-python">def make_correct_masses(cme, masses, iterations):
+    n = len(masses)
+    ms = jnp.array(masses).reshape((n, 1))
+    xi0 = math.sqrt(1.0 - (sum(masses) / cme) ** 2)
+
+    def compute_scale_factor(ps):
+        shape = ps.shape[1:]
+        e = ps[0]
+        xi = xi0 * jnp.ones((shape[-1],))
+        for _ in range(iterations):
+            # Using jax.jvp:
+            def func(xi_):
+                return jnp.sum(jnp.hypot(e * xi_, ms), axis=0) - cme
+
+            f, df = jax.jvp(func, (xi,), (jnp.ones_like(xi),))
+            # by hand:
+            # deltaf = jnp.hypot(e * xi, ms)
+            # f = jnp.sum(deltaf, axis=0) - cme
+            # df = jnp.sum(xi * e ** 2 / deltaf, axis=0)
+            xi = xi - f / df
+
+        return xi
+
+    def correct_masses(ps):
+        xi = compute_scale_factor(ps)
+        return jnp.array(
+            [
+                jnp.hypot(xi * ps[0], ms),
+                xi * ps[1],
+                xi * ps[2],
+                xi * ps[3],
+            ]
+        )
+
+    return jax.jit(correct_masses)
+</code></pre>
+<p>Lastly, we write our function to compute the weights.</p>
+<pre><code class="language-python">def make_compute_weights(n, cme):
+    pi = jnp.pi
+    fact_nm2 = math.factorial(n - 2)
+    fact = 1.0 / ((n - 1) * fact_nm2 ** 2)
+    base_wgt = (
+        fact * (0.5 * pi) ** (n - 1) * cme ** (2 * n - 4) * (0.5 / pi) ** (3 * n - 4)
+    )
+
+    def weight_rescale_factor(ps):
+        modsqr = jnp.sum(ps[1:] ** 2, axis=0)
+        mod = jnp.sqrt(modsqr)
+        inveng = 1.0 / ps[0]
+
+        t1 = jnp.sum(mod / cme, axis=0) ** (2 * n - 3)
+        t2 = 1.0 / jnp.sum(modsqr * inveng, axis=0)
+        t3 = jnp.prod(mod * inveng, axis=0)
+
+        return t1 * t2 * t3 * cme
+
+    def compute_weights(ps):
+        return weight_rescale_factor(ps) * base_wgt
+
+    return jax.jit(compute_weights)
+</code></pre>
+<p>Lastly, we put it all together, constructing a function that takes in a key and
+returns the weights and momenta.</p>
+<pre><code class="language-python">def make_generator(cme, masses, iterations, batch_size):
+    n = len(masses)
+    init = make_momenta_initializer(n, batch_size)
+    boost = make_momenta_boost(cme)
+    correct_masses = make_correct_masses(cme, masses, iterations)
+    compute_weights = make_compute_weights(n, cme)
+
+    def generator(key):
+        ps = init(key)
+        ps = boost(ps)
+        ps = correct_masses(ps)
+        ws = compute_weights(ps)
+        return ps, ws
+
+    return jax.jit(generator)
+</code></pre>
+<h3 id="example-muon-decay-mupm-to-epm--nu_mu--nu_e">Example: Muon decay $\mu^{\pm} \to e^{\pm} + \nu_{\mu} + \nu_{e}$</h3>
+<p>For an example, we will use our new code to compute the decay width for a muon
+decaying into an electron and two neutrinos. The analytic expression for the
+width is given by:</p>
+<p>
+$$
+\begin{align}
+    \Gamma &= \frac{G_{F}^{2}m_{\mu}^{5}}{192 \pi^{3}}
+\end{align}
+$$
+</p>
+<p>Let&rsquo;s see if we can obtain this result using our <code>jax</code> code. The below code will
+generate weights and momenta for a batch, then compute the average and standard
+deviation.  After we obtain our results, we divide by $1/(2m_{\mu})$ to obtain
+the width $\Gamma$.</p>
+<pre><code class="language-python">def make_compute_decay_width(msqrd, m, fsp_masses, batch_size):
+
+    generator = make_generator(m, fsp_masses, 10, batch_size)
+
+    def compute_decay_width(key):
+        ps, ws = generator(key)
+        ws = ws * msqrd(ps)
+        avg = jnp.average(ws)
+        std = jnp.std(ws) / math.sqrt(batch_size)
+        return avg / (2 * m), std / (2 * m)
+
+    return jax.jit(compute_decay_width)
+</code></pre>
+<p>The last piece of the puzzle we need is a function to compute the integrand of
+the decay width.</p>
+<pre><code class="language-python">MMU = 1.056584e-01 # Mass of the muon in GeV
+GF = 1.166379e-05  # Fermi constant in GeV^-2
+
+@jax.jit
+def lnorm_sqr(p):
+    &quot;&quot;&quot;
+    Compute the squared Lorenzian norm of a four-vector.
+    &quot;&quot;&quot;
+    return p[0, :] ** 2 - p[1, :] ** 2 - p[2, :] ** 2 - p[3, :] ** 2
+
+@jax.jit
+def msqrd_mu_to_e_nu_nu(ps):
+    &quot;&quot;&quot;
+    Compute the squared matrix element for muon decay into an electron
+    and two neutrinos.
+    &quot;&quot;&quot;
+    t = lnorm_sqr(ps[:, 0, :] + ps[:, 2, :])
+    return 16.0 * GF**2 * t * (MMU**2 - t)
+</code></pre>
+<p>Now let&rsquo;s test it out and make sure things are working correctly:</p>
+<pre><code class="language-python">cme = MMU
+masses = [0.0, 0.0, 0.0]
+width = GF2 * MMU**5 / (192.0 * jnp.pi**3)
+
+compute_decay_width_jax = make_compute_decay_width(msqrd_mu_to_e_nu_nu, cme, masses, 1 &lt;&lt; 19)
+percent_error = abs((compute_decay_width_jax(jax.random.PRNGKey(1234)) - width) / width)
+print(percent_error)
+# output: DeviceArray(0.1358793, dtype=float32)
+</code></pre>
+<p>Before we do some benchmarks against <code>numpy</code> and <code>c++</code>, let&rsquo;s show the amount of time it takes
+for this operation. First, the amount of time for the jit and a single evaluation is:</p>
+<pre><code class="language-python">def compile_and_eval():
+    compute_decay_width = make_compute_decay_width(msqrd_mu_to_e_nu_nu, MMU, masses, 1 &lt;&lt; 19)
+    compute_decay_width(jax.random.PRNGKey(1234))
+
+%timeit compile_and_eval()
+# output: 685 ms ± 7.87 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</code></pre>
+<p>and the time for a single evaluation (after jit) is:</p>
+<pre><code class="language-python">compute_decay_width = make_compute_decay_width(msqrd_mu_to_e_nu_nu, MMU, masses, 1 &lt;&lt; 19)
+%timeit compute_decay_width(jax.random.PRNGKey(1234))
+# output: 3.01 ms ± 7.46 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</code></pre>
+<h2 id="benchmarks">Benchmarks</h2>
+<p>Now let&rsquo;s take a look at some benchmarks. We will benchmark a pure <code>numpy</code>
+version, two <code>jax</code> versions (one on the CPU and another on the GPU), and two
+<code>C++</code> versions, a single-threaded version and a mutli-threaded version (compiled
+with <code>-O3 -march=native</code>). All of these computations are taking place on a
+machine with a Ryzen 3900X 12-core, 24-thread CPU and a GeForce 2060 6GB GPU. We
+use between 1 and $2^{22}$ for our <code>batch_size</code>. We set the center-of-mass
+energy to $100$ and use a 5-body final state with masses $[1,2,3,4,5]$.
+Additionally, we use a flat matrix element $\mathcal{M} = 1$.</p>
+<p align="center">
+  <img width="600" height="450" src="./benchmarks.png">
+</p>
+<p>Unsurprisingly, the <code>C++</code> versions dominate for small numbers of points ($n \lesssim 500$).
+However, we begin to see the power of jax when we cross $n\sim 5000$. The GPU version seems
+to be limited only by the data transfer time to the GPU up until 100,000 points, after which
+we begin to see the computation cost come into play. Clearly the GPU is the winner in this
+case. Interestingly, the jax CPU version is on par with the single-threaded <code>C++</code> version,
+demonstrating that jax is useful even if one doesn&rsquo;t have a GPU.</p>
+
+    </div>
+
+    
+
+
+
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tag/quantum-field-theory/">quantum-field-theory</a>
+  
+  <a class="badge badge-light" href="/tag/numeric/">numeric</a>
+  
+  <a class="badge badge-light" href="/tag/python/">python</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by copyright-license-text">
+    © 2022 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+    </div>
+    
+  </div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.3d946de2e8784a477845261d87025092.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/r.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/latex.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/rust.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":true}</script>
+
+    
+    
+      <script src="/js/wowchemy-headroom.e8fd2d733eef6a8bbbe0539398fc0547.js" type="module"></script>
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.a2ed145159dd33ad55ff402163350b5d.js"></script>
+
+    
+    
+    
+    
+    
+    
+      
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <script src="/js/wowchemy-publication.b0d291ed6d27eacec233e6cf5204f99a.js" type="module"></script>
+
+
+
+
+
+
+</body>
+</html>

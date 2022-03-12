@@ -812,6 +812,8 @@ from enum import Enum
 import pygame
 from random import randint, choice
 import numpy as np
+
+pygame.init()
 </code></pre>
 <h2 id="entity-class"><strong>Entity Class</strong></h2>
 <p>To make things a bit cleaner, we will make a class to hold information about
@@ -933,8 +935,7 @@ class SpaceInvaderGame:
     BULLET_VELOCITY = -10.0
 
     def __init__(self, player_type=0, num_enemies=3):
-        # Initialize pygame
-        pygame.init()
+        # For rendering
         self.screen: Optional[pygame.surface.Surface] = None
 
         # Runtime variables
