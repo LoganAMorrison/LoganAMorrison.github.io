@@ -2,9 +2,9 @@ MathJax = {
     svg: {
         fontCache: 'global'
     },
-    loader: { load: ['[tex]/physics', '[tex]/cancel', '[tex]/boldsymbol'] },
+    loader: { load: ['[tex]/physics', '[tex]/cancel', '[tex]/boldsymbol', '[tex]/ams'] },
     tex: {
-        packages: { '[+]': ['physics', 'cancel', 'boldsymbol'] },
+        packages: { '[+]': ['physics', 'cancel', 'boldsymbol', 'ams'] },
         inlineMath: [['$', '$'], ['\\(', '\\)']]
     }
 };

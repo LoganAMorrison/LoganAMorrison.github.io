@@ -1,0 +1,2090 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Logan A. Morrison, PhD" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="In this part of the post, we will actually write all the code to implement the Proximal-Policy-Optimization algorithm. We will be using jax, flax and optax to implement the algorithm, network and optimization." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://loganamorrison.github.io/post/making-some-flapjax/impl/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.1083c5683d81b407a892a791e534f8a7.css" />
+
+  
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://loganamorrison.github.io/post/making-some-flapjax/impl/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@wowchemy" />
+    <meta property="twitter:creator" content="@wowchemy" />
+  
+  <meta property="og:site_name" content="Logan A. Morrison" />
+  <meta property="og:url" content="https://loganamorrison.github.io/post/making-some-flapjax/impl/" />
+  <meta property="og:title" content="FlapJax Part 3 - PPO Implementation | Logan A. Morrison" />
+  <meta property="og:description" content="In this part of the post, we will actually write all the code to implement the Proximal-Policy-Optimization algorithm. We will be using jax, flax and optax to implement the algorithm, network and optimization." /><meta property="og:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2022-04-10T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-04-10T00:00:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>FlapJax Part 3 - PPO Implementation | Logan A. Morrison</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="dc9dc7ddba6354a74a2c524763b1c826" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.63a793a0158e186da77f80f308d537e2.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#publications"><span>Publications</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    
+
+
+
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          Reinforcement Learning FlappyBird
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+  <button class="form-control sidebar-search js-search d-none d-md-flex">
+    <i class="fas fa-search pr-2"></i>
+    <span class="sidebar-search-text">Search...</span>
+    <span class="sidebar-search-shortcut">/</span>
+  </button>
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      <ul class="nav docs-sidenav">
+        <li><a href="/post/"><i class="fas fa-arrow-left pr-1"></i>Posts</a></li>
+      </ul>
+
+      
+      
+        
+          
+        
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/post/making-some-flapjax/">Reinforcement Learning FlappyBird</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making the game</a></li>
+
+
+
+  <li class=""><a href="/post/making-some-flapjax/ppo/">FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization</a></li>
+
+
+
+  <li class="active"><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - PPO Implementation</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+    
+  
+</nav>
+
+    </div>
+
+    
+    
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
+      
+
+      <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">Contents</a></li>
+      </ul>
+
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#gym-environment"><code>gym</code> Environment</a></li>
+    <li><a href="#models">Models</a></li>
+    <li><a href="#ppo-algorithm">PPO Algorithm</a>
+      <ul>
+        <li><a href="#configuration">Configuration</a></li>
+        <li><a href="#trajectory-creation">Trajectory Creation</a></li>
+        <li><a href="#loss">Loss</a></li>
+        <li><a href="#training">Training</a></li>
+      </ul>
+    </li>
+    <li><a href="#testing-with-cartpole">Testing with <code>CartPole</code></a>
+      <ul>
+        <li><a href="#training-1">Training</a></li>
+        <li><a href="#results">Results</a></li>
+      </ul>
+    </li>
+    <li><a href="#training-flappy-bird">Training Flappy Bird</a>
+      <ul>
+        <li><a href="#training-2">Training</a></li>
+        <li><a href="#results-1">Results</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+      
+    </div>
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          
+
+          <h1>FlapJax Part 3 - PPO Implementation</h1>
+
+          <div class="article-style">
+            <p>In this part of the post, we will actually write all the code to implement the
+Proximal-Policy-Optimization algorithm. We will be using
+<a href="https://jax.readthedocs.io/en/latest/" target="_blank" rel="noopener"><code>jax</code></a>,
+<a href="https://flax.readthedocs.io/en/latest/" target="_blank" rel="noopener"><code>flax</code></a> and
+<a href="https://optax.readthedocs.io/en/latest/" target="_blank" rel="noopener"><code>optax</code></a> to implement the algorithm,
+network and optimization. If the reader is unfamiliar with these tools, I advise
+reading though their documentation. These tools have a bit of a learning curve.
+But once you get used to them, they are a joy to work with. Much of the code
+written here is easily adapted to <code>tensorflow</code> or <code>pytorch</code>.</p>
+<h2 id="gym-environment"><code>gym</code> Environment</h2>
+<p>It will be helpful to make a couple adjustments to the observations returned by the game. Let&rsquo;s take a quick peek at the observation:</p>
+<pre><code class="language-python">env = FlappyBirdEnvV0()
+
+# Step in such a way that we will always go through pipes. We only use this for
+# visualization.
+def env_step_without_dying(env, nsteps):
+    observation = env.reset()
+    for _ in range(nsteps):
+        env.flappy.bird.y = env.flappy.pipes[env.flappy.next_pipe].top_rect.bottom + env.flappy.pipe_gap_size / 2
+        observation, _, _, _ = env.step(env.action_space.sample())
+    return observation
+
+observation = env_step_without_dying(env, 150)
+plt.figure(dpi=100)
+plt.imshow(observation)
+plt.xticks([])
+plt.yticks([]);
+print(f&quot;observation.shape = {observation.shape}&quot;)
+</code></pre>
+<pre><code>observation.shape = (640, 480, 3)
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="../images/ppo_files/ppo_3_1.png" alt="png" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<p>The first change we will make is to resize the observation. As is, the image size is way to big. My 6GB GPU can&rsquo;t handle it. We will reduce the size to be 84X84 just like people do for Atari. We use <strong>gym</strong>&rsquo;s wrapper for this:</p>
+<pre><code class="language-python">env = FlappyBirdEnvV0()
+env = ResizeObservation(env, (84, 84))
+
+observation = env.reset()
+# Step a few times to bring the pipes into view
+for _ in range(10):
+    env.step(env.action_space.sample())
+
+fig, axes = plt.subplots(1, 4, dpi=100, figsize=(10,3))
+for i in range(len(axes)):
+    axes[i].imshow(env.step(env.action_space.sample())[0])
+    axes[i].set_xticklabels([])
+    axes[i].set_yticklabels([])
+    axes[i].grid(True, which=&quot;both&quot;, color=&quot;w&quot;, linestyle=&quot;-&quot;, linewidth=1, alpha=0.2)
+print(f&quot;observation.shape = {observation.shape}&quot;)
+</code></pre>
+<pre><code>observation.shape = (84, 84, 3)
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="../images/ppo_files/ppo_5_1.png" alt="png" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<p>This size is much more manageable.</p>
+<p>Next, note that color isn&rsquo;t necessary (the objects can be inferred by their
+shape) and the color dimension just takes up more memory. So our first
+modification to the observations will be to convert the observations to
+gray-scale. To do this, we will use the <strong>gym</strong> wrapper:</p>
+<pre><code class="language-python">env = FlappyBirdEnvV0()
+env = ResizeObservation(env, (84, 84))
+env = GrayScaleObservation(env)
+
+observation = env.reset()
+# Step a few times to bring the pipes into view
+for _ in range(10):
+    env.step(env.action_space.sample())
+
+fig, axes = plt.subplots(1, 4, dpi=100, figsize=(10,3))
+for i in range(len(axes)):
+    axes[i].imshow(env.step(env.action_space.sample())[0])
+    axes[i].set_xticklabels([])
+    axes[i].set_yticklabels([])
+    axes[i].grid(True, which=&quot;both&quot;, color=&quot;w&quot;, linestyle=&quot;-&quot;, linewidth=1, alpha=0.2)
+print(f&quot;observation.shape = {observation.shape}&quot;)
+</code></pre>
+<pre><code>observation.shape = (84, 84)
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="../images/ppo_files/ppo_7_1.png" alt="png" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<p>We can clearly still tell where the &ldquo;bird&rdquo; is and where the pipes are and we&rsquo;ve cut the memory down by a factor of 3. The next modification we will make is frame-skipping. If we use the game as is, from one frame to the next, not a whole lot changes. Additionally, there are many steps between rewards. To make the observations more dynamical and reduce the time between rewards, we can skip frame. A common approach is to skip 4 frames and return the last frame or a max-pool of the last two observations.</p>
+<p>We will adapt the <code>gym.wrappers.AtariPreprocessing</code> code (which implements frame-skipping, among other things.) Our frame-skipping class will be:</p>
+<pre><code class="language-python">class FrameSkip(gym.Wrapper):
+    def __init__(self, env: gym.Env, frame_skip: int = 4):
+        super().__init__(env)
+        assert frame_skip &gt; 0
+
+        self.frame_skip = frame_skip
+
+        # buffer of most recent two observations for max pooling
+        assert env.observation_space.shape is not None
+        self.obs_buffer = [
+            np.empty(env.observation_space.shape, dtype=np.uint8),
+            np.empty(env.observation_space.shape, dtype=np.uint8),
+        ]
+
+        self.observation_space = env.observation_space
+
+    def step(self, action):
+        r = 0.0
+
+        done = False
+        info = dict()
+        for t in range(self.frame_skip):
+            observation, reward, done, info = self.env.step(action)
+            r += reward
+
+            if done:
+                break
+            if t == self.frame_skip - 2:
+                self.obs_buffer[1] = observation
+            elif t == self.frame_skip - 1:
+                self.obs_buffer[0] = observation
+
+        return self._get_obs(), r, done, info
+
+    def reset(self, **kwargs):
+        self.obs_buffer[0] = self.env.reset(**kwargs)
+        self.obs_buffer[1].fill(0)
+        return self._get_obs()
+
+    def _get_obs(self):
+        if self.frame_skip &gt; 1:  # more efficient in-place pooling
+            np.maximum(self.obs_buffer[0], self.obs_buffer[1], out=self.obs_buffer[0])
+        obs = self.obs_buffer[0]
+        return obs
+</code></pre>
+<p>Every time <code>env.step(action)</code> is called, this wrapper will apply the same action a given number of times, record the last two observations and return their max-pool. That way we get all the important information from the last two observations. Let&rsquo;s take a look at what the observations look like:</p>
+<pre><code class="language-python">env = FlappyBirdEnvV0()
+env = ResizeObservation(env, (84, 84))
+env = GrayScaleObservation(env)
+env = FrameSkip(env)
+
+env.reset()
+# Step a few times to bring the pipes into view
+for _ in range(10):
+    env.step(env.action_space.sample())
+
+fig, axes = plt.subplots(1, 4, dpi=100, figsize=(10,3))
+for i in range(len(axes)):
+    axes[i].imshow(env.step(env.action_space.sample())[0])
+    axes[i].set_xticklabels([])
+    axes[i].set_yticklabels([])
+    axes[i].grid(True, which=&quot;both&quot;, color=&quot;w&quot;, linestyle=&quot;-&quot;, linewidth=1, alpha=0.2)
+print(f&quot;observation.shape = {observation.shape}&quot;)
+</code></pre>
+<pre><code>observation.shape = (84, 84)
+</code></pre>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<figure  >
+  <div class="d-flex justify-content-center">
+    <div class="w-100" ><img src="../images/ppo_files/ppo_11_1.png" alt="png" loading="lazy" data-zoomable /></div>
+  </div></figure>
+</p>
+<p>Comparing with our observations without frame-skipping, we can now see motion between frames.</p>
+<p>Before moving on to the code for the implementing the model, let&rsquo;s add a couple methods to make calling our environment a bit easier.</p>
+<pre><code class="language-python">def env_reset(env: Union[GymEnv, GymVecEnv]):
+    &quot;&quot;&quot;Reset environment and return jax array of observation.&quot;&quot;&quot;
+    observation = env.reset()
+    return jnp.array(observation, dtype=jnp.float32)
+
+
+def env_step(
+    action: jnp.ndarray, env: Union[GymEnv, GymVecEnv]
+) -&gt; Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    &quot;&quot;&quot;Step environment and return jax array of observation, reward and terminal status.&quot;&quot;&quot;
+    act = np.array(jax.device_get(action), dtype=np.int32)
+
+    if not isinstance(env, gym.vector.VectorEnv):
+        observation, reward, done, _ = env.step(act[0])
+    else:
+        observation, reward, done, _ = env.step(act)
+
+    observation = np.array(observation)
+    reward = np.array(reward, dtype=np.int32)
+    done = np.array(done, dtype=np.int32)
+
+    # Make the batch dimension for non-vector environments
+    if not isinstance(env, gym.vector.VectorEnv):
+        observation = np.expand_dims(observation, 0)
+        reward = np.expand_dims(reward, 0)
+        done = np.expand_dims(done, 0)
+
+    return observation, reward, done
+</code></pre>
+<h2 id="models">Models</h2>
+<p>Next, let&rsquo;s implement the model. We will use the architecture from the &ldquo;Human-level control through deep reinforcement learning.&rdquo; paper which has three convolutional layers followed by a single dense layer. We then pipe this output to the &ldquo;actor&rdquo; layer (which outputs the logits corresponding to probabilities of actions) and &ldquo;critic&rdquo; layer (which estimates the value function.)</p>
+<pre><code class="language-python">class ActorCriticCnn(nn.Module):
+    n_actions: int
+    n_hidden: int
+
+    def setup(self):
+        self.conv1 = nn.Conv(features=32, kernel_size=(8, 8), strides=(4, 4))
+        self.conv2 = nn.Conv(features=64, kernel_size=(4, 4), strides=(2, 2))
+        self.conv3 = nn.Conv(features=64, kernel_size=(3, 3), strides=(1, 1))
+        self.hidden = nn.Dense(features=self.n_hidden)
+        self.actor = nn.Dense(features=self.n_actions)
+        self.critic = nn.Dense(1)
+
+    def __call__(self, x):
+        x = x.astype(jnp.float32) / 255.0
+        # Convolutions
+        x = nn.relu(self.conv1(x))
+        x = nn.relu(self.conv2(x))
+        x = nn.relu(self.conv3(x))
+        # Dense
+        x = x.reshape((x.shape[0], -1))
+        x = nn.relu(self.hidden(x))
+        # Actor-Critic
+        logits = self.actor(x)
+        value = self.critic(x)
+        return logits, value
+</code></pre>
+<p>For non-image based observations, we include a simple MLP model (we will use this to verify the algorithm with CartPole.)</p>
+<pre><code class="language-python">class ActorCriticMlp(nn.Module):
+
+    n_hidden: int
+    n_actions: int
+
+    def setup(self):
+        self.common = nn.Dense(features=self.n_hidden)
+        self.actor = nn.Dense(features=self.n_actions)
+        self.critic = nn.Dense(1)
+
+    def __call__(self, x):
+        x = nn.relu(self.common(x))
+        logits = self.actor(x)
+        value = self.critic(x)
+        return logits, value
+</code></pre>
+<p>We will also make a couple functions to jit the calling of the model and another for converting the output of the model to a tuple with the action, value and log probability.</p>
+<pre><code class="language-python">@functools.partial(jax.jit, static_argnums=0)
+def apply_model(
+    apply_fn: Callable[..., Any],
+    params: flax.core.FrozenDict,
+    observation: Union[jnp.ndarray, np.ndarray],
+) -&gt; Tuple[jnp.ndarray, jnp.ndarray]:
+    return apply_fn(params, observation)
+
+
+@jax.jit
+@jax.vmap
+def select_log_prob(action, log_probs):
+    &quot;&quot;&quot;Vectorized function to select log-probabilities from vector of actions.&quot;&quot;&quot;
+    return log_probs[action]
+
+
+@functools.partial(jax.jit, static_argnums=0)
+def action_value_logprob(
+    apply_fn: Callable[..., Any],
+    params: flax.core.FrozenDict,
+    key,
+    observation: Union[jnp.ndarray, np.ndarray],
+):
+    logits, value = apply_fn(params, observation)
+
+    # Sample from the actor distribution to get actions
+    action = jax.random.categorical(key, logits)
+    # Get log-probabilities
+    log_probs = jax.nn.log_softmax(logits)
+    # Get log-probability corresponding to action
+    log_prob = select_log_prob(action, log_probs)
+    # Squeeze value to remove extra dimension
+    return action, jnp.squeeze(value), log_prob
+</code></pre>
+<h2 id="ppo-algorithm">PPO Algorithm</h2>
+<h3 id="configuration">Configuration</h3>
+<p>Now we will implement the proximal-policy-optimization algorithm. Recall that this algorithm has a few parameters:</p>
+<ul>
+<li><code>horizon</code>: Number of time steps in the trajectory,</li>
+<li><code>gamma</code> ($\gamma$): Discount of future rewards,</li>
+<li><code>lam</code> ($\lambda$): General Advantage Estimation (GAE) parameter,</li>
+<li><code>c1</code> ($c_{1}$): Prefactor of value-function loss,</li>
+<li><code>c2</code> ($c_{2}$): Prefactor of entropy loss</li>
+<li><code>epsilon</code> ($\epsilon$): Clipping parameter for actor loss.</li>
+</ul>
+<p>In addition to these parameters, we have addition hyperparameters:</p>
+<ul>
+<li><code>epochs</code>: Number of epochs to train for each trajectory,</li>
+<li><code>mini_batch_size</code>: Number of trajectory points to train at a time,</li>
+<li><code>n_actors</code>: Number of environments to run at once,</li>
+<li><code>total_frames</code>: Number of frames to train agent</li>
+</ul>
+<p>We will group these parameters into a <code>NamedTuple</code> for convenience:</p>
+<pre><code class="language-python">class PPOConfig(NamedTuple):
+    horizon: int = 2048
+    epochs: int = 10
+    mini_batch_size: int = 64
+    gamma: float = 0.99
+    lam: float = 0.95
+    n_actors: int = 1
+    epsilon: Union[float, optax.Schedule] = 0.1
+    c1: float = 0.5
+    c2: float = 0.01
+    total_frames: int = int(1e6)
+</code></pre>
+<h3 id="trajectory-creation">Trajectory Creation</h3>
+<p>We will also make a <code>NamedTuple</code> for the components of the trajectory needed for training. These components are:</p>
+<ul>
+<li><code>observations</code>: Collect observations along trajectory,</li>
+<li><code>log_probs</code>: Model log-probabilities,</li>
+<li><code>actions</code>: Actions the model took,</li>
+<li><code>returns</code>: Returns at each time step,</li>
+<li><code>advantages</code>: Computed advantages from GAE.</li>
+</ul>
+<pre><code class="language-python">class Trajectory(NamedTuple):
+    observations: jnp.ndarray
+    log_probs: jnp.ndarray
+    actions: jnp.ndarray
+    returns: jnp.ndarray
+    advantages: jnp.ndarray
+</code></pre>
+<p>Now we will write a function to compute the advantages and returns from the
+rewards and values. There is one tricky part to this. What do we do if one of
+our environments reaches a terminal state (game-over)? We want to use this
+trajectory despite reaching a terminal state. What we will do is perform a reset
+on the accumulated rewards when we reach a terminal observation, the continue
+accumulating after the terminated state. Our <code>generalized_advantage_estimation</code>
+function will compute the following:</p>
+<p>
+$$
+\begin{align*}
+\hat{A}_{t} &= \delta_{t} + (\gamma\lambda)\delta_{t+1} + \cdots + (\gamma\lambda)^{N}\delta_{t+N}\\
+\delta_{t} &= r_{t} + \gamma V(s_{t+1}) - V(s_{t})
+\end{align*}
+$$
+</p>
+<pre><code class="language-python">@jax.jit
+@functools.partial(jax.vmap, in_axes=(1, 1, 1, None, None), out_axes=1)
+def generalized_advantage_estimation(
+    rewards: np.ndarray,
+    values: np.ndarray,
+    terminals: np.ndarray,
+    gamma: float,
+    lam: float,
+) -&gt; Tuple[jnp.ndarray, jnp.ndarray]:
+    assert (
+        rewards.shape[0] == values.shape[0] - 1
+    ), &quot;Values must have one more element than rewards.&quot;
+    assert (
+        rewards.shape[0] == terminals.shape[0]
+    ), &quot;Rewards and terminals must have same shape.&quot;
+
+    advantages = []
+    advantage = 0.0
+
+    for t in reversed(range(len(rewards))):
+        # Eqn.(11) and (12) from ArXiv:1707.06347. Note, multiplying by `terminals` 
+        # (which is zero when done=True) will cause the advantage to reset.
+        delta = rewards[t] + (gamma * values[t + 1] * terminals[t]) - values[t]
+        advantage = delta + (gamma * lam * advantage * terminals[t])
+        advantages.append(advantage)
+
+    advantages = jnp.array(advantages[::-1])
+    # Note return is just the advantage + values
+    returns = advantages + jnp.array(values[:-1])
+    return returns, advantages
+</code></pre>
+<p>Next, we will write a function to construct the trajectory. This simply consists
+of running the environment a specified number of steps and accumulating the
+needed results. This function will also call our
+<code>generalized_advantage_estimation</code> function to compute the returns and
+advantages.</p>
+<pre><code class="language-python">def create_trajectory(
+    initial_observation: jnp.ndarray,
+    apply_fn: Callable[..., Any],
+    params: flax.core.FrozenDict,
+    env: Union[GymEnv, GymVecEnv],
+    key,
+    horizon: int,
+    gamma: float,
+    lam: float,
+):
+    observation = initial_observation
+
+    # Collected quantities
+    traj_observations = []
+    traj_log_probs = []
+    traj_values = []
+    traj_rewards = []
+    traj_actions = []
+    traj_dones = []
+
+    for _ in range(horizon):
+        key, rng = jax.random.split(key, 2)
+        action, value, log_prob = action_value_logprob(
+            apply_fn, params, rng, observation
+        )
+
+        traj_actions.append(action)
+        traj_values.append(np.array(value))
+        traj_observations.append(observation)
+        traj_log_probs.append(log_prob)
+
+        observation, reward, done = env_step(action, env)
+
+        traj_rewards.append(reward)
+        traj_dones.append(done)
+
+    _, next_value = apply_model(apply_fn, params, observation)
+    traj_values.append(np.squeeze(np.array(next_value)))
+
+    traj_rewards = np.array(traj_rewards)
+    traj_values = np.array(traj_values)
+    traj_terminals = 1 - np.array(traj_dones)
+
+    traj_returns, traj_advantages = generalized_advantage_estimation(
+        traj_rewards, traj_values, traj_terminals, gamma, lam
+    )
+
+    trajectory = Trajectory(
+        observations=jnp.array(traj_observations),
+        log_probs=jnp.array(traj_log_probs),
+        actions=jnp.array(traj_actions),
+        returns=traj_returns,
+        advantages=traj_advantages,
+    )
+
+    # Return observation as well so we can continue where we left off.
+    return trajectory, observation
+</code></pre>
+<p>Another useful function to write is one the takes the trajectory created from <code>create_trajectory</code> (which as a shape of <code>(horizon, ...)</code>), shuffle the batch dimension, and reshape to <code>(n, mini_batch_size,...)</code> (with <code>n * mini_batch_size = horizon</code>) so we can easily iterator over mini batches.</p>
+<pre><code class="language-python">@functools.partial(jax.jit, static_argnums=(2, 3))
+def trajectory_reshape(
+    trajectory: Trajectory, key, batch_size: int, mini_batch_size: int
+):
+    permutation = jax.random.permutation(key, batch_size)
+    # Flatten and permute
+    trajectory = tree_map(
+        lambda x: x.reshape((batch_size,) + x.shape[2:])[permutation], trajectory
+    )
+    # change shape of trajectory elements to (iterations, minibatch_size)
+    iterations = batch_size // mini_batch_size
+    trajectory = tree_map(
+        lambda x: x.reshape((iterations, mini_batch_size) + x.shape[1:]), trajectory
+    )
+    return trajectory
+</code></pre>
+<h3 id="loss">Loss</h3>
+<p>Now we need to implement the loss function. Recall that the loss function for the <code>PPO</code> algorithm is:</p>
+<p>
+$$
+\begin{align*}
+    L &= L^{\mathrm{CLIP}} + c_{1}L^{\mathrm{VF}} + c_{2}L^{\mathrm{entropy}}\\
+\end{align*}
+$$
+</p>
+<p>where:</p>
+<p>
+$$
+\begin{align*}
+    L^{\mathrm{CLIP}} &= -\mathrm{min}(r_{\theta}\hat{A}, \mathrm{clip}(r_{\theta},1-\epsilon,1+\epsilon)\hat{A})\\
+    L^{\mathrm{VF}} &= (V_{\theta} - V^{\mathrm{target}})^2\\
+    L^{\mathrm{entropy}} &= -S[\pi_{\theta}]
+\end{align*}
+$$
+</p>
+<p>In these expression $r_{\theta} = \pi_{\theta} / \pi_{\theta_{\mathrm{old}}}$, $V$ is the return and $A$ is the advantage. To compute the loss, we need all them elements of the trajectory. We use the values of the trajectory to compute the new action probabilities.</p>
+<pre><code class="language-python">@functools.partial(jax.jit, static_argnums=1)
+def loss_fn(
+    params: flax.core.FrozenDict,
+    apply_fn: Callable[..., Any],
+    batch: Tuple,
+    epsilon: float,
+    c1: float,
+    c2: float,
+):
+
+    observations, old_log_p, actions, returns, advantages = batch
+
+    logits, values = apply_fn(params, observations)
+    values = jnp.squeeze(values)
+    log_probs = jax.nn.log_softmax(logits)
+    log_p = select_log_prob(actions, log_probs)
+
+    # Normalize the advantages to give the network to make them easier
+    # for the network to estimate.
+    advantages = (advantages - jnp.mean(advantages)) / (jnp.std(advantages) + 1e-8)
+
+    # Compute actor loss using conservative policy iteration with an
+    # additional clipped surrogate and take minimum between the two.
+    # See Eqn.(7) of ArXiv:1707.06347
+    prob_ratio = jnp.exp(log_p - old_log_p)
+    surrogate1 = advantages * prob_ratio
+    surrogate2 = advantages * jnp.clip(prob_ratio, 1.0 - epsilon, 1.0 + epsilon)
+    actor_loss = -jnp.mean(jnp.minimum(surrogate1, surrogate2), axis=0)
+
+    # Use mean-squared error loss for value function
+    critic_loss = c1 * jnp.mean(jnp.square(returns - values), axis=0)
+    # Entropy bonus to ensure exploration
+    entropy_loss = -c2 * jnp.mean(jnp.sum(-jnp.exp(log_probs) * log_probs, axis=1))
+
+    loss = actor_loss + critic_loss + entropy_loss
+
+    return loss, (actor_loss, critic_loss, entropy_loss)
+</code></pre>
+<h3 id="training">Training</h3>
+<p>Now we implement the training. In order to make things more compact, we will write a jax-compatible class to store the model parameters and configuration. We adapt the <code>flax.training.TrainState</code> for our purposes:</p>
+<pre><code class="language-python">class PPOTrainState(struct.PyTreeNode):
+    &quot;&quot;&quot;Jax-compatible class holding train-state for the Proximal-Policy-Optimization algorithm.
+
+    Parameters
+    ----------
+    step : int
+        Current training step.
+    apply_fn : Callable
+        Function to compute forward pass through model.
+    params : flax.core.FrozenDict
+        Model parameters
+    lr: Union[float, optax.Schedule]
+        Learning rate of the model.
+    tx: optax.GradientTransformation
+        Training optimizer.
+    opt_state: optax.OptState
+        State of the optimizer.
+    config: PPOConfig
+        Configuration of the PPO algorithm.
+    &quot;&quot;&quot;
+
+    step: int
+    apply_fn: Callable = struct.field(pytree_node=False)
+    params: flax.core.FrozenDict
+
+    tx: optax.GradientTransformation = struct.field(pytree_node=False)
+    opt_state: optax.OptState
+
+    config: PPOConfig = struct.field(pytree_node=False)
+
+    def apply_gradients(self, *, grads, **kwargs):
+        &quot;&quot;&quot;Return the new train state after applying gradients.
+
+        Parameters
+        ----------
+        grads:
+            Gradients returns by loss function.
+
+        Returns
+        -------
+        new_state: PPOTrainState
+            The new train state.
+        &quot;&quot;&quot;
+        updates, opt_state = self.tx.update(grads, self.opt_state, self.params)
+        params = optax.apply_updates(self.params, updates)
+
+        return self.replace(
+            step=self.step + 1,
+            params=params,
+            opt_state=opt_state,
+            **kwargs,
+        )
+
+    def batch_size(self) -&gt; int:
+        &quot;&quot;&quot;Compute the batch size.&quot;&quot;&quot;
+        return self.config.horizon * self.config.n_actors
+
+    def epsilon(self) -&gt; chex.Numeric:
+        &quot;&quot;&quot;The current clipping parameter.&quot;&quot;&quot;
+        if isinstance(self.config.epsilon, Callable):
+            return self.config.epsilon(self.step)
+        return self.config.epsilon
+
+    def learning_rate(self) -&gt; chex.Numeric:
+        return self.opt_state.hyperparams[&quot;learning_rate&quot;]  # type:ignore
+
+    @classmethod
+    def create(
+        cls,
+        *,
+        apply_fn: Callable,
+        params: flax.core.FrozenDict,
+        lr: Union[float, optax.Schedule],
+        config: PPOConfig,
+        max_grad_norm: Optional[float] = None,
+    ):
+        @optax.inject_hyperparams
+        def make_optimizer(learning_rate):
+            tx_comps = []
+            if max_grad_norm is not None:
+                tx_comps.append(optax.clip_by_global_norm(max_grad_norm))
+            tx_comps.append(optax.adam(learning_rate))
+            return optax.chain(*tx_comps)
+
+        tx = make_optimizer(lr)
+        opt_state = tx.init(params)
+
+        return cls(
+            step=0,
+            apply_fn=apply_fn,
+            params=params,
+            tx=tx,
+            opt_state=opt_state,
+            config=config,
+        )
+</code></pre>
+<p>Note that we allow for a time-varying clipping parameter. Next, we implement a function to optimize the model. This function will compute the loss and gradients, apply the gradients and return the new state as well as the losses for logging.</p>
+<pre><code class="language-python">@functools.partial(jax.jit, static_argnums=2)
+def optimize(state: PPOTrainState, traj: Tuple):
+    &quot;&quot;&quot;Perform a backwards pass on model, update and return new state and losses.&quot;&quot;&quot;
+    epsilon = state.epsilon()
+    c1 = state.config.c1
+    c2 = state.config.c2
+
+    grad_fn = jax.value_and_grad(loss_fn, has_aux=True)
+    (loss, (aloss, closs, eloss)), grads = grad_fn(
+        state.params, state.apply_fn, traj, epsilon, c1, c2
+    )
+    state = state.apply_gradients(grads=grads)  # type: ignore
+
+    return state, loss, aloss, closs, eloss
+</code></pre>
+<p>Now we write a function to perform a training step. This function takes in the state and trajectory, reshapes the trajectory to be of shape <code>(n, mini_batch_size,...)</code> and then loops over each mini-batch (iterates over leading dimension), optimizing the model each loop iteration. We then repeat this process a specified number of times (<code>epochs</code> parameter). Finally, the new state and average losses are returned.</p>
+<pre><code class="language-python">def train_step(state: PPOTrainState, trajectory: Trajectory, key):
+    losses = {
+        &quot;total&quot;: [],
+        &quot;actor&quot;: [],
+        &quot;critic&quot;: [],
+        &quot;entropy&quot;: [],
+    }
+
+    batch_size = state.batch_size()
+    mini_batch_size = state.config.mini_batch_size
+
+    for _ in range(state.config.epochs):
+        key, rng = jax.random.split(key, 2)
+        traj_reshaped = trajectory_reshape(trajectory, rng, batch_size, mini_batch_size)
+        for traj in zip(*traj_reshaped):
+            state, *t_losses = optimize(state, traj)
+
+            losses[&quot;total&quot;] += t_losses[0]
+            losses[&quot;actor&quot;] += t_losses[1]
+            losses[&quot;critic&quot;] += t_losses[2]
+            losses[&quot;entropy&quot;] += t_losses[3]
+
+    losses = {key: val for key, val in zip(losses.keys(), map(np.average, losses.values()))}
+    return state, losses
+
+</code></pre>
+<p>It will be useful to have a function that estimates the performance of the model. To estimate the performance, we will run the model over a number of episodes and return the average of the accumulated reward:</p>
+<pre><code class="language-python">def evaluate_model(
+    state: PPOTrainState, env: GymEnv, episodes: int, key, expand_dims=True
+):
+    &quot;&quot;&quot;Estimate model performance by running model over a number of episodes and return the average accumulated reward.
+
+    Parameters
+    ----------
+    state : PPOTrainState
+        Current train state.
+    env : GymEnv
+        Environment to run model though.
+    episodes : int
+        Number of episodes to run model for.
+    key : _type_
+        key for random number generation.
+    expand_dims : bool, optional
+        If True, the observation is given a batch dimension. Default is True.
+
+    Returns
+    -------
+    reward: float
+       Average reward. 
+    &quot;&quot;&quot;
+    episode_rewards = []
+    for _ in range(episodes):
+        episode_reward = 0
+        observation = env.reset()
+        done = False
+        while not done:
+            if expand_dims:
+                observation = jnp.expand_dims(observation, 0)
+            logits, _ = apply_model(state.apply_fn, state.params, observation)
+            key, rng = jax.random.split(key, 2)
+            action = jax.random.categorical(rng, logits)
+            if expand_dims:
+                observation, reward, done, _ = env.step(int(action[0]))
+            else:
+                observation, reward, done, _ = env.step(int(action))
+            episode_reward += reward
+        episode_rewards.append(episode_reward)
+
+    return np.average(episode_rewards)
+</code></pre>
+<h2 id="testing-with-cartpole">Testing with <code>CartPole</code></h2>
+<h3 id="training-1">Training</h3>
+<p>Before going for flappy bird, we will start with a much more simile problem: <code>CartPole</code>. This environment can return non-image observations of the system, which are much easier to learn from. We will use our MLP model to implement our agent. First, let&rsquo;s set up out environment. We will use <code>gym</code>&rsquo;s async vector environment.</p>
+<pre><code class="language-python">n_actors = 8
+train_env = gym.vector.make(&quot;CartPole-v1&quot;, asynchronous=True, num_envs=n_actors)
+eval_env = gym.make(&quot;CartPole-v1&quot;)
+</code></pre>
+<p>Now let&rsquo;s set our configuration parameters. We will use stable-baselines3&rsquo;s RL-zoo hyperparameters <a href="https://github.com/DLR-RM/rl-baselines3-zoo/blob/master/hyperparams/ppo.yml" target="_blank" rel="noopener">hyperparameters</a> which have been tuned.</p>
+<pre><code class="language-python">def ppo_num_opt_steps(
+    total_frames: int, horizon: int, n_actors: int, epochs: int, mini_batch_size: int
+) -&gt; int:
+    &quot;&quot;&quot;Compute the number of optimization steps.&quot;&quot;&quot;
+    batch_size = horizon * n_actors
+    # Number of frames we see per train step
+    frames_per_train_step = batch_size
+    # Number of times we call optimizer per step
+    opt_steps_per_train_step = epochs * (batch_size // mini_batch_size)
+    # Number of train steps
+    num_train_steps = total_frames // frames_per_train_step
+    # Total number of optimizer calls
+    total_opt_steps = opt_steps_per_train_step * num_train_steps
+
+    return total_opt_steps
+
+
+horizon = 32
+epochs = 20
+mini_batch_size = 256
+total_frames = int(1e5)
+total_opt_steps = ppo_num_opt_steps(
+    total_frames, horizon, n_actors, epochs, mini_batch_size
+)
+
+config = PPOConfig(
+    horizon=horizon,
+    epochs=epochs,
+    mini_batch_size=mini_batch_size,
+    gamma=0.98,
+    lam=0.8,
+    c1=1.0,
+    c2=0.0,
+    total_frames=total_frames,
+    epsilon=optax.linear_schedule(0.2, 0.0, total_opt_steps),
+)
+</code></pre>
+<p>Now we create our train state. Note we will use a linearly decaying learning rate.</p>
+<pre><code class="language-python"># Create Model
+key = jax.random.PRNGKey(1234)
+n_hidden = 512
+n_actions = train_env.action_space[0].n  # type: ignore
+model = ActorCriticMlp(n_hidden=n_hidden, n_actions=n_actions)
+
+# Optimizer parameters
+learning_rate = optax.linear_schedule(0.001, 0.0, total_opt_steps)
+max_grad_norm = 0.5
+
+# Initialize training state
+observation = env_reset(train_env)
+key, rng = jax.random.split(key, 2)
+params = model.init(rng, observation)
+state = PPOTrainState.create(
+    apply_fn=model.apply,
+    params=params,
+    lr=learning_rate,
+    config=config,
+    max_grad_norm=max_grad_norm,
+)
+del params
+</code></pre>
+<p>Lastly, we configure our logging and checkpoint directories as well as some parameters for specifying the frequencies:</p>
+<pre><code class="language-python">checkpoint_dir = pathlib.Path(&quot;.&quot;).absolute().joinpath(&quot;checkpoints/cartpole/run1&quot;).as_posix()
+log_dir = pathlib.Path(&quot;.&quot;).absolute().joinpath(&quot;logs/cartpole/run1&quot;).as_posix()
+
+summary_writer = tensorboard.SummaryWriter(log_dir)
+summary_writer.hparams(config._asdict())
+
+batch_size = config.horizon * config.n_actors
+frames_per_train_step = batch_size
+num_train_steps = config.total_frames // frames_per_train_step
+
+reward = 0.0
+
+horizon = state.config.horizon
+gamma = state.config.gamma
+lam = state.config.lam
+
+log_frequency = 1
+eval_frequency = 1
+eval_episodes = 1
+</code></pre>
+<pre><code class="language-python">start_step = 0
+with tqdm(range(start_step, num_train_steps)) as t:
+    for step in t:
+        frame = step * frames_per_train_step
+        t.set_description(f&quot;frame: {step}&quot;)
+
+        key, rng1, rng2 = jax.random.split(key, 3)
+        trajectory, observation = create_trajectory(
+            observation,
+            state.apply_fn,
+            state.params,
+            train_env,
+            rng1,
+            horizon,
+            gamma,
+            lam,
+        )
+        state, losses = train_step(state, trajectory, rng2)
+
+        if step % log_frequency == 0:
+            summary_writer.scalar(&quot;train/loss&quot;, losses[&quot;total&quot;], frame)
+            summary_writer.scalar(&quot;train/loss-actor&quot;, losses[&quot;actor&quot;], frame)
+            summary_writer.scalar(&quot;train/loss-critic&quot;, losses[&quot;critic&quot;], frame)
+            summary_writer.scalar(&quot;train/loss-entropy&quot;, losses[&quot;entropy&quot;], frame)
+            summary_writer.scalar(
+                &quot;train/learning-rate&quot;, state.learning_rate(), frame
+            )
+            summary_writer.scalar(&quot;train/clipping&quot;, state.epsilon(), frame)
+
+        if step % 25 == 0:
+            key, rng = jax.random.split(key, 2)
+            reward = evaluate_model(state, eval_env, eval_episodes, rng)
+            summary_writer.scalar(&quot;train/reward&quot;, reward, frame)
+
+        t.set_description_str(f&quot;loss: {losses['total']}, reward: {reward}&quot;)
+
+        if checkpoint_dir is not None:
+            checkpoints.save_checkpoint(checkpoint_dir, state, frame)
+</code></pre>
+<h3 id="results">Results</h3>
+<p>Here are the results from training the MLP on the CartPole environment. The
+network was trained for about 1 hr. Below is an image of the training results.
+Not that the maximum reward for this environment is 500. We reached this at the
+very end. The training wasn&rsquo;t complete, but since this is for example purposes,
+these results are sufficient.</p>
+<p align="center">
+  <img width="800" height="450" src="../images/cartpole/stats.png">
+</p>
+<p>Here is gif of the agent surviving all 500 steps.</p>
+<p align="center">
+  <img width="500" height="500" src="../images/cartpole/cartpole.gif">
+</p>
+<p>We thus conclude that we are on the right track! Next, let&rsquo;s try the flappy bird environment.</p>
+<h2 id="training-flappy-bird">Training Flappy Bird</h2>
+<h3 id="training-2">Training</h3>
+<p>We are now ready to train an agent to play flappy bird. As in the <code>CartPole</code> example, we first set up our environments.</p>
+<pre><code class="language-python"># Initialize environments
+def make_env():
+    env = FlappyBirdEnvV0()
+    env = ResizeObservation(env, (84, 84))
+    env = GrayScaleObservation(env, keep_dim=True)
+    env = FrameSkip(env)
+
+    return env
+    
+train_env = gym.vector.SyncVectorEnv([make_env for _ in range(config.n_actors)])
+eval_env = make_env()
+</code></pre>
+<p>Now we setup our config:</p>
+<pre><code class="language-python">total_frames=int(1e7)
+n_actors=8
+horizon=128
+mini_batch_size=256
+epochs=4
+total_opt_steps = ppo_num_opt_steps(
+    total_frames, horizon, n_actors, epochs, mini_batch_size
+)
+
+gamma=0.99
+lam=0.95
+epsilon=optax.linear_schedule(0.1, 0.0, total_opt_steps)
+c1=0.5
+c2=0.01
+learning_rate=optax.linear_schedule(2.5e-4, 0.0, total_opt_steps)
+max_grad_norm=0.5
+
+# Configuration
+config = PPOConfig(
+    n_actors=n_actors,
+    total_frames=total_frames,
+    horizon=horizon,
+    mini_batch_size=mini_batch_size,
+    lam=lam,
+    gamma=gamma,
+    epochs=epochs,
+    c1=c1,
+    c2=c2,
+    epsilon=epsilon,
+)
+</code></pre>
+<p>Next, we initialize the training state:</p>
+<pre><code class="language-python"># Create Model
+key = jax.random.PRNGKey(0)
+n_hidden = 256
+n_actions = train_env.action_space[0].n  # type: ignore
+model = ActorCriticCnn(n_hidden=n_hidden, n_actions=n_actions)
+
+# Initialize model
+observation = env_reset(train_env)
+key, rng = jax.random.split(key, 2)
+params = model.init(rng, observation)
+state = PPOTrainState.create(
+    apply_fn=model.apply,
+    params=params,
+    lr=learning_rate,
+    config=config,
+    max_grad_norm=max_grad_norm,
+)
+del params
+</code></pre>
+<p>Set up logging and logging parameters:</p>
+<pre><code class="language-python">checkpoint_dir = pathlib.Path(&quot;.&quot;).absolute().joinpath(&quot;checkpoints/flappy_bird/run1&quot;).as_posix()
+log_dir = pathlib.Path(&quot;.&quot;).absolute().joinpath(&quot;logs/flappy_bird/run1&quot;).as_posix()
+
+summary_writer = tensorboard.SummaryWriter(log_dir)
+summary_writer.hparams(config._asdict())
+
+log_frequency = 1
+eval_frequency = 1
+eval_episodes = 25
+
+batch_size = config.horizon * config.n_actors
+frames_per_train_step = batch_size
+num_train_steps = config.total_frames // frames_per_train_step
+
+reward = 0.0
+
+horizon = state.config.horizon
+gamma = state.config.gamma
+lam = state.config.lam
+</code></pre>
+<p>And train! (this will take a VERY long time&hellip;)</p>
+<pre><code class="language-python">start_step = 0
+with tqdm(range(start_step, num_train_steps)) as t:
+    for step in t:
+        frame = step * frames_per_train_step
+        t.set_description(f&quot;frame: {step}&quot;)
+
+        key, rng1, rng2 = jax.random.split(key, 3)
+        trajectory, observation = create_trajectory(
+            observation,
+            state.apply_fn,
+            state.params,
+            train_env,
+            rng1,
+            horizon,
+            gamma,
+            lam,
+        )
+        state, losses = train_step(state, trajectory, rng2)
+
+        if step % log_frequency == 0:
+            summary_writer.scalar(&quot;train/loss&quot;, losses[&quot;total&quot;], frame)
+            summary_writer.scalar(&quot;train/loss-actor&quot;, losses[&quot;actor&quot;], frame)
+            summary_writer.scalar(&quot;train/loss-critic&quot;, losses[&quot;critic&quot;], frame)
+            summary_writer.scalar(&quot;train/loss-entropy&quot;, losses[&quot;entropy&quot;], frame)
+            summary_writer.scalar(
+                &quot;train/learning-rate&quot;, state.learning_rate(), frame
+            )
+            summary_writer.scalar(&quot;train/clipping&quot;, state.epsilon(), frame)
+
+        if step % 25 == 0:
+            key, rng = jax.random.split(key, 2)
+            reward = evaluate_model(state, eval_env, eval_episodes, rng)
+            summary_writer.scalar(&quot;train/reward&quot;, reward, frame)
+
+        t.set_description_str(f&quot;loss: {losses['total']}, reward: {reward}&quot;)
+
+        if checkpoint_dir is not None:
+            checkpoints.save_checkpoint(checkpoint_dir, state, frame)
+
+</code></pre>
+<h3 id="results-1">Results</h3>
+<p>Here are the results after training for about 1 day and 18 hrs. After about 1M
+steps, I had changed the evaluation frequency for once every step to once every
+25 steps since the training had slowed to a snail&rsquo;s pace (this is why things
+slightly smooth out in the rewards at 1M steps.)</p>
+<p>Clearly the training is not finished (I stopped because I don&rsquo;t want to train
+for a week!) However, we can see the agent definitely learned. The maximum
+average reward was about 50.</p>
+<p>Additionally, I did no hyperparameter optimization. So there is definitely room
+for improvement. Hyperparameter optimization would just take way too long on my
+single 6GB 2060.</p>
+<p align="center">
+  <img width="600" height="450" src="../images/flappy_bird_stats.png">
+</p>
+<p>Here is a gif of the agent flying through the environment. Keep in mind that we
+are skipping 4 frames at a time so things looks a bit choppy.</p>
+<p align="center">
+  <img width="500" height="500" src="../images/flappy_bird_quarter.gif">
+</p>
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/post/making-some-flapjax/ppo/" rel="next">FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization</a>
+  </div>
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>Last updated on Apr 10, 2022</p>
+
+          
+
+
+
+          
+
+
+
+
+          
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by copyright-license-text">
+    © 2022 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.3d946de2e8784a477845261d87025092.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/r.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/latex.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/rust.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+    <script src="https://cdn.jsdelivr.net/gh/bryanbraun/anchorjs@4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":false}</script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.a2ed145159dd33ad55ff402163350b5d.js"></script>
+
+    
+    
+    
+    
+    
+    
+      
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <script src="/js/wowchemy-publication.b0d291ed6d27eacec233e6cf5204f99a.js" type="module"></script>
+
+
+
+
+
+
+</body>
+</html>

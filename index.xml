@@ -13,6 +13,2591 @@
     </image>
     
     <item>
+      <title>FlapJax Part 1 - Making the game</title>
+      <link>https://loganamorrison.github.io/post/making-some-flapjax/making_the_game/</link>
+      <pubDate>Fri, 08 Apr 2022 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/making-some-flapjax/making_the_game/</guid>
+      <description>&lt;p&gt;The flappy bird game is quite simple. Each step, the user can take one of two
+options: do nothing or flap. There are pipes that slide by which have a gap
+which the player is supposed to go through. If the player hits a pipe, then game
+is over. In the original game, if the player hits the ground, the game is over
+as well. Additionally, the original game allows for the bird to go arbitrarily
+high of the top of the screen. We will deviate from these last two. We will clip
+the player to always be on the screen and allow the player to touch the ground.&lt;/p&gt;
+&lt;p&gt;To implement the game, we will use &lt;code&gt;pygame&lt;/code&gt;. However, much of the dynamics will
+be handled ourselves with basic Python code. We will write a couple classes to
+handle the bird and the pipes as well as a &lt;code&gt;gym&lt;/code&gt;-compatible class for running
+the game. We will be implementing the full game. The final product will look
+like the following:&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+  &lt;img width=&#34;600&#34; height=&#34;450&#34; src=&#34;../images/final_game_img.png&#34;&gt;
+&lt;/p&gt;
+&lt;p&gt;We will grab the game images from &lt;a href=&#34;https://github.com/sourabhv/FlapPyBird&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;this repo&lt;/a&gt;.
+Other than the images, we will use nothing else from that repo. We will be mimicking
+&lt;a href=&#34;https://flappybird.io/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;this version&lt;/a&gt; of the game.&lt;/p&gt;
+&lt;p&gt;We will be using a modular layout for our code structure. The layout will look like:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;.
+├── flappy_bird
+│   ├── core
+│   │   ├── bird.py
+│   │   ├── config.py
+│   │   ├── flappy_game.py
+│   │   ├── flappy.py
+│   │   ├── __init__.py
+│   │   ├── pipe.py
+│   │   ├── render.py
+│   │   ├── resources
+│   │   │   ├── background-base.png
+│   │   │   ├── background-day.png
+│   │   │   ├── background-night.png
+│   │   │   ├── bluebird-downflap.png
+│   │   │   ├── bluebird-midflap.png
+│   │   │   ├── bluebird-upflap.png
+│   │   │   ├── pipe-green.png
+│   │   │   ├── pipe-red.png
+│   │   │   ├── redbird-downflap.png
+│   │   │   ├── redbird-midflap.png
+│   │   │   └── redbird-upflap.png
+│   │   ├── resources.py
+│   │   └── types.py
+│   ├── envs
+│   │   ├── __init__.py
+│   │   └── v1.py
+│   ├── __init__.py
+├── MANIFEST.in
+├── setup.cfg
+└── setup.py
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    While this game works, it is far from optimized. See the possible improvements
+section for my thoughts ways to make things better.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;defining-types-coretypespy&#34;&gt;Defining types &lt;code&gt;core.types.py&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;In this file, we simply define some useful types.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import numpy as np
+import pygame
+
+PyGameImage = pygame.surface.Surface
+PyGameRect = pygame.rect.Rect
+PyGameSurface = pygame.surface.Surface
+
+RngGenerator = np.random.Generator
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;loading-the-resources-coreresourcespy&#34;&gt;Loading the resources &lt;code&gt;core.resources.py&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;Our first job will be to load the images of the game.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import pathlib
+
+import pygame
+
+__all__ = [&amp;quot;background_images&amp;quot;, &amp;quot;pipe_images&amp;quot;, &amp;quot;bird_images&amp;quot;]
+
+
+resources_dir = pathlib.Path(__file__).parent.absolute().joinpath(&amp;quot;resources&amp;quot;)
+
+# Function to make loading a bit less verbose
+def _load_image(name: str):
+    return pygame.image.load(resources_dir.joinpath(name).as_posix())
+
+
+background_images = {
+    &amp;quot;day&amp;quot;: _load_image(&amp;quot;background-day.png&amp;quot;),
+    &amp;quot;night&amp;quot;: _load_image(&amp;quot;background-night.png&amp;quot;),
+    &amp;quot;base&amp;quot;: _load_image(&amp;quot;background-base.png&amp;quot;),
+}
+
+pipe_images = {
+    &amp;quot;red&amp;quot;: _load_image(&amp;quot;pipe-red.png&amp;quot;),
+    &amp;quot;green&amp;quot;: _load_image(&amp;quot;pipe-green.png&amp;quot;),
+}
+
+bird_images = {
+    &amp;quot;blue&amp;quot;: {
+        &amp;quot;upflap&amp;quot;: _load_image(&amp;quot;bluebird-upflap.png&amp;quot;),
+        &amp;quot;midflap&amp;quot;: _load_image(&amp;quot;bluebird-midflap.png&amp;quot;),
+        &amp;quot;downflap&amp;quot;: _load_image(&amp;quot;bluebird-downflap.png&amp;quot;),
+    },
+    &amp;quot;red&amp;quot;: {
+        &amp;quot;upflap&amp;quot;: _load_image(&amp;quot;redbird-upflap.png&amp;quot;),
+        &amp;quot;midflap&amp;quot;: _load_image(&amp;quot;redbird-midflap.png&amp;quot;),
+        &amp;quot;downflap&amp;quot;: _load_image(&amp;quot;redbird-downflap.png&amp;quot;),
+    },
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The images we grabbed are a bit narrow and not quite the shape we want. With
+some experimentation, we can determine the scalings to make the images look
+a bit better. I chose to scale the widths by 5/3. At the end of the day, I
+ended up with the following.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;for key, image in background_images.items():
+    w = image.get_rect().width * 5.0 / 3.0
+    h = image.get_rect().height * (0.714 if key == &amp;quot;base&amp;quot; else 1.25)
+    background_images[key] = pygame.transform.scale(image, (w, h))
+
+
+for key, image in pipe_images.items():
+    w = image.get_rect().width * 5.0 / 3.0
+    h = image.get_rect().height * 1.094
+    pipe_images[key] = pygame.transform.scale(image, (w, h))
+
+
+for color in bird_images.keys():
+    for flap, image in bird_images[color].items():
+        w = image.get_rect().width * 5.0 / 3.0
+        h = image.get_rect().height * 5.0 / 3.0
+        bird_images[color][flap] = pygame.transform.scale(image, (w, h))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;game-configurations-coreconfigpy&#34;&gt;Game configurations &lt;code&gt;core.config.py&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;Next, we will have a class that specifies the configuration of the game.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import json
+from typing import Optional, Tuple
+
+import attrs
+from attrs import field, validators
+
+def gt_or_none(value):
+    def f(*args):
+        val = args[-1]
+        assert val is None or val &amp;gt; value, f&amp;quot;Value must be None or &amp;gt;= {value}&amp;quot;
+
+    return f
+
+@attrs.define
+class FlappyBirdConfig:
+    &amp;quot;&amp;quot;&amp;quot;
+    Configuration for the FlappyBird game.
+
+    Attributes
+    ----------
+    bird_color: str
+        Color of the bird. Can be &#39;blue&#39; or &#39;red&#39;.
+    bird_jump_velocity: float
+        Velocity of the bird after flap.
+    bird_jump_frequency: int
+        Number of steps before bird can falp again.
+    bird_start_position: Tuple[int, int]
+        Starting position of the bird.
+    bird_dead_on_hit_ground: bool
+        If True, game is over when bird hits the ground.
+    bird_max_speed: Optional[float]
+        If not None, the bird&#39;s speed cannot exceed `bird_max_speed`.
+    bird_rotate: bool
+        If True, the bird will rotate as it moves.
+
+    pipe_color: str
+        Color of the pipes. Can be &#39;green&#39; or &#39;red&#39;.
+    pipe_speed: float
+        Speed of the pipes.
+    pipe_gap_size: int
+        Size of gap between pipes.
+    pipe_spacing: int
+        Space between pipes.
+
+    background: str
+        Type of background. Can be &#39;day&#39; or &#39;night&#39;.
+    hide_screen: bool
+        If True, the screen will not be displayed.
+    show_score: bool
+        If True, the score will be displayed.
+    show_game_over_screen: bool
+        If True, the game-over screen will be displayed.
+
+    gravity: float
+        Gravitational acceleration.
+    dt: float
+        Time between frames.
+    fps: int
+        Frames per second of the game.
+    &amp;quot;&amp;quot;&amp;quot;
+
+    bird_color: str = field(default=&amp;quot;blue&amp;quot;, validator=validators.in_([&amp;quot;blue&amp;quot;, &amp;quot;red&amp;quot;]))
+    bird_jump_velocity: float = field(default=4.0, validator=validators.gt(0.0))
+    bird_jump_frequency: int = field(default=7, validator=validators.ge(0))
+    bird_start_position: Tuple[int, int] = field(default=(100, 250))
+    bird_dead_on_hit_ground: bool = field(default=True)
+    bird_constrained_to_screen: bool = field(default=True)
+    bird_max_speed: Optional[float] = field(default=None, validator=gt_or_none(0.0))
+    bird_rotate: bool = field(default=True)
+
+    pipe_color: str = field(default=&amp;quot;green&amp;quot;, validator=validators.in_([&amp;quot;red&amp;quot;, &amp;quot;green&amp;quot;]))
+    pipe_speed: float = field(default=3, validator=validators.gt(0))
+    pipe_gap_size: int = field(default=150, validator=validators.gt(0))
+    pipe_spacing: int = field(default=200, validator=validators.gt(0))
+
+    background: str = field(default=&amp;quot;day&amp;quot;, validator=validators.in_([&amp;quot;day&amp;quot;, &amp;quot;night&amp;quot;]))
+    hide_screen: bool = field(default=False)
+    show_score: bool = field(default=True)
+    show_game_over_screen: bool = field(default=True)
+
+    gravity: float = field(default=2.0 / 5.0, validator=validators.gt(0.0))
+    dt: float = field(default=1.0, validator=validators.gt(0.0))
+    fps: Optional[int] = field(default=60, validator=gt_or_none(0))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;making-the-bird-corebirdpy&#34;&gt;Making the bird &lt;code&gt;core.bird.py&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;Possibly the most important logic of the game is the bird. We will use Newton&amp;rsquo;s
+2nd law and Euler steps to model the dynamics of our bird. We assume that there
+is a constant gravitational force. In addition, we will fix the horizontal
+position of the bird. All motion will be in the vertical direction.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+  &lt;img width=&#34;600&#34; height=&#34;450&#34; src=&#34;../images/bird_annotated.png&#34;&gt;
+&lt;/p&gt;
+&lt;p&gt;In this case, the acceleration of the bird will be constant and equal to the
+gravitational acceleration. The differential equations for the y-components of
+position and velocity are simply:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \dv{y}{t} &amp;= v_{y}, &amp; \dv{v_{y}}{t} &amp;= -g
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;We will update the position and velocity using an Euler step:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    y_{t+1} &amp;= y_{t} + v_{y}\Delta t, &amp; v_{y,t+1} &amp;= v_{y,t} - g \Delta t
+\end{align}
+$$
+&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    We need to note that in &lt;strong&gt;pygame&lt;/strong&gt; (and most frameworks) the vertical direction is
+flipped so that a the top of the screen is $y=0$ while the bottom is $y=H_{\mathrm{screen}}$.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;For simplicity, we will set $\Delta t = 1$ and tune the other parameters to give
+a natural feel to the motion. We need to know how to handle the bird&amp;rsquo;s flap.
+Technically, we should use an impulse. In the case of a $\delta$-function
+impulse, we would get a constant shift in the velocity. Instead of doing this,
+we will simply change the velocity to some fixed value after a flap (we could
+think about this as a $\delta$-function impulse with a strength equal to the
+current velocity plus a constant off-set.) Explicitly, after a flap, we will
+change the velocity to a fixed value $\bar{v}$&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    v_{y,t+1} = \begin{cases}
+    v_{y,t} - g, &amp; \text{no flap}\\
+    \bar{v}, &amp; \mathrm{flap}
+    \end{cases}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;In addition to linear motion, we will also allow for rotation. We will assume a
+constant angular velocity $\omega$. Then the angular equation of motion and its update is:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+    \dv{\theta}{t} &amp;= \omega, &amp;
+    \theta_{t+1} &amp;= \theta_{t} + \omega\Delta t
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;When the bird flaps, we will instantaniously change the angle to 45 degrees.&lt;/p&gt;
+&lt;p&gt;To give our bird a flapping animation, after the bird flaps, we will switch between the
+&lt;code&gt;upflap&lt;/code&gt; and &lt;code&gt;downflap&lt;/code&gt; images. For reference, the bird images are as follows:&lt;/p&gt;
+&lt;div class=&#34;row&#34;&gt;
+    &lt;style&gt;
+        .column {
+            float: left;
+            width:33%;
+            padding: 5px;
+        }
+    &lt;/style&gt;
+    &lt;div class=&#34;column&#34;&gt;
+        &lt;img width=&#34;32&#34; height=&#34;32&#34; src=&#34;../images/bluebird-midflap.png&#34; alt=&#34;&#34;/&gt;
+        &lt;p align=&#34;center&#34;&gt;mid-flap&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;column&#34;&gt;
+        &lt;img width=&#34;32&#34; height=&#34;32&#34; src=&#34;../images/bluebird-downflap.png&#34; alt=&#34;&#34;/&gt;
+        &lt;p align=&#34;center&#34;&gt;down-flap&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;column&#34;&gt;
+        &lt;img width=&#34;32&#34; height=&#34;32&#34; src=&#34;../images/bluebird-upflap.png&#34; alt=&#34;&#34;/&gt;
+        &lt;p align=&#34;center&#34;&gt;up-flap&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt; 
+&lt;p&gt;Without further delay, let&amp;rsquo;s write down our bird class:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from typing import Optional
+import numpy as np
+import pygame
+
+from .config import FlappyBirdConfig
+from .resources import bird_images
+from .types import PyGameImage, PyGameRect, PyGameSurface
+
+
+class Bird:
+    def __init__(self, x0, y0, window_height, config: FlappyBirdConfig):
+        # Config
+        self.jump_velocity = config.bird_jump_velocity
+        self.jump_frequency = config.bird_jump_frequency
+        self.gravity = config.gravity
+        # Angular velocity. Set such that it will look like its flappy until it
+        # reaches its max height.
+        self.omega = 45.0 * self.gravity / (2 * self.jump_velocity)
+        self.images = bird_images[config.bird_color]
+        self.image: PyGameImage = self.images[&amp;quot;midflap&amp;quot;]
+        self.dt = config.dt
+        self.x0 = x0
+        self.y0 = y0
+        self.window_height = window_height
+        self.rotate = config.bird_rotate
+        self.max_speed: Optional[float] = config.bird_max_speed
+        # Number of flaps it takes to reach max height after a flap
+        self.num_flaps = int(np.ceil(self.jump_velocity / (self.gravity * self.dt)))
+
+        # State
+        self.x = x0
+        self.y = y0
+        self.velocity_y = 0.0
+        self.angle = 0.0
+        self.jump_counter = 0 # Counter to limit jumps (flaps)
+        self.flap_counter = 0 # Counter for determinings which image to display
+        self.flap_type: str = &amp;quot;midflap&amp;quot;
+
+        self.reset()
+
+    @property
+    def left(self) -&amp;gt; int:
+        # left side of image
+        return int(self.x - self.image.get_width() / 2.0)
+
+    @property
+    def right(self) -&amp;gt; int:
+        # right side of image
+        return int(self.x + self.image.get_width() / 2.0)
+
+    @property
+    def top(self) -&amp;gt; int:
+        # top side of image
+        return int(self.y - self.image.get_height() / 2.0)
+
+    @property
+    def bottom(self) -&amp;gt; int:
+        # bottom side of image
+        return int(self.y + self.image.get_height() / 2.0)
+
+    def reset(self):
+        # Reset to initial state
+        self.x = self.x0
+        self.y = self.y0
+        self.velocity_y = 0.0
+        self.dead = False
+        self.angle = 0.0
+        self.jump_counter = 0
+
+    def flap(self):
+        # If jump_counter == 0, we can flap!
+        if self.jump_counter == 0:
+            self.velocity_y = -self.jump_velocity
+            self.jump_velocity = self.jump_frequency
+            self.angle = 45.0
+            self.flap_type = &amp;quot;upflap&amp;quot;
+            self.image = self.images[self.flap_type]
+            self.flap_counter = self.num_flaps
+            self.jump_counter = self.jump_frequency
+
+    def step(self, action: int):
+        # Set the image based on flap_counter
+        if self.flap_counter &amp;gt; 0:
+            # If flap_counter &amp;gt; 0, we are flapping. Osscilate between upflap and
+            # downflap.
+            self.flap_counter -= 1
+            if self.flap_type == &amp;quot;upflap&amp;quot;:
+                self.flap_type = &amp;quot;downflap&amp;quot;
+            elif self.flap_type == &amp;quot;downflap&amp;quot;:
+                self.flap_type = &amp;quot;upflap&amp;quot;
+            self.image = self.images[self.flap_type]
+        else:
+            self.flap_type = &amp;quot;midflap&amp;quot;
+            self.image = self.images[&amp;quot;midflap&amp;quot;]
+
+        # Update jump_counter
+        if self.jump_counter &amp;gt; 0:
+            self.jump_counter -= 1
+
+        if action == 1:
+            self.flap()
+
+        # Apply Euler steps
+        self.angle = np.clip(self.angle - self.omega * self.dt, -90.0, 45.0)
+        self.y += self.velocity_y * self.dt
+        self.velocity_y += self.gravity * self.dt
+
+        # Limit speed if requested
+        if self.max_speed is not None:
+            maxv = abs(self.max_speed)
+            self.velocity_y = np.clip(self.velocity_y, -maxv, maxv)
+
+        # Limit bird position to be on screen. If we hit the boundaries, set
+        # velocity to zero.
+        ymax = self.window_height - self.image.get_height() / 2.0
+        if self.y &amp;gt; ymax:
+            self.velocity_y = 0.0
+            self.y = ymax
+        if self.y &amp;lt; 0.0:
+            self.y = 0.0
+            self.velocity_y = 0.0
+
+    @property
+    def rect(self) -&amp;gt; PyGameRect:
+        # Get the pygame rect (used for collision detection)
+        rect = self.image.get_rect()
+        rect.left = self.left
+        rect.top = self.top
+        return rect
+
+    def draw(self, surface: PyGameSurface) -&amp;gt; None:
+        # Draw the bird to the surface
+        image = self.image
+        rect = self.rect
+        if self.rotate:
+            image = pygame.transform.rotate(image, self.angle)
+        surface.blit(image, rect)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;making-the-pipes-corepipespy&#34;&gt;Making the pipes &lt;code&gt;core.pipes.py&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;Our next goal is to implement the pipes. The pipe dynamics are very simple
+compared to the bird dynamics. The pipes will simply move to the left. However,
+there are a few things we need to consider. First, we want the location of the
+gap (where the bird can fly through) to be random. Second, our images of the
+pipes have a finite height, and we want the pipes to fit on the screen.&lt;/p&gt;
+&lt;p&gt;Let $h$ be the total height one segement of the pipe (upper or lower pipe). Let
+$H$ be the height from the top of the screen to the ground. Lastly, let $G$ be
+the height of the gap between the upper and lower pipe. Here is an annotated
+image with these measurements (aside from $h$ since part of the pipe is hidden.)&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+  &lt;img width=&#34;600&#34; height=&#34;450&#34; src=&#34;../images/pipe_annotated.png&#34;&gt;
+&lt;/p&gt;
+&lt;p&gt;We might be tempted to choose the center between the upper can lower pipes to be
+a random number between $0$ and $H$.  However, since $h &amp;lt; H_{g}$, this could
+cause part of either the upper or lower pipe to be off the screen. To ensure the
+pipes are completely on the screen, the center must be between:&lt;/p&gt;
+&lt;p&gt;
+$$
+h_{\mathrm{min}} = H - h - G/2 &lt; h_{c} &lt; h + G / 2 = h_{\mathrm{max}} 
+$$
+&lt;/p&gt;
+&lt;p&gt;Now that we know the limits, we can choose a random number between
+$h_{\mathrm{min}} &amp;lt; h_{c} &amp;lt; h_{\mathrm{max}}$ for the location of the center.
+Once we know the center, we then set the location of the bottom of the top pipe
+$h_{t} = h_{c} - G/2$ and the location of the top of the bottom pipe to
+$h_{b} =h_{c} + G/2$.&lt;/p&gt;
+&lt;p&gt;This is all we need to implement the &lt;code&gt;Pipe&lt;/code&gt; class. Note that we only have one
+image for the pipes. So for the top pipe, we need to rotate the image by $180$
+degrees to make it look likes its coming from above.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import pygame
+
+from .config import FlappyBirdConfig
+from .resources import pipe_images
+from .types import PyGameImage, PyGameSurface, RngGenerator
+
+
+class Pipe:
+    def __init__(
+        self,
+        config: FlappyBirdConfig,
+        x: float,
+        ymin: float,
+        ymax: float,
+        rng: RngGenerator,
+    ):
+        # Config
+        self.gap_size = config.pipe_gap_size
+        self.velocity_x = config.pipe_speed
+        self.ymin = ymin
+        self.ymax = ymax
+        image: PyGameImage = pipe_images[config.pipe_color]
+        self.top_image = pygame.transform.rotate(image, 180.0)
+        self.top_rect = self.top_image.get_rect()
+        self.bottom_image = image
+        self.bottom_rect = self.bottom_image.get_rect()
+        self.width = self.top_rect.width
+        self.dt = config.dt
+
+        # State
+        self.x = x
+        self.y = 0.0
+        self.reset(x, rng)
+
+    def step(self) -&amp;gt; None:
+        self.x -= self.velocity_x * self.dt
+        left = int(self.left)
+        self.top_rect.left = left
+        self.bottom_rect.left = left
+
+    def reset(self, x, rng: RngGenerator) -&amp;gt; None:
+        self.x = x
+        self.y = rng.uniform(low=self.ymin, high=self.ymax)
+
+        left = int(self.left)
+        self.top_rect.left = left
+        self.top_rect.bottom = int(self.y - self.gap_size / 2.0)
+
+        self.bottom_rect.left = left
+        self.bottom_rect.top = self.top_rect.bottom + self.gap_size
+
+    def draw(self, surface: PyGameSurface):
+        surface.blit(self.top_image, self.top_rect)
+        surface.blit(self.bottom_image, self.bottom_rect)
+
+    @property
+    def left(self) -&amp;gt; float:
+        return self.x - self.width / 2.0
+
+    @property
+    def right(self) -&amp;gt; float:
+        return self.x + self.width / 2.0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;game-logic-coreflappypy&#34;&gt;Game Logic &lt;code&gt;core.flappy.py&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;Now that we have the &lt;code&gt;Bird&lt;/code&gt; and &lt;code&gt;Pipe&lt;/code&gt; classes, we&amp;rsquo;re ready to implement the
+main game logic. The dynamics of the bird and individual pipes is handled by
+these classes. However, our main class will handle having multiple pipes.&lt;/p&gt;
+&lt;p&gt;We want the game to appear as if there is a continuous stream of pipes. To
+achieve this, we will hold onto multiple pipes. When a pipe moves past the
+left-side of the screen, we will move that pipe to a position beyond the pipe
+furthest to the right. Explicitly,&lt;/p&gt;
+&lt;p&gt;
+$$
+\ell^{(i)}_{t+1} = \begin{cases}
+    \ell^{(i)}_{t} + v_{p}\Delta t &amp; \ell^{(i)}_{t} &gt; 0\\
+    \ell^{(i-1)}_{t} + \delta &amp; \ell^{(i)}_{t} &lt; 0
+\end{cases}
+$$
+&lt;/p&gt;
+&lt;p&gt;where $\ell^{(i)}_{t}$ is the location of the left-side of pipe $i$ at the
+current step. When $\ell^{(i)}_{t} &amp;gt; 0$, we just let the class handle the
+motion (just use Euler step.) When $\ell^{(i)}_{t} &amp;lt; 0$, the pipe has moved
+beyond the left-side of the screen. We then set the new location of the
+left-edge of the pipe to be some shift $\delta$ beyond the pipe before it in the
+queue. The shift $\delta$ is equal to the pipe-width plus the pipe-spacing.&lt;/p&gt;
+&lt;p&gt;We also need to ensure the number of pipes in our queue is large enough to keep
+the flow steady with a consistent spacing between the pipe. We use
+$\mathrm{ceil}(W / (w + w_{p}))$, where $w$ is the pipe-spacing and $w_{p}$ is
+the width of a pipe.&lt;/p&gt;
+&lt;p&gt;This is essentially all we need to implement the game. We use &lt;strong&gt;pygame&lt;/strong&gt;&amp;rsquo;s
+collision detection to determine if the bird hits anything. We also detect if
+the bird has moved passed a pipe by comparing the positions of the bird and
+pipe in front of the bird. We also use &lt;strong&gt;pygame&lt;/strong&gt;&amp;rsquo;s interface to render the
+screen. Since this isn&amp;rsquo;t a post about &lt;strong&gt;pygame&lt;/strong&gt;, we will not dig into these
+aspects.&lt;/p&gt;
+&lt;p&gt;In the implementation below, we added a few bells and whistles. We added some
+dynamics for the base to make it appear as if the screen is moving to the left.
+Additionally, we added functionality to display the score and a game-over screen
+to display the current score and maximum score obtained using the current
+instance of the game. The scoring and game-over screen are mainly to replicate
+existing implementations and are only used in &lt;em&gt;human&lt;/em&gt; mode.&lt;/p&gt;
+&lt;p&gt;We note, however, the &lt;code&gt;step&lt;/code&gt; function. This function records if the bird hit the
+ground, a pipe or if the bird passed a pipe. It then returns a dictionary with
+this information. That way, other classes may choose how to use this information
+to decided what to do next.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from typing import List, Optional
+
+import numpy as np
+import pygame
+
+from .bird import Bird
+from .config import FlappyBirdConfig
+from .pipe import Pipe
+from .resources import background_images, pipe_images
+from .types import PyGameImage, PyGameSurface, RngGenerator
+
+
+class FlappyBird:
+    def __init__(self, config: FlappyBirdConfig, rng: Optional[RngGenerator] = None):
+        # Config
+        self.dead_on_hit_ground = config.bird_dead_on_hit_ground
+        self.bird_constrained_to_screen = config.bird_constrained_to_screen
+        self.background: PyGameImage = background_images[config.background]
+        self.base: PyGameImage = background_images[&amp;quot;base&amp;quot;]
+        self.hide_screen = config.hide_screen
+        self.show_score = config.show_score
+        self.fps = config.fps
+        if rng is None:
+            self.rng = np.random.default_rng()
+
+        # Screen/PyGame init
+        pygame.init()
+        pygame.display.init()
+        self.screen: Optional[PyGameSurface] = None
+        self.width = self.background.get_width()
+        self.height = self.background.get_height()  # + self.base.get_height()
+        self.rect = pygame.rect.Rect(0, 0, self.width, self.height)
+        self.y_ground = self.background.get_height() - self.base.get_height()
+
+        # Setup bases
+        self.base_rects = [self.base.get_rect() for _ in range(3)]
+        for i, rect in enumerate(self.base_rects):
+            rect.top = self.y_ground
+            rect.left = i * rect.width
+
+        # Bird setup
+        x0 = self.width / 2.0
+        y0 = self.background.get_height() / 2.0
+        self.bird = Bird(x0, y0, self.background.get_height(), config)
+
+        # Pipe setup
+        pipe_rect = pipe_images[config.pipe_color].get_rect()
+        self.pipe_spacing = config.pipe_spacing
+        self.pipe_gap_size = config.pipe_gap_size
+        self.pipe_width = pipe_rect.width
+        self.pipe_speed = config.pipe_speed
+        npipes = int(np.ceil(self.width / (self.pipe_spacing + self.pipe_width)))
+
+        bkg_h = self.background.get_height()
+        ymin = bkg_h - pipe_rect.height - self.pipe_gap_size / 2.0
+        ymax = pipe_rect.height + self.pipe_gap_size / 2.0
+        shift = self.width + self.pipe_width / 2.0
+
+        self.pipes: List[Pipe] = []
+        for i in range(npipes):
+            x = shift + i * (self.pipe_width + self.pipe_spacing)
+            self.pipes.append(Pipe(config, x, ymin, ymax, self.rng))
+
+        # Game state
+        self.game_over = False
+        self.score = 0
+        self.next_pipe = 0
+        self.best_score = 0
+        self.clock = pygame.time.Clock()
+
+    def flap(self):
+        self.bird.flap()
+
+    def step(self, action: int):
+        assert action in [0, 1], &amp;quot;Invalid action. Must be 0 or 1.&amp;quot;
+        state = {&amp;quot;reward&amp;quot;: 0, &amp;quot;hit-pipe&amp;quot;: False, &amp;quot;hit-ground&amp;quot;: False}
+
+        self.bird.step(action)
+
+        for i, pipe in enumerate(self.pipes):
+            pipe.step()
+
+            if pipe.right &amp;lt; 0.0:
+                # New left position of the pipe
+                left = self.pipes[i - 1].right + self.pipe_spacing
+                # Make sure the new pipe starts off the screen
+                left = np.clip(left, self.width, None)
+                pipe.reset(left, self.rng)
+
+        # Detect if player has passed a pipe
+        if self.bird.left &amp;gt; self.pipes[self.next_pipe].right:
+            self.next_pipe = (self.next_pipe + 1) % len(self.pipes)
+            state[&amp;quot;reward&amp;quot;] = 1
+
+        # Detect if bird hit a pipe
+        for pipe in self.pipes:
+            if pipe.top_rect.colliderect(self.bird.rect):
+                state[&amp;quot;hit-pipe&amp;quot;] = True
+            if pipe.bottom_rect.colliderect(self.bird.rect):
+                state[&amp;quot;hit-pipe&amp;quot;] = True
+
+        # detect if bird hit ground
+        if self.bird.rect.bottom &amp;gt; self.y_ground:
+            state[&amp;quot;hit-ground&amp;quot;] = True
+
+        self.score += state[&amp;quot;reward&amp;quot;]
+
+        return state
+
+    def _render(self, hidden: Optional[bool] = None):
+        force_reinit = False
+        if not (self.hide_screen == hidden):
+            self.hide_screen = hidden
+            force_reinit = True
+
+        if self.screen is None or force_reinit:
+            pygame.init()
+            pygame.display.init()
+            mode = pygame.SHOWN if not self.hide_screen else pygame.HIDDEN
+            self.screen = pygame.display.set_mode(self.rect.size, flags=mode)
+
+        self.screen.fill((0, 0, 0))
+        self.screen.blit(self.background, (0, 0))
+
+        self.bird.draw(self.screen)
+
+        for pipe in self.pipes:
+            pipe.draw(self.screen)
+
+        # Step bases
+        for i, base_rect in enumerate(self.base_rects):
+            base_rect.left -= int(self.pipe_speed)
+            if base_rect.right &amp;lt; 0:
+                base_rect.left = self.base_rects[i - 1].right - int(self.pipe_speed)
+            self.screen.blit(self.base, base_rect)
+
+    def _flip(self):
+        if not self.hide_screen:
+            pygame.event.pump()
+            if self.fps is not None:
+                self.clock.tick(self.fps)
+            pygame.display.flip()
+
+    def render(self, hidden: Optional[bool] = None):
+        self._render(hidden)
+        assert self.screen is not None
+
+        if self.show_score:
+            score = pygame.font.Font(&amp;quot;freesansbold.ttf&amp;quot;, 32).render(
+                f&amp;quot;{self.score}&amp;quot;, True, (255, 255, 255)
+            )
+            rect = score.get_rect()
+            rect.left = self.background.get_rect().left + 5
+            rect.top = self.background.get_rect().top + 5
+            self.screen.blit(score, rect)
+
+        self._flip()
+
+    def game_over_screen(self, hidden: Optional[bool] = None):
+        self._render(hidden)
+        assert self.screen is not None
+
+        if self.show_score:
+            score = pygame.font.Font(&amp;quot;freesansbold.ttf&amp;quot;, 32).render(
+                f&amp;quot;Score: {self.score}&amp;quot;, True, (255, 255, 255)
+            )
+            rect = score.get_rect()
+            rect.left = self.background.get_rect().width // 2 - rect.width // 2
+            rect.top = self.background.get_rect().height // 3
+            self.screen.blit(score, rect)
+
+            best_score = pygame.font.Font(&amp;quot;freesansbold.ttf&amp;quot;, 32).render(
+                f&amp;quot;Best Score: {self.best_score}&amp;quot;, True, (255, 255, 255)
+            )
+            rect = best_score.get_rect()
+            rect.left = self.background.get_rect().width // 2 - rect.width // 2
+            rect.top = self.background.get_rect().height // 3 + 40
+            self.screen.blit(best_score, rect)
+
+        self._flip()
+
+    def reset(self):
+        self.bird.reset()
+
+        shift = self.width + self.pipe_width / 2.0
+        for i, pipe in enumerate(self.pipes):
+            x = shift + i * (self.pipe_spacing + pipe.top_rect.width)
+            pipe.reset(x, self.rng)
+
+        self.base_rects = [self.base.get_rect() for _ in range(3)]
+        for i, rect in enumerate(self.base_rects):
+            rect.top = self.y_ground
+            rect.left = i * rect.width
+
+        self.game_over = False
+        self.score = 0
+        self.next_pipe = 0
+
+    def close(self):
+        self.screen = None
+        pygame.display.quit()
+        pygame.quit()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;game-environment-envsv1py&#34;&gt;Game environment &lt;code&gt;envs.v1.py&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;Before we train a network to play, we will make an class that implements the
+&lt;code&gt;gym&lt;/code&gt; interface. In the &lt;code&gt;v1&lt;/code&gt; class, we say the game is over if the bird hits a
+pipe or if the bird touches the ground. We remove the frame rate to make things
+go as fast as possible. Additionally, we hide the screen so nothing is
+displayed. (Rendering to the screen just takes more time and is annoying when
+you used a window manager like xmonad, which I do.)&lt;/p&gt;
+&lt;p&gt;There is really only one aspect that is worth mentioning. We need to convert the
+&lt;strong&gt;pygame&lt;/strong&gt; screen into a numpy array to pass to our network. To do this, we used
+*&lt;strong&gt;pygame&lt;/strong&gt;&amp;rsquo;s &lt;code&gt;surfarray.pixels3d&lt;/code&gt; function. Since we will be used &lt;strong&gt;flax&lt;/strong&gt; to
+implement our network, we need to transpose the output of &lt;code&gt;surfarray.pixels3d&lt;/code&gt;.
+&lt;code&gt;surfarray.pixels3d&lt;/code&gt; returns an image of shape &lt;code&gt;(W,H,C)&lt;/code&gt;, while we want &lt;code&gt;(H,W,C)&lt;/code&gt;.
+We use &lt;code&gt;np.transpose(...,axes=(1,0,2)&lt;/code&gt; to achieve this.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;from typing import Tuple
+
+import gym
+import numpy as np
+import pygame
+from gym import spaces
+
+from flappy_bird.core.config import FlappyBirdConfig
+from flappy_bird.core.flappy import FlappyBird
+
+ActType = int
+ObsType = np.ndarray
+
+config = FlappyBirdConfig(
+    bird_color=&amp;quot;blue&amp;quot;,
+    bird_jump_velocity=4.0,
+    bird_jump_frequency=4,
+    bird_dead_on_hit_ground=True,
+    bird_max_speed=None,
+    bird_rotate=True,
+    pipe_color=&amp;quot;green&amp;quot;,
+    pipe_speed=3,
+    pipe_gap_size=150,
+    pipe_spacing=200,
+    background=&amp;quot;day&amp;quot;,
+    hide_screen=True,
+    show_score=False,
+    show_game_over_screen=False,
+    gravity=0.4,
+    dt=1.0,
+    fps=None,
+)
+
+
+class FlappyBirdEnvV0(gym.Env):
+    metadate = {&amp;quot;render.modes&amp;quot;: [&amp;quot;human&amp;quot;, &amp;quot;none&amp;quot;]}
+
+    def __init__(self) -&amp;gt; None:
+        self.flappy = FlappyBird(config)
+        self.show_game_over_screen = config.show_game_over_screen
+        self.bird_dead_on_hit_ground = config.bird_dead_on_hit_ground
+        self.grayscale = config.grayscale
+        self.hide_screen = config.hide_screen
+
+        shape = (self.flappy.height, self.flappy.width, 3)
+
+        self.observation_space = spaces.Box(
+            low=0, high=255, shape=shape, dtype=np.uint8
+        )
+        self.action_space = spaces.Discrete(2)
+
+        self.game_over = True
+
+    def _observation(self):
+        self.flappy._render(self.hide_screen)
+        assert self.flappy.screen is not None
+
+        obs = np.array(pygame.surfarray.pixels3d(self.flappy.screen), dtype=np.uint8)
+        return np.transpose(obs, axes=(1, 0, 2))
+
+    def step(self, action: ActType) -&amp;gt; Tuple[ObsType, float, bool, dict]:
+        assert not self.game_over, &amp;quot;Call reset before step.&amp;quot;
+        state = self.flappy.step(action)
+
+        if state[&amp;quot;hit-pipe&amp;quot;]:
+            self.game_over = True
+
+        if state[&amp;quot;hit-ground&amp;quot;] and self.bird_dead_on_hit_ground:
+            self.game_over = True
+
+        obs = self._observation()
+        reward = state[&amp;quot;reward&amp;quot;]
+        done = self.game_over
+        info = dict()
+
+        return obs, reward, done, info
+
+    def render(self, mode: str = &amp;quot;none&amp;quot;):
+        hidden = mode == &amp;quot;none&amp;quot;
+        if self.game_over and self.show_game_over_screen:
+            self.flappy.game_over_screen(hidden)
+        else:
+            self.flappy.render(hidden)
+
+    def close(self) -&amp;gt; None:
+        self.flappy.close()
+
+    def reset(self) -&amp;gt; ObsType:
+        self.flappy.reset()
+        self.game_over = False
+        return self._observation()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;bonus-game-for-human-play-coreflappy_gamepy&#34;&gt;Bonus: Game for human play &lt;code&gt;core.flappy_game.py&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;It is really important to determine visualize the game. This is essential for
+determining if the parameters, such as, gravitational acceleration, the bird
+jump velocity, pipe gap size, pipe spacing, etc. are set to reasonable values.
+Perhaps the best way of doing so is do make the game playable by a human and
+play it. For this purpose, we provide the &lt;code&gt;FlappyBirdGame&lt;/code&gt; class.&lt;/p&gt;
+&lt;p&gt;This class uses &lt;strong&gt;pygame&lt;/strong&gt;&amp;rsquo;s &lt;code&gt;event&lt;/code&gt; module to parse keyboard input to allow the
+user to make the bird jump. It uses a couple of features that the AI version
+doesn&amp;rsquo;t, such as the game over screen and score. It also adds some animations
+before the start of the game.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import numpy as np
+import pygame
+
+from .config import FlappyBirdConfig
+from .flappy import FlappyBird
+
+CONFIG = FlappyBirdConfig(
+    bird_color=&amp;quot;blue&amp;quot;,
+    bird_jump_velocity=4.0,
+    bird_jump_frequency=7,
+    bird_dead_on_hit_ground=True,
+    bird_max_speed=None,
+    bird_rotate=True,
+    pipe_color=&amp;quot;green&amp;quot;,
+    pipe_speed=3,
+    pipe_gap_size=150,
+    pipe_spacing=200,
+    background=&amp;quot;day&amp;quot;,
+    hide_screen=False,
+    show_score=True,
+    gravity=0.4,
+    dt=1.0,
+    fps=60,
+)
+
+
+class FlappyBirdGame:
+    def __init__(self):
+        self.game = FlappyBird(CONFIG)
+        self.action_keys = [pygame.K_SPACE, pygame.K_UP, pygame.K_KP_ENTER]
+        self.game_over = False
+
+    def _step(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key in self.action_keys:
+                    return self.game.step(1)
+        return self.game.step(0)
+
+    def step(self):
+        assert not self.game_over, &amp;quot;Game is over. Call reset.&amp;quot;
+        state = self._step()
+        if state[&amp;quot;hit-ground&amp;quot;] or state[&amp;quot;hit-pipe&amp;quot;]:
+            self.game_over = True
+
+    def render(self):
+        self.game.render()
+
+    def reset(self):
+        self.game.reset()
+        self.game_over = False
+
+    def _play(self):
+        while not self.game_over:
+            self.step()
+            self.render()
+
+    def _get_key_press(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                return event.key
+        return None
+
+    def game_over_screen(self) -&amp;gt; None:
+        self.game.game_over_screen()
+        while True:
+            key = self._get_key_press()
+            if key is not None:
+                return
+
+    def play(self):
+        oscillate_amp = 5
+        oscillate_period = 50
+        t = 0
+
+        # This loop waits for an action key to pressed. While waiting, the bird
+        # will appear to oscillate up and down. Once the game starts, we hand
+        # off control to _play. Once finished, we hand off control to the
+        # game-over screen. Onces returned, we reset and wait for input.
+        y0 = self.game.bird.y
+        while True:
+            self.render()
+            key = self._get_key_press()
+            if key is not None:
+                if key in self.action_keys:
+                    self._play()
+                    self.game_over_screen()
+                    self.reset()
+                    y0 = self.game.bird.y
+                elif key == pygame.K_ESCAPE:
+                    self.game.close()
+                    return
+
+            self.game.bird.y = y0 + oscillate_amp * np.sin(2 * np.pi * t / oscillate_period)
+            t = (t + 1) % oscillate_period
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;possible-improvements&#34;&gt;Possible Improvements&lt;/h3&gt;
+&lt;p&gt;This implementation works perfectly fine for human play. However, it becomes a
+bit more obvious how slow it is when the AI is training. Here are my thoughts on
+how things &lt;em&gt;might&lt;/em&gt; be improved.&lt;/p&gt;
+&lt;h4 id=&#34;collision-detection&#34;&gt;Collision detection&lt;/h4&gt;
+&lt;p&gt;First, one thing I would have liked to change is the collision detection. When
+the bird is rotated, the collisions do not see obvious. Sometimes the bird image
+can go through a pipe while escaping the collision detection. The collision
+detection might be improved by constructing a polygon around the bird and
+detecting an intersection of the polygon with the ground or pipe. However, this
+might slow things down more. But it would be more pleasing.&lt;/p&gt;
+&lt;h4 id=&#34;sprites&#34;&gt;Sprites?&lt;/h4&gt;
+&lt;p&gt;As one can tell from the implementation, we did not use the &lt;strong&gt;pygame&lt;/strong&gt; &lt;code&gt;sprite&lt;/code&gt;
+module. It is possible that using the sprite module &lt;em&gt;might&lt;/em&gt; improve the
+performance for rendering the screen since groups of sprites can be drawn at
+once, reducing the switching back and forth between the underlying c code and
+python.&lt;/p&gt;
+&lt;h4 id=&#34;pyglet&#34;&gt;Pyglet?&lt;/h4&gt;
+&lt;p&gt;The code might be faster using a newer package such as &lt;strong&gt;pyglet&lt;/strong&gt;. It was a bit
+less obvious how to control a game using an AI using a &lt;strong&gt;pyglet&lt;/strong&gt;
+implementation, so it was not used here. However, &lt;strong&gt;pyglet&lt;/strong&gt; might be faster.&lt;/p&gt;
+&lt;h4 id=&#34;opengl-pil-opencv&#34;&gt;OpenGL, PIL, OpenCV&lt;/h4&gt;
+&lt;p&gt;The game is quite simple. All the dynamics can be handled in python. The only
+place where &lt;strong&gt;pygame&lt;/strong&gt; came in was in collision detection and rendering. The
+collision detection with rectangles is simple and can be implemented ourselves.
+However, the rendering is less trivial. This is where &lt;strong&gt;pygame&lt;/strong&gt; really came
+into play (and in a couple places for font rendering for the human version.)&lt;/p&gt;
+&lt;p&gt;Rendering might be made faster by directly communicating with OpenGL. Or one
+might try using &lt;code&gt;PIL&lt;/code&gt; (the Pillow library) or &lt;code&gt;cv2&lt;/code&gt; (OpenCV). The require a bit
+more manual labor than &lt;strong&gt;pygame&lt;/strong&gt;, but may yield performance gains (or maybe
+not).&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization</title>
+      <link>https://loganamorrison.github.io/post/making-some-flapjax/ppo/</link>
+      <pubDate>Sat, 09 Apr 2022 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/making-some-flapjax/ppo/</guid>
+      <description>&lt;p&gt;In this section, we will be implementing an Actor-Critic reinforcement algorithm.&lt;/p&gt;
+&lt;h2 id=&#34;reinforcement-learning&#34;&gt;Reinforcement Learning&lt;/h2&gt;
+&lt;h3 id=&#34;terminology-and-deep-q-learning&#34;&gt;Terminology and Deep-Q Learning&lt;/h3&gt;
+&lt;p&gt;First, let&amp;rsquo;s setup terminology and pose the problem a reinforcement algorithm aims to solve. Supposed we have some
+world which exists in states $s\in\mathcal{S}$, which describe all information about the world. For example, if our world is
+a chess game, the $s$ contains all information about the positions of the game pieces. $\mathcal{S}$ is the state-space,
+containing all possible states our world can exist in.&lt;/p&gt;
+&lt;p&gt;The world contains a given number of &lt;em&gt;agents&lt;/em&gt;, which can perform actions $a\in\mathcal{A}$ inside the world (in the chess example,
+the agent could be one of the players and the actions would be moving a chess piece to a valid location.) Here, $a$
+is an action taken from the &lt;em&gt;action-space&lt;/em&gt; $\mathcal{A}$, which contains all allowed actions.&lt;/p&gt;
+&lt;p&gt;The dynamics of the world are determined by the environment $\mathcal{E}$. Think of the environment as the natural laws of the
+world or the rules of the game. The environment dictates how the world will transition from a state $s$ to the next state $s&amp;rsquo;$
+given that the agent took the action $a$, i.e. $\mathcal{E}$ is a map from the current state and the agent action to a new
+state: $\mathcal{E}: \mathcal{S}\times\mathcal{A}\to\mathcal{S}$.&lt;/p&gt;
+&lt;p&gt;The goal of reinforcement learning is to construct an agent that performs a certain task. For example, maybe we want an
+agent that can play (and win) chess against another player or maybe an agent that can drive a car. In order to construct such an
+agent, we need a criterion for how well the agent is doing at performing the specified task. We do this be constructing
+a &lt;em&gt;reward&lt;/em&gt; system $\mathcal{R}$. A reward is dished out to the agent every time the agent takes an action. The reward will be
+high if the action was beneficial in bringing the agent closer to performing the required task and lower otherwise.
+Mathematically speaking, the reward is a function that maps the current state, action and next state to a real number
+$\mathcal{R}: \mathcal{S}\times\mathcal{A}\times\mathcal{S}\to\mathbb{R}$.&lt;/p&gt;
+&lt;p&gt;The agent itself is often described as a &lt;em&gt;policy&lt;/em&gt; $\pi$. The policy is a
+function that takes the current state and outputs an action $\pi:
+\mathcal{S}\to\mathcal{A}$. For our purposes, $\pi$ will be a neutral network.
+As described above, the goal is to obtain an agent that chooses actions that
+bring us closer to achieving or goal or completing the specified task. Our way
+of judging whether the agent is choosing actions that bring us closer to the
+goal is through the rewards. So the optimal agent is one that &lt;em&gt;maximizes&lt;/em&gt; the
+reward. Consider a trajectory taken by the agent starting from a state $s_{t}$,
+i.e. a sequence of states $s_t,s_{t+1},s_{t+2},\dots$ produced by the agent
+following its policy. Consider the &lt;em&gt;return&lt;/em&gt;, the sum of all future rewards
+starting from $s_t$. This is:&lt;/p&gt;
+&lt;p&gt;$$
+R(s_{t},a_{t};s_{t+1},a_{t+1};\dots) = r_t + r_{t+1} + r_{t+2} + \cdots  = \sum_{k=0}^{\infty}r_{t+k}
+$$&lt;/p&gt;
+&lt;p&gt;with $r_{i} = \mathcal{R}(s_{i}, a, s_{i+1})$ and $a_{i}$ the action taken to
+transition from $s_{i}\to s_{i+1}$. Our goal is to construct an agent to
+maximize this sum. If the rewards are finite numbers, then this sum won&amp;rsquo;t
+converge.  The trick to make this sum converge is to make it geometric by adding
+in a &lt;em&gt;discount&lt;/em&gt; factor $\gamma\in(0,1)$ to suppress future rewards, i.e.
+multiply $r_{t+k}$ by $$\gamma^{k}$. Another way to think about the discount
+factor is that we prioritize larger rewards now.  With a discount factor, our
+total reward through the trajectory is&lt;/p&gt;
+&lt;p&gt;$$
+R(s_{t},a_{t};s_{t+1},a_{t+1};\dots) =
+r_t + \gamma r_{t+1} + \gamma^{2}r_{t+2} + \cdots  = \sum_{k=0}^{\infty}\gamma^{k}r_{t+k}
+$$&lt;/p&gt;
+&lt;p&gt;In order to ease the optimization algorithms, we introduce three additional
+concepts: the action-value function $Q^{\pi}(s,a)$, the value function
+$V^{\pi}(a)$ and the advantage $A^{\pi}(s,a)$. The value function is just the
+return obtained by following the policy $\pi$ forever.  The action-value
+function $Q^{\pi}(s,a)$ is the return obtained by first taking the action $a$
+given state $s$, then following the policy function forever afterwards. Lastly,
+the advantage is the difference between the value-action function and the value
+function $A^{\pi}(s,a) = Q^{\pi}(s,a) - V^{\pi}(s)$. Explicitly, the value and
+action-value functions are given by:&lt;/p&gt;
+&lt;p&gt;$$
+V^{\pi}(s_{t}) = \sum_{k=0}^{\infty}\gamma^{k} \mathcal{R}(s_{t+k}, \pi(s_{t+k}), s_{t+k+1})
+$$&lt;/p&gt;
+&lt;p&gt;and&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+Q^{\pi}(s_{t},a_{t})
+&amp;amp;= \mathcal{R}(s_{t},a_{t},s_{t+1}) + \sum_{k=1}^{\infty}\gamma^{k} \mathcal{R}(s_{t+k}, \pi(s_{t+k}), s_{t+k+1})\\
+&amp;amp;=\mathcal{R}(s_{t},a_{t},s_{t+1}) + \gamma V^{\pi}(s_{t+1})
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;The advantage function $A^{\pi}(s,a)$ measures how much better it would be to
+take the action $a$ in state $s$ rather than just using the policy $\pi$. Notice
+that the value and action-value functions satisfy the following equations:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{align}
+Q^{\pi}(s_{t}, a_{t}) &amp;amp;= \mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma Q^{\pi}(s_{t+1}, \pi(s_{t+1}))\\
+V^{\pi}(s_{t}) &amp;amp;= \mathcal{R}(s_{t}, \pi(s_{t}), s_{t+1}) + \gamma V^{\pi}(s_{t+1})
+\end{align}
+$$&lt;/p&gt;
+&lt;p&gt;Now, consider the &lt;em&gt;optimal&lt;/em&gt; value/action-value function, denoted as $V^{*}$ and $Q^{*}$. The optimal
+versions satisfy the above equation, but instead of using $a_{t} = \pi(s_{t})$, we simply take the
+action producing the maximum results. That is,&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+Q^{*}(s_{t}, a_{t}) &amp;= \mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma \max_{a_{t+1}}Q^{*}(s_{t+1}, a_{t+1})\\\\
+V^{*}(s_{t}) &amp;= \max_{a_{t}}\mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma V^{\pi}(s_{t+1})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;These are known as Bellman equations. To optimize $Q^{\pi}$, we need to minimize the following
+difference:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\delta &amp;= 
+Q^{\pi}(s_{t}, a_{t}) - \qty(\mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma \max_{a_{t+1}}Q^{\pi}(s_{t+1}, a_{t+1}))
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;and then take our policy function to be $\pi(s) =\mathrm{argmax}_{a}Q^{\pi}(s,a)$.
+This is the basic approach taken for Deep-$Q$ learning: initialized a network
+that takes the state $s_{t}$ and outputs values for each possible action. That is,
+our network approximates $Q^{\pi}(s,a)$. We use $\pi(s) =\mathrm{argmax}_{a}Q^{\pi}(s,a)$
+to perform actions and update our network at each step by minimize $\delta$ in
+the above equation.&lt;/p&gt;
+&lt;p&gt;As currently described, this process is very inefficient. More efficient
+implementations utilize relay-memory to train on batches of experience as well as
+employ multiple network to improve stabilization. However we will not go into
+these optimizations here. Instead we will explore a different method for determining
+the maximal policy.&lt;/p&gt;
+&lt;h3 id=&#34;probabilistic-policy-functions-and-policy-gradients&#34;&gt;Probabilistic Policy Functions and Policy Gradients&lt;/h3&gt;
+&lt;p&gt;In the previous section, we assumed that the environment and the policy function
+were deterministic. It is much more common to use a policy function which is a
+distribution of actions given states. In this section, we will transition our
+policy function and environment distributions. We will then discuss policy
+gradients.&lt;/p&gt;
+&lt;p&gt;First, let&amp;rsquo;s consider a probabilistic environment. That is, given the state
+$s_{t}$, the probability of transitioning to the state $s_{t+1}$ is
+$\mathcal{E}(s_{t+1}|s_{t},a_{t})$. In addition, we take our policy function to
+be $\pi = \pi(a|s)$, i.e., a probability distribution over actions given the
+state $s$. Given that our system has become stochastic, the trajectories taken by
+an agent following $\pi$ will be stochastic. A stochastic process of this form
+is a Markov Decision Process, where the transition function
+$P(s_{t+1},s_{t}) = \mathcal{E}(s_{t+1}|s_{t},a_{t})\pi(a_{t}|s_{t})$ only depends
+on the current state.&lt;/p&gt;
+&lt;p&gt;As in the previous sections, our goal is to optimize our policy function in
+order to maximize the total return. Given that our functions are now
+probabilistic, the return is additionally probabilistic. Therefore, we will
+maximize the expectation value of the return. In order to compute the
+expectation value of the return, we will need to average over all possible
+trajectories the agent can take following the policy. This requires knowing
+the probability of a given trajectory. Consider a trajectory specified by
+the state/action pairs ending in the state $s_{t+N+1}$:
+$\tau=(s_{t},a_{t},\dots,s_{t+N},a_{t+N};s_{t+N+1})$. The probability of
+this trajectory is given by:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+P(\tau) &amp;= \rho(s_{t})\prod_{k=0}^{N}\mathcal{E}(s_{t+k+1}|s_{t+k},a_{t+k})\pi(a_{t+k}|s_{t+k})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;In this expression, $\rho(s_{t})$ specifies the probability of starting in state
+$s_{t}$. Now consider the return given this trajectory. The reward given the
+transition $s_{t},a_{t}\to s_{t+1}$ is $\mathcal{R}(s_{t},a_{t},s_{t+1})$. Thus,
+the return of the trajectory is&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+R(\tau) &amp;= \sum_{k=0}^{N}\mathcal{R}(s_{t+k},a_{t+k},s_{t+k+1})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;To compute the expectation value of the return, we need to average the return
+over all possible trajectories, which requires an integration over all possible
+trajectories. That is, we need to perform a path integral:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\mathbb{E}\qty[R] &amp;= \int\mathcal{D}\tau P(\tau)R(\tau)\\\\
+&amp;= 
+\qty[\prod_{k=0}^{N}\int\dd{a_{t+k}}\int\dd{s_{t+k}}]
+\int\dd{s_{t+N+1}}
+\rho(s_{t})\prod_{k=0}^{N}\mathcal{E}(s_{t+k+1}|s_{t+k},a_{t+k})\pi(a_{t+k}|s_{t+k})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;Now supposed our policy function is parameterized by internal variables
+$\theta$: $\pi = \pi_{\theta}$.  If we want to optimize our policy function to
+yield the maximum return, we need to maximize $\mathbb{E}[R]$.  To do so, we can
+use gradient accent. The gradient of the expectation value of $R$ is:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &amp;= \int\mathcal{D}\tau R(\tau) \nabla_{\theta}P_{\theta}(\tau)\\\\
+&amp;= \int\mathcal{D}\tau R(\tau) P_{\theta}(\tau)\nabla_{\theta}\log P_{\theta}(\tau)\\\\
+&amp;= \mathbb{E}_{\tau}\qty[R(\tau)\nabla_{\theta}\log P_{\theta}(\tau)]
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;were we used $\nabla f = f \nabla\log f$. However, note that $\nabla\log P_{\theta}\tau$ is&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\nabla_{\theta}\log P(\tau) &amp;= \nabla_{\theta}\log\rho(s_{t}) 
++ \sum_{k=0}^{N}\nabla_{\theta}\log\mathcal{E}(s_{t+k+1}|s_{t+k},a_{t+k})
++ \sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})\\\\
+ &amp;= \sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;(since only $\pi$ depends on $\theta$.) Therefore, the expectation value of the return is:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &amp;= \mathbb{E}_{\tau}\qty[R(\tau)
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+]
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;In practice, it is impractical to perform the functional integral needed to
+compute this expectation value.  Instead, we make use Monte Carlo integration to
+compute the expectation value. Recall that:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\int_{\Omega}\dd{\vec{x}}f(\vec{x}) \sim \frac{1}{N}\sum_{\vec{x}_{i}}f(\vec{x}_{i})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;which is true if sampling $\vec{x}\sim\Omega$ uniformly. If instead we sample from a
+distribution $p(\vec{x})$, then we have&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\int_{\Omega}\dd{\vec{x}}f(\vec{x}) \sim \frac{1}{N}\sum_{\vec{x}_{i}}\frac{f(\vec{x}_{i})}{p(\vec{x}_{i})}
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;Thus, if we sample our trajectories from $P(\tau)$ (which is what we&amp;rsquo;re doing
+when we let follow the policy function in our stochastic environment), our
+expectation value of the return is asymptotic (as $N\to\infty$) to&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &amp;\sim \frac{1}{N}\sum_{\tau_{i}}R(\tau_{i})
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a^{\tau_{i}}_{t+k}|s^{\tau_{i}}_{t+k})
+]
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;Thus, to optimize our policy function to yield the maximum return, we collect
+$N$ trajectories, perform a gradient decent on $-\mathbb{E}[R]$ and repeat until
+we converge to the optimal policy.&lt;/p&gt;
+&lt;p&gt;An important thing to note is the our above expression can be reduced. In the
+current form, we&amp;rsquo;re weighting $\nabla_{\theta}\log\pi_{\theta}(a_{k}|s_{k})$ by
+the entire return $R(\tau)$. It turns out that the expectation value returns
+accumulated prior to $s_{k}$ will vanish. To show this, consider a term in the
+expectation value of the form:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\mathcal{R}(s_{m},a_{m},s_{m+1})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;with $t &amp;lt; n,m &amp;lt; t + N$. The expectation value of this term can be written as:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+I_{m,n} &amp;= \mathbb{E}[\mathcal{R}(s_{m},a_{m},s_{m+1})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})] \\\\
+&amp;= \qty(\prod_{k=0}^{N}\int\dd{a_{k}}\dd{s_{k}}P\qty(s_{k+1},s_{k}))\rho(s_{t})\int\dd{s_{t+N+1}}
+\mathcal{R}(s_{m},a_{m},s_{m+1})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;Note that we can safely integrate over all $a_{k},s_{k}$ for $k&amp;gt;m+1,n$. This is because the probability of
+having some tail trajectory (unweighted by $R$ or $\nabla_{\theta}\log\pi_{\theta}$) is one. Thus,&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+I_{m,n}
+&amp;= \qty(\prod_{k=0}^{\mathrm{max}(m+1,n)}\int\dd{a_{k}}\dd{s_{k}}P\qty(s_{k+1}|s_{k},a_{k})\pi\qty(a_{k}|s_{k}))
+\rho(s_{t})\mathcal{R}(s_{m},a_{m},s_{m+1})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;Now suppose $m &amp;lt; n$. In this case, we can peel off the last integrals of $a_{n},s_{n},s_{n+1}$, obtaining&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\int\dd{s_{n}}\int\dd{a_{n}}\int\dd{s_{n+1}}
+P\qty(s_{n+1}|s_{n},a_{n})\pi(a_{n}|s_{n})
+P\qty(s_{n}|s_{n-1},a_{n-1})\pi(a_{n-1}|s_{n-1})
+\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;The integral over $s_{n+1}$ can be performed and the result is 1. Thus, we are left with&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\int\dd{s_{n}}
+P\qty(s_{n}|s_{n-1},a_{n-1})\pi(a_{n-1}|s_{n-1})
+\int\dd{a_{n}}
+\pi(a_{n}|s_{n})
+\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;The last integral can be evaluated. To evaluate, we first rewrite the integrand using
+$\pi(a_{n}|s_{s})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{s}) = \nabla_{\theta}\pi_{\theta}(a_{n}|s_{n})$.
+Then, pulling the derivative outside the integral, we end up with:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\int\dd{a_{n}} \pi(a_{n}|s_{n}) \nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n}) 
+&amp;= \int\dd{a_{n}} \nabla_{\theta} \pi(a_{n}|s_{n})\\\\ 
+&amp;= \nabla_{\theta} \int\dd{a_{n}} \pi(a_{n}|s_{n})\\\\ 
+&amp;= 0
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;where we used the fact that $\int\pi(a_{n}|s_{n})\dd{a_{n}} = 1$.&lt;/p&gt;
+&lt;p&gt;In the case where $m \geq n$, we cannot perform the last few steps. This is
+because the tail trajectory beyond $n$ will be weighted by
+$\mathcal{R}(s_{m},a_{m}, s_{m+1})$.  Since $\mathcal{R}(s_{m}, a_{m}, s_{m+1})$
+is dependent on the actions taken in steps before $m$, the integral over the
+tail trajectory will also be dependent on previous actions and hence dependent
+on $a_{n}$.  Thus, the integral over $a_{n}$ will have additional factors from
+the tail trajectory that prevent us from evaluating the integral analytically.&lt;/p&gt;
+&lt;p&gt;These results tell use that only future rewards matter inside the expectation
+value. This allows us to reduce the terms inside the expectation value of the
+return to:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &amp;= \mathbb{E}_{\tau}\qty[
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+\sum_{n=k}^{N}\mathcal{R}(s_{t+n},a_{n},s_{t+n+1})
+]
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;Another important fact is that we are free to add any function $b$ to the above
+expression that only depends on state, as it will drop out of the expectation
+value. A typical approach is to augment the above expression as:&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &amp;= \mathbb{E}_{\tau}\qty[
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+\sum_{n=k}^{N}\qty(\mathcal{R}\qty(s_{t+n},a_{n},s_{t+n+1}) - b(s_{t}))
+]
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;Here $b$ is known as the &lt;em&gt;baseline&lt;/em&gt;. Adding it has no effect on the expectation
+value, but it often helps in the training of the policy. The approach we will
+end up taking is to set $b$ to be the value function. Then, the above expression
+will reduce to&lt;/p&gt;
+&lt;p&gt;
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &amp;= \mathbb{E}_{\tau}\qty[
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+\hat{A}_{t+k}
+]
+\end{align}
+&lt;/p&gt;
+&lt;p&gt;where $\hat{A}_{t} = Q^{\pi}(s_{t},a_{t}) - V^{\pi}(s_{t})$ is the advantage.
+This has the benefit that in cases where the advantage is zero, i.e., when we are
+accurately predicting the value function, the term doesn&amp;rsquo;t contribute, allowing
+us to focus on situations where we are incorrectly predicting the value function. See
+&lt;a href=&#34;https://spinningup.openai.com/en/latest/spinningup/extra_pg_proof2.html&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;this post&lt;/a&gt;
+for a proof that using the action-value $Q^{\pi}(a_{t}|s_{t})$ results in the
+same expectation value.&lt;/p&gt;
+&lt;h3 id=&#34;proximal-policy-optimization&#34;&gt;Proximal Policy Optimization&lt;/h3&gt;
+&lt;p&gt;Proximal Policy Optimization (PPO) is similar in spirit to the concepts
+described above but aims to be more stable and efficient. It puts together ideas
+from Advantage Actor-Critic (A2C), Trust-Region Policy Optimization (TRPO) and
+asynchronous methods. We will describe the basic principles of the various
+algorithm then put them together to reproduce PPO.&lt;/p&gt;
+&lt;p&gt;First, we will be using an Actor-Critic configuration where we have an &lt;strong&gt;actor&lt;/strong&gt;
+network that computes the policy $\pi_{\theta}(a|s)$ and a &lt;strong&gt;critic&lt;/strong&gt; network
+which computes the value function $V_{\theta}(s)$. These networks can share
+parameters or have separate parameters. The goal is to have the actor-critic
+maximize the expectation value of the return. The TRPO algorithm suggest using
+the following &lt;em&gt;surrogate&lt;/em&gt; function:&lt;/p&gt;
+&lt;p&gt;
+$$
+\underset{\theta}{\mathrm{maximize}}\quad
+\hat{\mathbb{E}}_{t}\qty[
+    \frac{\pi_{\theta}(a_{t}|s_{t})}{\pi_{\theta_{\mathrm{old}}}(a_{t}|s_{t})}
+    \hat{A}_{t}
+]
+$$
+&lt;/p&gt;
+&lt;p&gt;subject to the constraint that the relative entropy (KL divergence) is less than
+a hyperparameter $\delta$&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+\hat{\mathbb{E}}_{t}\qty[\mathrm{KL}\qty[\pi_{\theta_{\mathrm{old}}}(\cdot|s_{t}),\pi_{\theta}(\cdot|s_{t})]] \leq \delta
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;Here $\pi_{\theta_{\mathrm{old}}}$ represents the distribution from the previous
+iteration. This expectation value looks different from the one we developed in
+our previous exploration into policy gradients, but it turns out that if
+$\vb*{\theta_{\mathrm{old}}}$ is not too far off from $\vb*{\theta}$ then the two expression
+yield the same gradient up to terms of order $\vb*{\theta}-\vb*{\theta_{\mathrm{old}}}$:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+\grad_{\vb*{\theta}}
+\frac{\pi_{\vb*{\theta}}}{\pi_{\vb*{\theta}_{\mathrm{old}}}}
+&amp;=
+\frac{\pi_{\vb*{\theta}}}{\pi_{\vb*{\theta}_{\mathrm{old}}}}
+\grad_{\vb*{\theta}}\log\pi_{\vb*{\theta}}\\\\
+&amp;=
+\frac{
+\pi_{\vb*{\theta_{\mathrm{old}}}} 
++ \delta\vb*{\theta}\cdot\eval{\grad_{\vb*{\theta}}\pi}_{\vb*{\theta}_{\mathrm{old}}}
++ \cdots
+}{
+    \pi_{\vb*{\theta}_{\mathrm{old}}}
+}
+\grad_{\vb*{\theta}}\log\pi_{\vb*{\theta}}\\\\
+&amp;=
+\grad_{\vb*{\theta}}\log\pi_{\vb*{\theta}}
++ \order{\delta\vb*{\theta}}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;with $\delta\vb*{\theta} = (\vb*{\theta} - \vb*{\theta}_{\mathrm{old}})$. Thus,
+maximizing the surrogate yields the same result as maximizing the
+expectation of the return since the two gradients are identical at the extrema.
+The constraint on the relative entropy ensures that we don&amp;rsquo;t stray too far from
+the old values, keeping $\delta\vb*{\theta}$ small.&lt;/p&gt;
+&lt;p&gt;PPO uses a similar surrogate, but doesn&amp;rsquo;t use the relative entropy constraint
+(but there are versions which employ the relative entropy.) Instead, PPO uses
+the following:&lt;/p&gt;
+&lt;p&gt;
+$$
+L^{\mathrm{CLIP}}_{t}(\theta) = -\min(r_{t}(\theta)\hat{A}_{t}, \mathrm{clip}(r_{t}(\theta), 1-\epsilon,1+\epsilon)\hat{A}_{t})
+$$
+&lt;/p&gt;
+&lt;p&gt;where $r_{\vb*{\theta}} = \pi_{\vb*{\theta}} / \pi_{\vb*{\theta}_{\mathrm{old}}}$.
+In this form, it&amp;rsquo;s not very intuitive what&amp;rsquo;s going on. It is instructive to
+consider what this function does when the advantage is positive or negative:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+\hat{A}_{t} &gt; 0: \qquad
+L^{\mathrm{CLIP}}_{t}(\theta)
+&amp;=-\min(r_{t}, 1+\epsilon)\hat{A}_{t}\\\\
+\hat{A}_{t} &lt; 0: \qquad
+L^{\mathrm{CLIP}}_{t}(\theta)
+&amp;=-\max(r_{t}, 1-\epsilon)\hat{A}_{t}
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;This loss function looks as follows:&lt;/p&gt;
+&lt;img src=&#34;./loss.png&#34; alt=&#34;ppo_loss_function&#34; width=&#34;600&#34;/&gt;
+&lt;p&gt;We can see that, if we&amp;rsquo;re minimizing $L^{\mathrm{CLIP}}_{t}(\vb*{\theta})$, then
+the clipping cuts off how much we&amp;rsquo;re allowed to minimize. For example, if
+$\hat{A}_{t}&amp;gt;0$, then increasing the probability $\pi_{\theta}(a|s)$ beyond a
+certain point has not effect on the loss function, specifically when
+$r_{t}(\theta) &amp;gt; 1 + \epsilon$. When $\hat{A}_{t}&amp;lt;0$, then
+we have the reverse situation: decreasing the probability will have no effect
+beyond $r_{t}(\theta) &amp;lt; 1-\epsilon$. Thus, there is no incentive to move
+$r_{t}(\vb*{\theta})$ further than $\epsilon$, as moving further than $\epsilon$
+makes the gradient from $L^{\mathrm{CLIP}}_{t}$ zero.&lt;/p&gt;
+&lt;p&gt;Next, let&amp;rsquo;s discuss the advantage function. PPO uses the Generalized Advantage
+Estimation (GAE). The GAE used by PPO is given by the following:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+\hat{A}_{t} &amp;= \delta_{t} + (\gamma\lambda)\delta_{t+1} + \cdots + (\gamma\lambda)^{N}\delta_{t+N}\\\\
+\delta_{t} &amp;= r_{t} + \gamma V(s_{t+1}) - V(s_{t})
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;where $N$ is the number of times steps taken for the trajectory (fixed for all trajectories),
+$\gamma$ is the discount and $\lambda$ is an additional hyperparameter. For $\lambda=1$, this
+reduces to the standard advantage with a finite number of steps. See &lt;a href=&#34;https://arxiv.org/abs/1506.02438&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;this paper&lt;/a&gt;
+for a detailed explanation of GAE.&lt;/p&gt;
+&lt;p&gt;Since we have a critic, we will add a loss function to train the critic. We use the mean-squared-error
+for the critic:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+L_{t}^{\mathrm{VF}}(\theta) &amp;= \qty(V_{\theta}(s_{t}) - V_{t}^{\mathrm{targ}})^2
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;where $V_{t}^{\mathrm{targ}}$ is the actual return observed using the policy.
+PPO uses one additional loss function used to encourage exploration. We add a loss
+function that aims to increase the entropy of the policy&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+L_{t}^{\mathrm{entropy}}(\theta) &amp;= -S[\pi_{\theta}]
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;Thus, our total loss function is given by:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align}
+L_{t}(\theta) &amp;= \hat{\mathbb{E}}_{t}\qty[
+    L_{t}^{\mathrm{CLIP}}(\theta)
+    + c_1 L_{t}^{\mathrm{VF}}(\theta) 
+    + c_2 L_{t}^{\mathrm{entropy}}(\theta)
+]
+\end{align}
+$$
+&lt;/p&gt;
+&lt;p&gt;where $c_{1}$ and $c_{2}$ are additional hyperparameters. The last item we need to discuss is the
+asynchronous evaluation. Taking inspiration from A2C, we improve training speed and batch size
+by running multiple trajectories at the same time. For example, if we run $M$ separate trajectories
+at the same time, each for $N$ time steps, then we end up with a batch of size $MN$.&lt;/p&gt;
+&lt;p&gt;These are all the elements of PPO. The full algorithm is as follows:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;$\textbf{for}$ iteration $\leftarrow 1,\text{MaxSteps}$ $\textbf{do}$&lt;br&gt;
+$\quad$// Collect trajectories&lt;br&gt;
+$\quad\textbf{for}$ actor $\leftarrow 1, M$ $\textbf{do}$&lt;br&gt;
+$\quad\quad\textbf{for}$ $t$ $\leftarrow 1, N$ $\textbf{do}$&lt;br&gt;
+$\quad\quad\quad$Step environment using $\pi_{\theta}$&lt;br&gt;
+$\quad\quad\quad$Store $V_{t}$, $r_{t}$, $a_{t}$, $s_{t}$, $\log\pi(a_{t}|s_{t})$&lt;br&gt;
+$\quad\quad\textbf{end}$ $\textbf{for}$&lt;br&gt;
+$\quad\quad$Compute GAEs $\hat{A}_{1},\dots,\hat{A}_{N}$&lt;br&gt;
+$\quad\textbf{end}$ $\textbf{for}$&lt;/p&gt;
+&lt;p&gt;$\quad$// Optimize&lt;br&gt;
+$\quad n_{\mathrm{batch}} \leftarrow \text{mini_batch_size}$&lt;br&gt;
+$\quad N_{\mathrm{batches}} \leftarrow MN / n_{\mathrm{batch}}$&lt;br&gt;
+$\quad\textbf{for}$ batch $\leftarrow 1, N_{\mathrm{batches}}$ $\textbf{do}$&lt;br&gt;
+$\quad\quad$ Extract $\log\pi_{\vb*{\theta}_{\mathrm{old}}}$, action $a$ state $s$, value $V$, advantage $\hat{A}$ from trajectory&lt;br&gt;
+$\quad\quad$ Compute $r_{\vb*{\theta}} = \exp(\log\pi_{\vb*{\theta}}(a) - \log\pi_{\vb*{\theta}_{\mathrm{old}}})$&lt;br&gt;
+$\quad\quad$ Compute loss $L_{t}(\vb*{\theta})$&lt;br&gt;
+$\quad\quad$ Back-propagate to update $\vb*{\theta}$&lt;br&gt;
+$\quad\textbf{end}$ $\textbf{for}$&lt;br&gt;
+$\textbf{end}$ $\textbf{for}$&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;references&#34;&gt;References&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;The PPO paper: &lt;a href=&#34;https://arxiv.org/abs/1707.06347&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;PP0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The TRPO paper: &lt;a href=&#34;https://arxiv.org/abs/1502.05477&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;TRPO&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Paper on Generalized advantage functions: &lt;a href=&#34;https://arxiv.org/abs/1506.02438&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GAE&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Paper on Asynchronous Actor-Critic &lt;a href=&#34;https://arxiv.org/abs/1602.01783&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;A2C&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Paper on Deep Q-Networks: &lt;a href=&#34;https://arxiv.org/pdf/1312.5602.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DQN&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Paper on distributional rewards: &lt;a href=&#34;https://arxiv.org/pdf/1707.06887.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Distributional Rewards&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Paper on per-experience replay: &lt;a href=&#34;https://arxiv.org/pdf/1511.05952.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;PER&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Paper on double Deep-Q networks: &lt;a href=&#34;https://arxiv.org/pdf/1511.06581.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DDQN&lt;/a&gt;, &lt;a href=&#34;https://arxiv.org/pdf/1509.06461.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DDQN&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://arxiv.org/pdf/1507.06527.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DRQN&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Paper on Actor-Critic methods: &lt;a href=&#34;https://proceedings.neurips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Actor Critc&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>FlapJax Part 3 - PPO Implementation</title>
+      <link>https://loganamorrison.github.io/post/making-some-flapjax/impl/</link>
+      <pubDate>Sun, 10 Apr 2022 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/post/making-some-flapjax/impl/</guid>
+      <description>&lt;p&gt;In this part of the post, we will actually write all the code to implement the
+Proximal-Policy-Optimization algorithm. We will be using
+&lt;a href=&#34;https://jax.readthedocs.io/en/latest/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;jax&lt;/code&gt;&lt;/a&gt;,
+&lt;a href=&#34;https://flax.readthedocs.io/en/latest/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;flax&lt;/code&gt;&lt;/a&gt; and
+&lt;a href=&#34;https://optax.readthedocs.io/en/latest/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;optax&lt;/code&gt;&lt;/a&gt; to implement the algorithm,
+network and optimization. If the reader is unfamiliar with these tools, I advise
+reading though their documentation. These tools have a bit of a learning curve.
+But once you get used to them, they are a joy to work with. Much of the code
+written here is easily adapted to &lt;code&gt;tensorflow&lt;/code&gt; or &lt;code&gt;pytorch&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;gym-environment&#34;&gt;&lt;code&gt;gym&lt;/code&gt; Environment&lt;/h2&gt;
+&lt;p&gt;It will be helpful to make a couple adjustments to the observations returned by the game. Let&amp;rsquo;s take a quick peek at the observation:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;env = FlappyBirdEnvV0()
+
+# Step in such a way that we will always go through pipes. We only use this for
+# visualization.
+def env_step_without_dying(env, nsteps):
+    observation = env.reset()
+    for _ in range(nsteps):
+        env.flappy.bird.y = env.flappy.pipes[env.flappy.next_pipe].top_rect.bottom + env.flappy.pipe_gap_size / 2
+        observation, _, _, _ = env.step(env.action_space.sample())
+    return observation
+
+observation = env_step_without_dying(env, 150)
+plt.figure(dpi=100)
+plt.imshow(observation)
+plt.xticks([])
+plt.yticks([]);
+print(f&amp;quot;observation.shape = {observation.shape}&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;observation.shape = (640, 480, 3)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;../images/ppo_files/ppo_3_1.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;The first change we will make is to resize the observation. As is, the image size is way to big. My 6GB GPU can&amp;rsquo;t handle it. We will reduce the size to be 84X84 just like people do for Atari. We use &lt;strong&gt;gym&lt;/strong&gt;&amp;rsquo;s wrapper for this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;env = FlappyBirdEnvV0()
+env = ResizeObservation(env, (84, 84))
+
+observation = env.reset()
+# Step a few times to bring the pipes into view
+for _ in range(10):
+    env.step(env.action_space.sample())
+
+fig, axes = plt.subplots(1, 4, dpi=100, figsize=(10,3))
+for i in range(len(axes)):
+    axes[i].imshow(env.step(env.action_space.sample())[0])
+    axes[i].set_xticklabels([])
+    axes[i].set_yticklabels([])
+    axes[i].grid(True, which=&amp;quot;both&amp;quot;, color=&amp;quot;w&amp;quot;, linestyle=&amp;quot;-&amp;quot;, linewidth=1, alpha=0.2)
+print(f&amp;quot;observation.shape = {observation.shape}&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;observation.shape = (84, 84, 3)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;../images/ppo_files/ppo_5_1.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;This size is much more manageable.&lt;/p&gt;
+&lt;p&gt;Next, note that color isn&amp;rsquo;t necessary (the objects can be inferred by their
+shape) and the color dimension just takes up more memory. So our first
+modification to the observations will be to convert the observations to
+gray-scale. To do this, we will use the &lt;strong&gt;gym&lt;/strong&gt; wrapper:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;env = FlappyBirdEnvV0()
+env = ResizeObservation(env, (84, 84))
+env = GrayScaleObservation(env)
+
+observation = env.reset()
+# Step a few times to bring the pipes into view
+for _ in range(10):
+    env.step(env.action_space.sample())
+
+fig, axes = plt.subplots(1, 4, dpi=100, figsize=(10,3))
+for i in range(len(axes)):
+    axes[i].imshow(env.step(env.action_space.sample())[0])
+    axes[i].set_xticklabels([])
+    axes[i].set_yticklabels([])
+    axes[i].grid(True, which=&amp;quot;both&amp;quot;, color=&amp;quot;w&amp;quot;, linestyle=&amp;quot;-&amp;quot;, linewidth=1, alpha=0.2)
+print(f&amp;quot;observation.shape = {observation.shape}&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;observation.shape = (84, 84)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;../images/ppo_files/ppo_7_1.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;We can clearly still tell where the &amp;ldquo;bird&amp;rdquo; is and where the pipes are and we&amp;rsquo;ve cut the memory down by a factor of 3. The next modification we will make is frame-skipping. If we use the game as is, from one frame to the next, not a whole lot changes. Additionally, there are many steps between rewards. To make the observations more dynamical and reduce the time between rewards, we can skip frame. A common approach is to skip 4 frames and return the last frame or a max-pool of the last two observations.&lt;/p&gt;
+&lt;p&gt;We will adapt the &lt;code&gt;gym.wrappers.AtariPreprocessing&lt;/code&gt; code (which implements frame-skipping, among other things.) Our frame-skipping class will be:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class FrameSkip(gym.Wrapper):
+    def __init__(self, env: gym.Env, frame_skip: int = 4):
+        super().__init__(env)
+        assert frame_skip &amp;gt; 0
+
+        self.frame_skip = frame_skip
+
+        # buffer of most recent two observations for max pooling
+        assert env.observation_space.shape is not None
+        self.obs_buffer = [
+            np.empty(env.observation_space.shape, dtype=np.uint8),
+            np.empty(env.observation_space.shape, dtype=np.uint8),
+        ]
+
+        self.observation_space = env.observation_space
+
+    def step(self, action):
+        r = 0.0
+
+        done = False
+        info = dict()
+        for t in range(self.frame_skip):
+            observation, reward, done, info = self.env.step(action)
+            r += reward
+
+            if done:
+                break
+            if t == self.frame_skip - 2:
+                self.obs_buffer[1] = observation
+            elif t == self.frame_skip - 1:
+                self.obs_buffer[0] = observation
+
+        return self._get_obs(), r, done, info
+
+    def reset(self, **kwargs):
+        self.obs_buffer[0] = self.env.reset(**kwargs)
+        self.obs_buffer[1].fill(0)
+        return self._get_obs()
+
+    def _get_obs(self):
+        if self.frame_skip &amp;gt; 1:  # more efficient in-place pooling
+            np.maximum(self.obs_buffer[0], self.obs_buffer[1], out=self.obs_buffer[0])
+        obs = self.obs_buffer[0]
+        return obs
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Every time &lt;code&gt;env.step(action)&lt;/code&gt; is called, this wrapper will apply the same action a given number of times, record the last two observations and return their max-pool. That way we get all the important information from the last two observations. Let&amp;rsquo;s take a look at what the observations look like:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;env = FlappyBirdEnvV0()
+env = ResizeObservation(env, (84, 84))
+env = GrayScaleObservation(env)
+env = FrameSkip(env)
+
+env.reset()
+# Step a few times to bring the pipes into view
+for _ in range(10):
+    env.step(env.action_space.sample())
+
+fig, axes = plt.subplots(1, 4, dpi=100, figsize=(10,3))
+for i in range(len(axes)):
+    axes[i].imshow(env.step(env.action_space.sample())[0])
+    axes[i].set_xticklabels([])
+    axes[i].set_yticklabels([])
+    axes[i].grid(True, which=&amp;quot;both&amp;quot;, color=&amp;quot;w&amp;quot;, linestyle=&amp;quot;-&amp;quot;, linewidth=1, alpha=0.2)
+print(f&amp;quot;observation.shape = {observation.shape}&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;observation.shape = (84, 84)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;figure  &gt;
+  &lt;div class=&#34;d-flex justify-content-center&#34;&gt;
+    &lt;div class=&#34;w-100&#34; &gt;&lt;img src=&#34;../images/ppo_files/ppo_11_1.png&#34; alt=&#34;png&#34; loading=&#34;lazy&#34; data-zoomable /&gt;&lt;/div&gt;
+  &lt;/div&gt;&lt;/figure&gt;
+&lt;/p&gt;
+&lt;p&gt;Comparing with our observations without frame-skipping, we can now see motion between frames.&lt;/p&gt;
+&lt;p&gt;Before moving on to the code for the implementing the model, let&amp;rsquo;s add a couple methods to make calling our environment a bit easier.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def env_reset(env: Union[GymEnv, GymVecEnv]):
+    &amp;quot;&amp;quot;&amp;quot;Reset environment and return jax array of observation.&amp;quot;&amp;quot;&amp;quot;
+    observation = env.reset()
+    return jnp.array(observation, dtype=jnp.float32)
+
+
+def env_step(
+    action: jnp.ndarray, env: Union[GymEnv, GymVecEnv]
+) -&amp;gt; Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    &amp;quot;&amp;quot;&amp;quot;Step environment and return jax array of observation, reward and terminal status.&amp;quot;&amp;quot;&amp;quot;
+    act = np.array(jax.device_get(action), dtype=np.int32)
+
+    if not isinstance(env, gym.vector.VectorEnv):
+        observation, reward, done, _ = env.step(act[0])
+    else:
+        observation, reward, done, _ = env.step(act)
+
+    observation = np.array(observation)
+    reward = np.array(reward, dtype=np.int32)
+    done = np.array(done, dtype=np.int32)
+
+    # Make the batch dimension for non-vector environments
+    if not isinstance(env, gym.vector.VectorEnv):
+        observation = np.expand_dims(observation, 0)
+        reward = np.expand_dims(reward, 0)
+        done = np.expand_dims(done, 0)
+
+    return observation, reward, done
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;models&#34;&gt;Models&lt;/h2&gt;
+&lt;p&gt;Next, let&amp;rsquo;s implement the model. We will use the architecture from the &amp;ldquo;Human-level control through deep reinforcement learning.&amp;rdquo; paper which has three convolutional layers followed by a single dense layer. We then pipe this output to the &amp;ldquo;actor&amp;rdquo; layer (which outputs the logits corresponding to probabilities of actions) and &amp;ldquo;critic&amp;rdquo; layer (which estimates the value function.)&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class ActorCriticCnn(nn.Module):
+    n_actions: int
+    n_hidden: int
+
+    def setup(self):
+        self.conv1 = nn.Conv(features=32, kernel_size=(8, 8), strides=(4, 4))
+        self.conv2 = nn.Conv(features=64, kernel_size=(4, 4), strides=(2, 2))
+        self.conv3 = nn.Conv(features=64, kernel_size=(3, 3), strides=(1, 1))
+        self.hidden = nn.Dense(features=self.n_hidden)
+        self.actor = nn.Dense(features=self.n_actions)
+        self.critic = nn.Dense(1)
+
+    def __call__(self, x):
+        x = x.astype(jnp.float32) / 255.0
+        # Convolutions
+        x = nn.relu(self.conv1(x))
+        x = nn.relu(self.conv2(x))
+        x = nn.relu(self.conv3(x))
+        # Dense
+        x = x.reshape((x.shape[0], -1))
+        x = nn.relu(self.hidden(x))
+        # Actor-Critic
+        logits = self.actor(x)
+        value = self.critic(x)
+        return logits, value
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For non-image based observations, we include a simple MLP model (we will use this to verify the algorithm with CartPole.)&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class ActorCriticMlp(nn.Module):
+
+    n_hidden: int
+    n_actions: int
+
+    def setup(self):
+        self.common = nn.Dense(features=self.n_hidden)
+        self.actor = nn.Dense(features=self.n_actions)
+        self.critic = nn.Dense(1)
+
+    def __call__(self, x):
+        x = nn.relu(self.common(x))
+        logits = self.actor(x)
+        value = self.critic(x)
+        return logits, value
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We will also make a couple functions to jit the calling of the model and another for converting the output of the model to a tuple with the action, value and log probability.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;@functools.partial(jax.jit, static_argnums=0)
+def apply_model(
+    apply_fn: Callable[..., Any],
+    params: flax.core.FrozenDict,
+    observation: Union[jnp.ndarray, np.ndarray],
+) -&amp;gt; Tuple[jnp.ndarray, jnp.ndarray]:
+    return apply_fn(params, observation)
+
+
+@jax.jit
+@jax.vmap
+def select_log_prob(action, log_probs):
+    &amp;quot;&amp;quot;&amp;quot;Vectorized function to select log-probabilities from vector of actions.&amp;quot;&amp;quot;&amp;quot;
+    return log_probs[action]
+
+
+@functools.partial(jax.jit, static_argnums=0)
+def action_value_logprob(
+    apply_fn: Callable[..., Any],
+    params: flax.core.FrozenDict,
+    key,
+    observation: Union[jnp.ndarray, np.ndarray],
+):
+    logits, value = apply_fn(params, observation)
+
+    # Sample from the actor distribution to get actions
+    action = jax.random.categorical(key, logits)
+    # Get log-probabilities
+    log_probs = jax.nn.log_softmax(logits)
+    # Get log-probability corresponding to action
+    log_prob = select_log_prob(action, log_probs)
+    # Squeeze value to remove extra dimension
+    return action, jnp.squeeze(value), log_prob
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;ppo-algorithm&#34;&gt;PPO Algorithm&lt;/h2&gt;
+&lt;h3 id=&#34;configuration&#34;&gt;Configuration&lt;/h3&gt;
+&lt;p&gt;Now we will implement the proximal-policy-optimization algorithm. Recall that this algorithm has a few parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;horizon&lt;/code&gt;: Number of time steps in the trajectory,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gamma&lt;/code&gt; ($\gamma$): Discount of future rewards,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;lam&lt;/code&gt; ($\lambda$): General Advantage Estimation (GAE) parameter,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;c1&lt;/code&gt; ($c_{1}$): Prefactor of value-function loss,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;c2&lt;/code&gt; ($c_{2}$): Prefactor of entropy loss&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;epsilon&lt;/code&gt; ($\epsilon$): Clipping parameter for actor loss.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In addition to these parameters, we have addition hyperparameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;epochs&lt;/code&gt;: Number of epochs to train for each trajectory,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mini_batch_size&lt;/code&gt;: Number of trajectory points to train at a time,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;n_actors&lt;/code&gt;: Number of environments to run at once,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;total_frames&lt;/code&gt;: Number of frames to train agent&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We will group these parameters into a &lt;code&gt;NamedTuple&lt;/code&gt; for convenience:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class PPOConfig(NamedTuple):
+    horizon: int = 2048
+    epochs: int = 10
+    mini_batch_size: int = 64
+    gamma: float = 0.99
+    lam: float = 0.95
+    n_actors: int = 1
+    epsilon: Union[float, optax.Schedule] = 0.1
+    c1: float = 0.5
+    c2: float = 0.01
+    total_frames: int = int(1e6)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;trajectory-creation&#34;&gt;Trajectory Creation&lt;/h3&gt;
+&lt;p&gt;We will also make a &lt;code&gt;NamedTuple&lt;/code&gt; for the components of the trajectory needed for training. These components are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;observations&lt;/code&gt;: Collect observations along trajectory,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;log_probs&lt;/code&gt;: Model log-probabilities,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;actions&lt;/code&gt;: Actions the model took,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;returns&lt;/code&gt;: Returns at each time step,&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;advantages&lt;/code&gt;: Computed advantages from GAE.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class Trajectory(NamedTuple):
+    observations: jnp.ndarray
+    log_probs: jnp.ndarray
+    actions: jnp.ndarray
+    returns: jnp.ndarray
+    advantages: jnp.ndarray
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we will write a function to compute the advantages and returns from the
+rewards and values. There is one tricky part to this. What do we do if one of
+our environments reaches a terminal state (game-over)? We want to use this
+trajectory despite reaching a terminal state. What we will do is perform a reset
+on the accumulated rewards when we reach a terminal observation, the continue
+accumulating after the terminated state. Our &lt;code&gt;generalized_advantage_estimation&lt;/code&gt;
+function will compute the following:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align*}
+\hat{A}_{t} &amp;= \delta_{t} + (\gamma\lambda)\delta_{t+1} + \cdots + (\gamma\lambda)^{N}\delta_{t+N}\\
+\delta_{t} &amp;= r_{t} + \gamma V(s_{t+1}) - V(s_{t})
+\end{align*}
+$$
+&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;@jax.jit
+@functools.partial(jax.vmap, in_axes=(1, 1, 1, None, None), out_axes=1)
+def generalized_advantage_estimation(
+    rewards: np.ndarray,
+    values: np.ndarray,
+    terminals: np.ndarray,
+    gamma: float,
+    lam: float,
+) -&amp;gt; Tuple[jnp.ndarray, jnp.ndarray]:
+    assert (
+        rewards.shape[0] == values.shape[0] - 1
+    ), &amp;quot;Values must have one more element than rewards.&amp;quot;
+    assert (
+        rewards.shape[0] == terminals.shape[0]
+    ), &amp;quot;Rewards and terminals must have same shape.&amp;quot;
+
+    advantages = []
+    advantage = 0.0
+
+    for t in reversed(range(len(rewards))):
+        # Eqn.(11) and (12) from ArXiv:1707.06347. Note, multiplying by `terminals` 
+        # (which is zero when done=True) will cause the advantage to reset.
+        delta = rewards[t] + (gamma * values[t + 1] * terminals[t]) - values[t]
+        advantage = delta + (gamma * lam * advantage * terminals[t])
+        advantages.append(advantage)
+
+    advantages = jnp.array(advantages[::-1])
+    # Note return is just the advantage + values
+    returns = advantages + jnp.array(values[:-1])
+    return returns, advantages
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we will write a function to construct the trajectory. This simply consists
+of running the environment a specified number of steps and accumulating the
+needed results. This function will also call our
+&lt;code&gt;generalized_advantage_estimation&lt;/code&gt; function to compute the returns and
+advantages.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def create_trajectory(
+    initial_observation: jnp.ndarray,
+    apply_fn: Callable[..., Any],
+    params: flax.core.FrozenDict,
+    env: Union[GymEnv, GymVecEnv],
+    key,
+    horizon: int,
+    gamma: float,
+    lam: float,
+):
+    observation = initial_observation
+
+    # Collected quantities
+    traj_observations = []
+    traj_log_probs = []
+    traj_values = []
+    traj_rewards = []
+    traj_actions = []
+    traj_dones = []
+
+    for _ in range(horizon):
+        key, rng = jax.random.split(key, 2)
+        action, value, log_prob = action_value_logprob(
+            apply_fn, params, rng, observation
+        )
+
+        traj_actions.append(action)
+        traj_values.append(np.array(value))
+        traj_observations.append(observation)
+        traj_log_probs.append(log_prob)
+
+        observation, reward, done = env_step(action, env)
+
+        traj_rewards.append(reward)
+        traj_dones.append(done)
+
+    _, next_value = apply_model(apply_fn, params, observation)
+    traj_values.append(np.squeeze(np.array(next_value)))
+
+    traj_rewards = np.array(traj_rewards)
+    traj_values = np.array(traj_values)
+    traj_terminals = 1 - np.array(traj_dones)
+
+    traj_returns, traj_advantages = generalized_advantage_estimation(
+        traj_rewards, traj_values, traj_terminals, gamma, lam
+    )
+
+    trajectory = Trajectory(
+        observations=jnp.array(traj_observations),
+        log_probs=jnp.array(traj_log_probs),
+        actions=jnp.array(traj_actions),
+        returns=traj_returns,
+        advantages=traj_advantages,
+    )
+
+    # Return observation as well so we can continue where we left off.
+    return trajectory, observation
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Another useful function to write is one the takes the trajectory created from &lt;code&gt;create_trajectory&lt;/code&gt; (which as a shape of &lt;code&gt;(horizon, ...)&lt;/code&gt;), shuffle the batch dimension, and reshape to &lt;code&gt;(n, mini_batch_size,...)&lt;/code&gt; (with &lt;code&gt;n * mini_batch_size = horizon&lt;/code&gt;) so we can easily iterator over mini batches.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;@functools.partial(jax.jit, static_argnums=(2, 3))
+def trajectory_reshape(
+    trajectory: Trajectory, key, batch_size: int, mini_batch_size: int
+):
+    permutation = jax.random.permutation(key, batch_size)
+    # Flatten and permute
+    trajectory = tree_map(
+        lambda x: x.reshape((batch_size,) + x.shape[2:])[permutation], trajectory
+    )
+    # change shape of trajectory elements to (iterations, minibatch_size)
+    iterations = batch_size // mini_batch_size
+    trajectory = tree_map(
+        lambda x: x.reshape((iterations, mini_batch_size) + x.shape[1:]), trajectory
+    )
+    return trajectory
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;loss&#34;&gt;Loss&lt;/h3&gt;
+&lt;p&gt;Now we need to implement the loss function. Recall that the loss function for the &lt;code&gt;PPO&lt;/code&gt; algorithm is:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align*}
+    L &amp;= L^{\mathrm{CLIP}} + c_{1}L^{\mathrm{VF}} + c_{2}L^{\mathrm{entropy}}\\
+\end{align*}
+$$
+&lt;/p&gt;
+&lt;p&gt;where:&lt;/p&gt;
+&lt;p&gt;
+$$
+\begin{align*}
+    L^{\mathrm{CLIP}} &amp;= -\mathrm{min}(r_{\theta}\hat{A}, \mathrm{clip}(r_{\theta},1-\epsilon,1+\epsilon)\hat{A})\\
+    L^{\mathrm{VF}} &amp;= (V_{\theta} - V^{\mathrm{target}})^2\\
+    L^{\mathrm{entropy}} &amp;= -S[\pi_{\theta}]
+\end{align*}
+$$
+&lt;/p&gt;
+&lt;p&gt;In these expression $r_{\theta} = \pi_{\theta} / \pi_{\theta_{\mathrm{old}}}$, $V$ is the return and $A$ is the advantage. To compute the loss, we need all them elements of the trajectory. We use the values of the trajectory to compute the new action probabilities.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;@functools.partial(jax.jit, static_argnums=1)
+def loss_fn(
+    params: flax.core.FrozenDict,
+    apply_fn: Callable[..., Any],
+    batch: Tuple,
+    epsilon: float,
+    c1: float,
+    c2: float,
+):
+
+    observations, old_log_p, actions, returns, advantages = batch
+
+    logits, values = apply_fn(params, observations)
+    values = jnp.squeeze(values)
+    log_probs = jax.nn.log_softmax(logits)
+    log_p = select_log_prob(actions, log_probs)
+
+    # Normalize the advantages to give the network to make them easier
+    # for the network to estimate.
+    advantages = (advantages - jnp.mean(advantages)) / (jnp.std(advantages) + 1e-8)
+
+    # Compute actor loss using conservative policy iteration with an
+    # additional clipped surrogate and take minimum between the two.
+    # See Eqn.(7) of ArXiv:1707.06347
+    prob_ratio = jnp.exp(log_p - old_log_p)
+    surrogate1 = advantages * prob_ratio
+    surrogate2 = advantages * jnp.clip(prob_ratio, 1.0 - epsilon, 1.0 + epsilon)
+    actor_loss = -jnp.mean(jnp.minimum(surrogate1, surrogate2), axis=0)
+
+    # Use mean-squared error loss for value function
+    critic_loss = c1 * jnp.mean(jnp.square(returns - values), axis=0)
+    # Entropy bonus to ensure exploration
+    entropy_loss = -c2 * jnp.mean(jnp.sum(-jnp.exp(log_probs) * log_probs, axis=1))
+
+    loss = actor_loss + critic_loss + entropy_loss
+
+    return loss, (actor_loss, critic_loss, entropy_loss)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;training&#34;&gt;Training&lt;/h3&gt;
+&lt;p&gt;Now we implement the training. In order to make things more compact, we will write a jax-compatible class to store the model parameters and configuration. We adapt the &lt;code&gt;flax.training.TrainState&lt;/code&gt; for our purposes:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class PPOTrainState(struct.PyTreeNode):
+    &amp;quot;&amp;quot;&amp;quot;Jax-compatible class holding train-state for the Proximal-Policy-Optimization algorithm.
+
+    Parameters
+    ----------
+    step : int
+        Current training step.
+    apply_fn : Callable
+        Function to compute forward pass through model.
+    params : flax.core.FrozenDict
+        Model parameters
+    lr: Union[float, optax.Schedule]
+        Learning rate of the model.
+    tx: optax.GradientTransformation
+        Training optimizer.
+    opt_state: optax.OptState
+        State of the optimizer.
+    config: PPOConfig
+        Configuration of the PPO algorithm.
+    &amp;quot;&amp;quot;&amp;quot;
+
+    step: int
+    apply_fn: Callable = struct.field(pytree_node=False)
+    params: flax.core.FrozenDict
+
+    tx: optax.GradientTransformation = struct.field(pytree_node=False)
+    opt_state: optax.OptState
+
+    config: PPOConfig = struct.field(pytree_node=False)
+
+    def apply_gradients(self, *, grads, **kwargs):
+        &amp;quot;&amp;quot;&amp;quot;Return the new train state after applying gradients.
+
+        Parameters
+        ----------
+        grads:
+            Gradients returns by loss function.
+
+        Returns
+        -------
+        new_state: PPOTrainState
+            The new train state.
+        &amp;quot;&amp;quot;&amp;quot;
+        updates, opt_state = self.tx.update(grads, self.opt_state, self.params)
+        params = optax.apply_updates(self.params, updates)
+
+        return self.replace(
+            step=self.step + 1,
+            params=params,
+            opt_state=opt_state,
+            **kwargs,
+        )
+
+    def batch_size(self) -&amp;gt; int:
+        &amp;quot;&amp;quot;&amp;quot;Compute the batch size.&amp;quot;&amp;quot;&amp;quot;
+        return self.config.horizon * self.config.n_actors
+
+    def epsilon(self) -&amp;gt; chex.Numeric:
+        &amp;quot;&amp;quot;&amp;quot;The current clipping parameter.&amp;quot;&amp;quot;&amp;quot;
+        if isinstance(self.config.epsilon, Callable):
+            return self.config.epsilon(self.step)
+        return self.config.epsilon
+
+    def learning_rate(self) -&amp;gt; chex.Numeric:
+        return self.opt_state.hyperparams[&amp;quot;learning_rate&amp;quot;]  # type:ignore
+
+    @classmethod
+    def create(
+        cls,
+        *,
+        apply_fn: Callable,
+        params: flax.core.FrozenDict,
+        lr: Union[float, optax.Schedule],
+        config: PPOConfig,
+        max_grad_norm: Optional[float] = None,
+    ):
+        @optax.inject_hyperparams
+        def make_optimizer(learning_rate):
+            tx_comps = []
+            if max_grad_norm is not None:
+                tx_comps.append(optax.clip_by_global_norm(max_grad_norm))
+            tx_comps.append(optax.adam(learning_rate))
+            return optax.chain(*tx_comps)
+
+        tx = make_optimizer(lr)
+        opt_state = tx.init(params)
+
+        return cls(
+            step=0,
+            apply_fn=apply_fn,
+            params=params,
+            tx=tx,
+            opt_state=opt_state,
+            config=config,
+        )
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Note that we allow for a time-varying clipping parameter. Next, we implement a function to optimize the model. This function will compute the loss and gradients, apply the gradients and return the new state as well as the losses for logging.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;@functools.partial(jax.jit, static_argnums=2)
+def optimize(state: PPOTrainState, traj: Tuple):
+    &amp;quot;&amp;quot;&amp;quot;Perform a backwards pass on model, update and return new state and losses.&amp;quot;&amp;quot;&amp;quot;
+    epsilon = state.epsilon()
+    c1 = state.config.c1
+    c2 = state.config.c2
+
+    grad_fn = jax.value_and_grad(loss_fn, has_aux=True)
+    (loss, (aloss, closs, eloss)), grads = grad_fn(
+        state.params, state.apply_fn, traj, epsilon, c1, c2
+    )
+    state = state.apply_gradients(grads=grads)  # type: ignore
+
+    return state, loss, aloss, closs, eloss
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we write a function to perform a training step. This function takes in the state and trajectory, reshapes the trajectory to be of shape &lt;code&gt;(n, mini_batch_size,...)&lt;/code&gt; and then loops over each mini-batch (iterates over leading dimension), optimizing the model each loop iteration. We then repeat this process a specified number of times (&lt;code&gt;epochs&lt;/code&gt; parameter). Finally, the new state and average losses are returned.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def train_step(state: PPOTrainState, trajectory: Trajectory, key):
+    losses = {
+        &amp;quot;total&amp;quot;: [],
+        &amp;quot;actor&amp;quot;: [],
+        &amp;quot;critic&amp;quot;: [],
+        &amp;quot;entropy&amp;quot;: [],
+    }
+
+    batch_size = state.batch_size()
+    mini_batch_size = state.config.mini_batch_size
+
+    for _ in range(state.config.epochs):
+        key, rng = jax.random.split(key, 2)
+        traj_reshaped = trajectory_reshape(trajectory, rng, batch_size, mini_batch_size)
+        for traj in zip(*traj_reshaped):
+            state, *t_losses = optimize(state, traj)
+
+            losses[&amp;quot;total&amp;quot;] += t_losses[0]
+            losses[&amp;quot;actor&amp;quot;] += t_losses[1]
+            losses[&amp;quot;critic&amp;quot;] += t_losses[2]
+            losses[&amp;quot;entropy&amp;quot;] += t_losses[3]
+
+    losses = {key: val for key, val in zip(losses.keys(), map(np.average, losses.values()))}
+    return state, losses
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It will be useful to have a function that estimates the performance of the model. To estimate the performance, we will run the model over a number of episodes and return the average of the accumulated reward:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def evaluate_model(
+    state: PPOTrainState, env: GymEnv, episodes: int, key, expand_dims=True
+):
+    &amp;quot;&amp;quot;&amp;quot;Estimate model performance by running model over a number of episodes and return the average accumulated reward.
+
+    Parameters
+    ----------
+    state : PPOTrainState
+        Current train state.
+    env : GymEnv
+        Environment to run model though.
+    episodes : int
+        Number of episodes to run model for.
+    key : _type_
+        key for random number generation.
+    expand_dims : bool, optional
+        If True, the observation is given a batch dimension. Default is True.
+
+    Returns
+    -------
+    reward: float
+       Average reward. 
+    &amp;quot;&amp;quot;&amp;quot;
+    episode_rewards = []
+    for _ in range(episodes):
+        episode_reward = 0
+        observation = env.reset()
+        done = False
+        while not done:
+            if expand_dims:
+                observation = jnp.expand_dims(observation, 0)
+            logits, _ = apply_model(state.apply_fn, state.params, observation)
+            key, rng = jax.random.split(key, 2)
+            action = jax.random.categorical(rng, logits)
+            if expand_dims:
+                observation, reward, done, _ = env.step(int(action[0]))
+            else:
+                observation, reward, done, _ = env.step(int(action))
+            episode_reward += reward
+        episode_rewards.append(episode_reward)
+
+    return np.average(episode_rewards)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;testing-with-cartpole&#34;&gt;Testing with &lt;code&gt;CartPole&lt;/code&gt;&lt;/h2&gt;
+&lt;h3 id=&#34;training-1&#34;&gt;Training&lt;/h3&gt;
+&lt;p&gt;Before going for flappy bird, we will start with a much more simile problem: &lt;code&gt;CartPole&lt;/code&gt;. This environment can return non-image observations of the system, which are much easier to learn from. We will use our MLP model to implement our agent. First, let&amp;rsquo;s set up out environment. We will use &lt;code&gt;gym&lt;/code&gt;&amp;rsquo;s async vector environment.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;n_actors = 8
+train_env = gym.vector.make(&amp;quot;CartPole-v1&amp;quot;, asynchronous=True, num_envs=n_actors)
+eval_env = gym.make(&amp;quot;CartPole-v1&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now let&amp;rsquo;s set our configuration parameters. We will use stable-baselines3&amp;rsquo;s RL-zoo hyperparameters &lt;a href=&#34;https://github.com/DLR-RM/rl-baselines3-zoo/blob/master/hyperparams/ppo.yml&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;hyperparameters&lt;/a&gt; which have been tuned.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def ppo_num_opt_steps(
+    total_frames: int, horizon: int, n_actors: int, epochs: int, mini_batch_size: int
+) -&amp;gt; int:
+    &amp;quot;&amp;quot;&amp;quot;Compute the number of optimization steps.&amp;quot;&amp;quot;&amp;quot;
+    batch_size = horizon * n_actors
+    # Number of frames we see per train step
+    frames_per_train_step = batch_size
+    # Number of times we call optimizer per step
+    opt_steps_per_train_step = epochs * (batch_size // mini_batch_size)
+    # Number of train steps
+    num_train_steps = total_frames // frames_per_train_step
+    # Total number of optimizer calls
+    total_opt_steps = opt_steps_per_train_step * num_train_steps
+
+    return total_opt_steps
+
+
+horizon = 32
+epochs = 20
+mini_batch_size = 256
+total_frames = int(1e5)
+total_opt_steps = ppo_num_opt_steps(
+    total_frames, horizon, n_actors, epochs, mini_batch_size
+)
+
+config = PPOConfig(
+    horizon=horizon,
+    epochs=epochs,
+    mini_batch_size=mini_batch_size,
+    gamma=0.98,
+    lam=0.8,
+    c1=1.0,
+    c2=0.0,
+    total_frames=total_frames,
+    epsilon=optax.linear_schedule(0.2, 0.0, total_opt_steps),
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we create our train state. Note we will use a linearly decaying learning rate.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Create Model
+key = jax.random.PRNGKey(1234)
+n_hidden = 512
+n_actions = train_env.action_space[0].n  # type: ignore
+model = ActorCriticMlp(n_hidden=n_hidden, n_actions=n_actions)
+
+# Optimizer parameters
+learning_rate = optax.linear_schedule(0.001, 0.0, total_opt_steps)
+max_grad_norm = 0.5
+
+# Initialize training state
+observation = env_reset(train_env)
+key, rng = jax.random.split(key, 2)
+params = model.init(rng, observation)
+state = PPOTrainState.create(
+    apply_fn=model.apply,
+    params=params,
+    lr=learning_rate,
+    config=config,
+    max_grad_norm=max_grad_norm,
+)
+del params
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Lastly, we configure our logging and checkpoint directories as well as some parameters for specifying the frequencies:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;checkpoint_dir = pathlib.Path(&amp;quot;.&amp;quot;).absolute().joinpath(&amp;quot;checkpoints/cartpole/run1&amp;quot;).as_posix()
+log_dir = pathlib.Path(&amp;quot;.&amp;quot;).absolute().joinpath(&amp;quot;logs/cartpole/run1&amp;quot;).as_posix()
+
+summary_writer = tensorboard.SummaryWriter(log_dir)
+summary_writer.hparams(config._asdict())
+
+batch_size = config.horizon * config.n_actors
+frames_per_train_step = batch_size
+num_train_steps = config.total_frames // frames_per_train_step
+
+reward = 0.0
+
+horizon = state.config.horizon
+gamma = state.config.gamma
+lam = state.config.lam
+
+log_frequency = 1
+eval_frequency = 1
+eval_episodes = 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;start_step = 0
+with tqdm(range(start_step, num_train_steps)) as t:
+    for step in t:
+        frame = step * frames_per_train_step
+        t.set_description(f&amp;quot;frame: {step}&amp;quot;)
+
+        key, rng1, rng2 = jax.random.split(key, 3)
+        trajectory, observation = create_trajectory(
+            observation,
+            state.apply_fn,
+            state.params,
+            train_env,
+            rng1,
+            horizon,
+            gamma,
+            lam,
+        )
+        state, losses = train_step(state, trajectory, rng2)
+
+        if step % log_frequency == 0:
+            summary_writer.scalar(&amp;quot;train/loss&amp;quot;, losses[&amp;quot;total&amp;quot;], frame)
+            summary_writer.scalar(&amp;quot;train/loss-actor&amp;quot;, losses[&amp;quot;actor&amp;quot;], frame)
+            summary_writer.scalar(&amp;quot;train/loss-critic&amp;quot;, losses[&amp;quot;critic&amp;quot;], frame)
+            summary_writer.scalar(&amp;quot;train/loss-entropy&amp;quot;, losses[&amp;quot;entropy&amp;quot;], frame)
+            summary_writer.scalar(
+                &amp;quot;train/learning-rate&amp;quot;, state.learning_rate(), frame
+            )
+            summary_writer.scalar(&amp;quot;train/clipping&amp;quot;, state.epsilon(), frame)
+
+        if step % 25 == 0:
+            key, rng = jax.random.split(key, 2)
+            reward = evaluate_model(state, eval_env, eval_episodes, rng)
+            summary_writer.scalar(&amp;quot;train/reward&amp;quot;, reward, frame)
+
+        t.set_description_str(f&amp;quot;loss: {losses[&#39;total&#39;]}, reward: {reward}&amp;quot;)
+
+        if checkpoint_dir is not None:
+            checkpoints.save_checkpoint(checkpoint_dir, state, frame)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;results&#34;&gt;Results&lt;/h3&gt;
+&lt;p&gt;Here are the results from training the MLP on the CartPole environment. The
+network was trained for about 1 hr. Below is an image of the training results.
+Not that the maximum reward for this environment is 500. We reached this at the
+very end. The training wasn&amp;rsquo;t complete, but since this is for example purposes,
+these results are sufficient.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+  &lt;img width=&#34;800&#34; height=&#34;450&#34; src=&#34;../images/cartpole/stats.png&#34;&gt;
+&lt;/p&gt;
+&lt;p&gt;Here is gif of the agent surviving all 500 steps.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+  &lt;img width=&#34;500&#34; height=&#34;500&#34; src=&#34;../images/cartpole/cartpole.gif&#34;&gt;
+&lt;/p&gt;
+&lt;p&gt;We thus conclude that we are on the right track! Next, let&amp;rsquo;s try the flappy bird environment.&lt;/p&gt;
+&lt;h2 id=&#34;training-flappy-bird&#34;&gt;Training Flappy Bird&lt;/h2&gt;
+&lt;h3 id=&#34;training-2&#34;&gt;Training&lt;/h3&gt;
+&lt;p&gt;We are now ready to train an agent to play flappy bird. As in the &lt;code&gt;CartPole&lt;/code&gt; example, we first set up our environments.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Initialize environments
+def make_env():
+    env = FlappyBirdEnvV0()
+    env = ResizeObservation(env, (84, 84))
+    env = GrayScaleObservation(env, keep_dim=True)
+    env = FrameSkip(env)
+
+    return env
+    
+train_env = gym.vector.SyncVectorEnv([make_env for _ in range(config.n_actors)])
+eval_env = make_env()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we setup our config:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;total_frames=int(1e7)
+n_actors=8
+horizon=128
+mini_batch_size=256
+epochs=4
+total_opt_steps = ppo_num_opt_steps(
+    total_frames, horizon, n_actors, epochs, mini_batch_size
+)
+
+gamma=0.99
+lam=0.95
+epsilon=optax.linear_schedule(0.1, 0.0, total_opt_steps)
+c1=0.5
+c2=0.01
+learning_rate=optax.linear_schedule(2.5e-4, 0.0, total_opt_steps)
+max_grad_norm=0.5
+
+# Configuration
+config = PPOConfig(
+    n_actors=n_actors,
+    total_frames=total_frames,
+    horizon=horizon,
+    mini_batch_size=mini_batch_size,
+    lam=lam,
+    gamma=gamma,
+    epochs=epochs,
+    c1=c1,
+    c2=c2,
+    epsilon=epsilon,
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we initialize the training state:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Create Model
+key = jax.random.PRNGKey(0)
+n_hidden = 256
+n_actions = train_env.action_space[0].n  # type: ignore
+model = ActorCriticCnn(n_hidden=n_hidden, n_actions=n_actions)
+
+# Initialize model
+observation = env_reset(train_env)
+key, rng = jax.random.split(key, 2)
+params = model.init(rng, observation)
+state = PPOTrainState.create(
+    apply_fn=model.apply,
+    params=params,
+    lr=learning_rate,
+    config=config,
+    max_grad_norm=max_grad_norm,
+)
+del params
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Set up logging and logging parameters:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;checkpoint_dir = pathlib.Path(&amp;quot;.&amp;quot;).absolute().joinpath(&amp;quot;checkpoints/flappy_bird/run1&amp;quot;).as_posix()
+log_dir = pathlib.Path(&amp;quot;.&amp;quot;).absolute().joinpath(&amp;quot;logs/flappy_bird/run1&amp;quot;).as_posix()
+
+summary_writer = tensorboard.SummaryWriter(log_dir)
+summary_writer.hparams(config._asdict())
+
+log_frequency = 1
+eval_frequency = 1
+eval_episodes = 25
+
+batch_size = config.horizon * config.n_actors
+frames_per_train_step = batch_size
+num_train_steps = config.total_frames // frames_per_train_step
+
+reward = 0.0
+
+horizon = state.config.horizon
+gamma = state.config.gamma
+lam = state.config.lam
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And train! (this will take a VERY long time&amp;hellip;)&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;start_step = 0
+with tqdm(range(start_step, num_train_steps)) as t:
+    for step in t:
+        frame = step * frames_per_train_step
+        t.set_description(f&amp;quot;frame: {step}&amp;quot;)
+
+        key, rng1, rng2 = jax.random.split(key, 3)
+        trajectory, observation = create_trajectory(
+            observation,
+            state.apply_fn,
+            state.params,
+            train_env,
+            rng1,
+            horizon,
+            gamma,
+            lam,
+        )
+        state, losses = train_step(state, trajectory, rng2)
+
+        if step % log_frequency == 0:
+            summary_writer.scalar(&amp;quot;train/loss&amp;quot;, losses[&amp;quot;total&amp;quot;], frame)
+            summary_writer.scalar(&amp;quot;train/loss-actor&amp;quot;, losses[&amp;quot;actor&amp;quot;], frame)
+            summary_writer.scalar(&amp;quot;train/loss-critic&amp;quot;, losses[&amp;quot;critic&amp;quot;], frame)
+            summary_writer.scalar(&amp;quot;train/loss-entropy&amp;quot;, losses[&amp;quot;entropy&amp;quot;], frame)
+            summary_writer.scalar(
+                &amp;quot;train/learning-rate&amp;quot;, state.learning_rate(), frame
+            )
+            summary_writer.scalar(&amp;quot;train/clipping&amp;quot;, state.epsilon(), frame)
+
+        if step % 25 == 0:
+            key, rng = jax.random.split(key, 2)
+            reward = evaluate_model(state, eval_env, eval_episodes, rng)
+            summary_writer.scalar(&amp;quot;train/reward&amp;quot;, reward, frame)
+
+        t.set_description_str(f&amp;quot;loss: {losses[&#39;total&#39;]}, reward: {reward}&amp;quot;)
+
+        if checkpoint_dir is not None:
+            checkpoints.save_checkpoint(checkpoint_dir, state, frame)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;results-1&#34;&gt;Results&lt;/h3&gt;
+&lt;p&gt;Here are the results after training for about 1 day and 18 hrs. After about 1M
+steps, I had changed the evaluation frequency for once every step to once every
+25 steps since the training had slowed to a snail&amp;rsquo;s pace (this is why things
+slightly smooth out in the rewards at 1M steps.)&lt;/p&gt;
+&lt;p&gt;Clearly the training is not finished (I stopped because I don&amp;rsquo;t want to train
+for a week!) However, we can see the agent definitely learned. The maximum
+average reward was about 50.&lt;/p&gt;
+&lt;p&gt;Additionally, I did no hyperparameter optimization. So there is definitely room
+for improvement. Hyperparameter optimization would just take way too long on my
+single 6GB 2060.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+  &lt;img width=&#34;600&#34; height=&#34;450&#34; src=&#34;../images/flappy_bird_stats.png&#34;&gt;
+&lt;/p&gt;
+&lt;p&gt;Here is a gif of the agent flying through the environment. Keep in mind that we
+are skipping 4 frames at a time so things looks a bit choppy.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+  &lt;img width=&#34;500&#34; height=&#34;500&#34; src=&#34;../images/flappy_bird_quarter.gif&#34;&gt;
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Example Talk</title>
       <link>https://loganamorrison.github.io/talk/example-talk/</link>
       <pubDate>Sat, 01 Jun 2030 13:00:00 +0000</pubDate>
@@ -815,6 +3400,14 @@ $$
 &lt;/ol&gt;
 &lt;/section&gt;
 </description>
+    </item>
+    
+    <item>
+      <title>Simulation Based Inference for Efficient Theory Space Sampling: an Application to Supersymmetric Explanations of the Anomalous Muon (g-2)</title>
+      <link>https://loganamorrison.github.io/publication/sbi-mssm-2022/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      <guid>https://loganamorrison.github.io/publication/sbi-mssm-2022/</guid>
+      <description></description>
     </item>
     
     <item>

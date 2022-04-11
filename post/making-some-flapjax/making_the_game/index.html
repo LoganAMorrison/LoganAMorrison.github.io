@@ -1,0 +1,2057 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Logan A. Morrison, PhD" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="The flappy bird game is quite simple. Each step, the user can take one of two options: do nothing or flap. There are pipes that slide by which have a gap which the player is supposed to go through." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://loganamorrison.github.io/post/making-some-flapjax/making_the_game/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.1083c5683d81b407a892a791e534f8a7.css" />
+
+  
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://loganamorrison.github.io/post/making-some-flapjax/making_the_game/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@wowchemy" />
+    <meta property="twitter:creator" content="@wowchemy" />
+  
+  <meta property="og:site_name" content="Logan A. Morrison" />
+  <meta property="og:url" content="https://loganamorrison.github.io/post/making-some-flapjax/making_the_game/" />
+  <meta property="og:title" content="FlapJax Part 1 - Making the game | Logan A. Morrison" />
+  <meta property="og:description" content="The flappy bird game is quite simple. Each step, the user can take one of two options: do nothing or flap. There are pipes that slide by which have a gap which the player is supposed to go through." /><meta property="og:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2022-04-08T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-04-08T00:00:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>FlapJax Part 1 - Making the game | Logan A. Morrison</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="4b67f5a8b5ef32f8dbebb5959b18440f" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.63a793a0158e186da77f80f308d537e2.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#publications"><span>Publications</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    
+
+
+
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          Reinforcement Learning FlappyBird
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+  <button class="form-control sidebar-search js-search d-none d-md-flex">
+    <i class="fas fa-search pr-2"></i>
+    <span class="sidebar-search-text">Search...</span>
+    <span class="sidebar-search-shortcut">/</span>
+  </button>
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      <ul class="nav docs-sidenav">
+        <li><a href="/post/"><i class="fas fa-arrow-left pr-1"></i>Posts</a></li>
+      </ul>
+
+      
+      
+        
+          
+        
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/post/making-some-flapjax/">Reinforcement Learning FlappyBird</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class="active"><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making the game</a></li>
+
+
+
+  <li class=""><a href="/post/making-some-flapjax/ppo/">FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization</a></li>
+
+
+
+  <li class=""><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - PPO Implementation</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+    
+  
+</nav>
+
+    </div>
+
+    
+    
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
+      
+
+      <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">Contents</a></li>
+      </ul>
+
+      <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#defining-types-coretypespy">Defining types <code>core.types.py</code></a></li>
+        <li><a href="#loading-the-resources-coreresourcespy">Loading the resources <code>core.resources.py</code></a></li>
+        <li><a href="#game-configurations-coreconfigpy">Game configurations <code>core.config.py</code></a></li>
+        <li><a href="#making-the-bird-corebirdpy">Making the bird <code>core.bird.py</code></a></li>
+        <li><a href="#making-the-pipes-corepipespy">Making the pipes <code>core.pipes.py</code></a></li>
+        <li><a href="#game-logic-coreflappypy">Game Logic <code>core.flappy.py</code></a></li>
+        <li><a href="#game-environment-envsv1py">Game environment <code>envs.v1.py</code></a></li>
+        <li><a href="#bonus-game-for-human-play-coreflappy_gamepy">Bonus: Game for human play <code>core.flappy_game.py</code></a></li>
+        <li><a href="#possible-improvements">Possible Improvements</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+      
+    </div>
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          
+
+          <h1>FlapJax Part 1 - Making the game</h1>
+
+          <div class="article-style">
+            <p>The flappy bird game is quite simple. Each step, the user can take one of two
+options: do nothing or flap. There are pipes that slide by which have a gap
+which the player is supposed to go through. If the player hits a pipe, then game
+is over. In the original game, if the player hits the ground, the game is over
+as well. Additionally, the original game allows for the bird to go arbitrarily
+high of the top of the screen. We will deviate from these last two. We will clip
+the player to always be on the screen and allow the player to touch the ground.</p>
+<p>To implement the game, we will use <code>pygame</code>. However, much of the dynamics will
+be handled ourselves with basic Python code. We will write a couple classes to
+handle the bird and the pipes as well as a <code>gym</code>-compatible class for running
+the game. We will be implementing the full game. The final product will look
+like the following:</p>
+<p align="center">
+  <img width="600" height="450" src="../images/final_game_img.png">
+</p>
+<p>We will grab the game images from <a href="https://github.com/sourabhv/FlapPyBird" target="_blank" rel="noopener">this repo</a>.
+Other than the images, we will use nothing else from that repo. We will be mimicking
+<a href="https://flappybird.io/" target="_blank" rel="noopener">this version</a> of the game.</p>
+<p>We will be using a modular layout for our code structure. The layout will look like:</p>
+<pre><code>.
+├── flappy_bird
+│   ├── core
+│   │   ├── bird.py
+│   │   ├── config.py
+│   │   ├── flappy_game.py
+│   │   ├── flappy.py
+│   │   ├── __init__.py
+│   │   ├── pipe.py
+│   │   ├── render.py
+│   │   ├── resources
+│   │   │   ├── background-base.png
+│   │   │   ├── background-day.png
+│   │   │   ├── background-night.png
+│   │   │   ├── bluebird-downflap.png
+│   │   │   ├── bluebird-midflap.png
+│   │   │   ├── bluebird-upflap.png
+│   │   │   ├── pipe-green.png
+│   │   │   ├── pipe-red.png
+│   │   │   ├── redbird-downflap.png
+│   │   │   ├── redbird-midflap.png
+│   │   │   └── redbird-upflap.png
+│   │   ├── resources.py
+│   │   └── types.py
+│   ├── envs
+│   │   ├── __init__.py
+│   │   └── v1.py
+│   ├── __init__.py
+├── MANIFEST.in
+├── setup.cfg
+└── setup.py
+</code></pre>
+<div class="alert alert-note">
+  <div>
+    While this game works, it is far from optimized. See the possible improvements
+section for my thoughts ways to make things better.
+  </div>
+</div>
+<h3 id="defining-types-coretypespy">Defining types <code>core.types.py</code></h3>
+<p>In this file, we simply define some useful types.</p>
+<pre><code class="language-python">import numpy as np
+import pygame
+
+PyGameImage = pygame.surface.Surface
+PyGameRect = pygame.rect.Rect
+PyGameSurface = pygame.surface.Surface
+
+RngGenerator = np.random.Generator
+</code></pre>
+<h3 id="loading-the-resources-coreresourcespy">Loading the resources <code>core.resources.py</code></h3>
+<p>Our first job will be to load the images of the game.</p>
+<pre><code class="language-python">import pathlib
+
+import pygame
+
+__all__ = [&quot;background_images&quot;, &quot;pipe_images&quot;, &quot;bird_images&quot;]
+
+
+resources_dir = pathlib.Path(__file__).parent.absolute().joinpath(&quot;resources&quot;)
+
+# Function to make loading a bit less verbose
+def _load_image(name: str):
+    return pygame.image.load(resources_dir.joinpath(name).as_posix())
+
+
+background_images = {
+    &quot;day&quot;: _load_image(&quot;background-day.png&quot;),
+    &quot;night&quot;: _load_image(&quot;background-night.png&quot;),
+    &quot;base&quot;: _load_image(&quot;background-base.png&quot;),
+}
+
+pipe_images = {
+    &quot;red&quot;: _load_image(&quot;pipe-red.png&quot;),
+    &quot;green&quot;: _load_image(&quot;pipe-green.png&quot;),
+}
+
+bird_images = {
+    &quot;blue&quot;: {
+        &quot;upflap&quot;: _load_image(&quot;bluebird-upflap.png&quot;),
+        &quot;midflap&quot;: _load_image(&quot;bluebird-midflap.png&quot;),
+        &quot;downflap&quot;: _load_image(&quot;bluebird-downflap.png&quot;),
+    },
+    &quot;red&quot;: {
+        &quot;upflap&quot;: _load_image(&quot;redbird-upflap.png&quot;),
+        &quot;midflap&quot;: _load_image(&quot;redbird-midflap.png&quot;),
+        &quot;downflap&quot;: _load_image(&quot;redbird-downflap.png&quot;),
+    },
+}
+
+</code></pre>
+<p>The images we grabbed are a bit narrow and not quite the shape we want. With
+some experimentation, we can determine the scalings to make the images look
+a bit better. I chose to scale the widths by 5/3. At the end of the day, I
+ended up with the following.</p>
+<pre><code class="language-python">for key, image in background_images.items():
+    w = image.get_rect().width * 5.0 / 3.0
+    h = image.get_rect().height * (0.714 if key == &quot;base&quot; else 1.25)
+    background_images[key] = pygame.transform.scale(image, (w, h))
+
+
+for key, image in pipe_images.items():
+    w = image.get_rect().width * 5.0 / 3.0
+    h = image.get_rect().height * 1.094
+    pipe_images[key] = pygame.transform.scale(image, (w, h))
+
+
+for color in bird_images.keys():
+    for flap, image in bird_images[color].items():
+        w = image.get_rect().width * 5.0 / 3.0
+        h = image.get_rect().height * 5.0 / 3.0
+        bird_images[color][flap] = pygame.transform.scale(image, (w, h))
+</code></pre>
+<h3 id="game-configurations-coreconfigpy">Game configurations <code>core.config.py</code></h3>
+<p>Next, we will have a class that specifies the configuration of the game.</p>
+<pre><code class="language-python">import json
+from typing import Optional, Tuple
+
+import attrs
+from attrs import field, validators
+
+def gt_or_none(value):
+    def f(*args):
+        val = args[-1]
+        assert val is None or val &gt; value, f&quot;Value must be None or &gt;= {value}&quot;
+
+    return f
+
+@attrs.define
+class FlappyBirdConfig:
+    &quot;&quot;&quot;
+    Configuration for the FlappyBird game.
+
+    Attributes
+    ----------
+    bird_color: str
+        Color of the bird. Can be 'blue' or 'red'.
+    bird_jump_velocity: float
+        Velocity of the bird after flap.
+    bird_jump_frequency: int
+        Number of steps before bird can falp again.
+    bird_start_position: Tuple[int, int]
+        Starting position of the bird.
+    bird_dead_on_hit_ground: bool
+        If True, game is over when bird hits the ground.
+    bird_max_speed: Optional[float]
+        If not None, the bird's speed cannot exceed `bird_max_speed`.
+    bird_rotate: bool
+        If True, the bird will rotate as it moves.
+
+    pipe_color: str
+        Color of the pipes. Can be 'green' or 'red'.
+    pipe_speed: float
+        Speed of the pipes.
+    pipe_gap_size: int
+        Size of gap between pipes.
+    pipe_spacing: int
+        Space between pipes.
+
+    background: str
+        Type of background. Can be 'day' or 'night'.
+    hide_screen: bool
+        If True, the screen will not be displayed.
+    show_score: bool
+        If True, the score will be displayed.
+    show_game_over_screen: bool
+        If True, the game-over screen will be displayed.
+
+    gravity: float
+        Gravitational acceleration.
+    dt: float
+        Time between frames.
+    fps: int
+        Frames per second of the game.
+    &quot;&quot;&quot;
+
+    bird_color: str = field(default=&quot;blue&quot;, validator=validators.in_([&quot;blue&quot;, &quot;red&quot;]))
+    bird_jump_velocity: float = field(default=4.0, validator=validators.gt(0.0))
+    bird_jump_frequency: int = field(default=7, validator=validators.ge(0))
+    bird_start_position: Tuple[int, int] = field(default=(100, 250))
+    bird_dead_on_hit_ground: bool = field(default=True)
+    bird_constrained_to_screen: bool = field(default=True)
+    bird_max_speed: Optional[float] = field(default=None, validator=gt_or_none(0.0))
+    bird_rotate: bool = field(default=True)
+
+    pipe_color: str = field(default=&quot;green&quot;, validator=validators.in_([&quot;red&quot;, &quot;green&quot;]))
+    pipe_speed: float = field(default=3, validator=validators.gt(0))
+    pipe_gap_size: int = field(default=150, validator=validators.gt(0))
+    pipe_spacing: int = field(default=200, validator=validators.gt(0))
+
+    background: str = field(default=&quot;day&quot;, validator=validators.in_([&quot;day&quot;, &quot;night&quot;]))
+    hide_screen: bool = field(default=False)
+    show_score: bool = field(default=True)
+    show_game_over_screen: bool = field(default=True)
+
+    gravity: float = field(default=2.0 / 5.0, validator=validators.gt(0.0))
+    dt: float = field(default=1.0, validator=validators.gt(0.0))
+    fps: Optional[int] = field(default=60, validator=gt_or_none(0))
+</code></pre>
+<h3 id="making-the-bird-corebirdpy">Making the bird <code>core.bird.py</code></h3>
+<p>Possibly the most important logic of the game is the bird. We will use Newton&rsquo;s
+2nd law and Euler steps to model the dynamics of our bird. We assume that there
+is a constant gravitational force. In addition, we will fix the horizontal
+position of the bird. All motion will be in the vertical direction.</p>
+<p align="center">
+  <img width="600" height="450" src="../images/bird_annotated.png">
+</p>
+<p>In this case, the acceleration of the bird will be constant and equal to the
+gravitational acceleration. The differential equations for the y-components of
+position and velocity are simply:</p>
+<p>
+$$
+\begin{align}
+    \dv{y}{t} &= v_{y}, & \dv{v_{y}}{t} &= -g
+\end{align}
+$$
+</p>
+<p>We will update the position and velocity using an Euler step:</p>
+<p>
+$$
+\begin{align}
+    y_{t+1} &= y_{t} + v_{y}\Delta t, & v_{y,t+1} &= v_{y,t} - g \Delta t
+\end{align}
+$$
+</p>
+<div class="alert alert-note">
+  <div>
+    We need to note that in <strong>pygame</strong> (and most frameworks) the vertical direction is
+flipped so that a the top of the screen is $y=0$ while the bottom is $y=H_{\mathrm{screen}}$.
+  </div>
+</div>
+<p>For simplicity, we will set $\Delta t = 1$ and tune the other parameters to give
+a natural feel to the motion. We need to know how to handle the bird&rsquo;s flap.
+Technically, we should use an impulse. In the case of a $\delta$-function
+impulse, we would get a constant shift in the velocity. Instead of doing this,
+we will simply change the velocity to some fixed value after a flap (we could
+think about this as a $\delta$-function impulse with a strength equal to the
+current velocity plus a constant off-set.) Explicitly, after a flap, we will
+change the velocity to a fixed value $\bar{v}$</p>
+<p>
+$$
+\begin{align}
+    v_{y,t+1} = \begin{cases}
+    v_{y,t} - g, & \text{no flap}\\
+    \bar{v}, & \mathrm{flap}
+    \end{cases}
+\end{align}
+$$
+</p>
+<p>In addition to linear motion, we will also allow for rotation. We will assume a
+constant angular velocity $\omega$. Then the angular equation of motion and its update is:</p>
+<p>
+$$
+\begin{align}
+    \dv{\theta}{t} &= \omega, &
+    \theta_{t+1} &= \theta_{t} + \omega\Delta t
+\end{align}
+$$
+</p>
+<p>When the bird flaps, we will instantaniously change the angle to 45 degrees.</p>
+<p>To give our bird a flapping animation, after the bird flaps, we will switch between the
+<code>upflap</code> and <code>downflap</code> images. For reference, the bird images are as follows:</p>
+<div class="row">
+    <style>
+        .column {
+            float: left;
+            width:33%;
+            padding: 5px;
+        }
+    </style>
+    <div class="column">
+        <img width="32" height="32" src="../images/bluebird-midflap.png" alt=""/>
+        <p align="center">mid-flap</p>
+    </div>
+    <div class="column">
+        <img width="32" height="32" src="../images/bluebird-downflap.png" alt=""/>
+        <p align="center">down-flap</p>
+    </div>
+    <div class="column">
+        <img width="32" height="32" src="../images/bluebird-upflap.png" alt=""/>
+        <p align="center">up-flap</p>
+    </div>
+</div> 
+<p>Without further delay, let&rsquo;s write down our bird class:</p>
+<pre><code class="language-python">from typing import Optional
+import numpy as np
+import pygame
+
+from .config import FlappyBirdConfig
+from .resources import bird_images
+from .types import PyGameImage, PyGameRect, PyGameSurface
+
+
+class Bird:
+    def __init__(self, x0, y0, window_height, config: FlappyBirdConfig):
+        # Config
+        self.jump_velocity = config.bird_jump_velocity
+        self.jump_frequency = config.bird_jump_frequency
+        self.gravity = config.gravity
+        # Angular velocity. Set such that it will look like its flappy until it
+        # reaches its max height.
+        self.omega = 45.0 * self.gravity / (2 * self.jump_velocity)
+        self.images = bird_images[config.bird_color]
+        self.image: PyGameImage = self.images[&quot;midflap&quot;]
+        self.dt = config.dt
+        self.x0 = x0
+        self.y0 = y0
+        self.window_height = window_height
+        self.rotate = config.bird_rotate
+        self.max_speed: Optional[float] = config.bird_max_speed
+        # Number of flaps it takes to reach max height after a flap
+        self.num_flaps = int(np.ceil(self.jump_velocity / (self.gravity * self.dt)))
+
+        # State
+        self.x = x0
+        self.y = y0
+        self.velocity_y = 0.0
+        self.angle = 0.0
+        self.jump_counter = 0 # Counter to limit jumps (flaps)
+        self.flap_counter = 0 # Counter for determinings which image to display
+        self.flap_type: str = &quot;midflap&quot;
+
+        self.reset()
+
+    @property
+    def left(self) -&gt; int:
+        # left side of image
+        return int(self.x - self.image.get_width() / 2.0)
+
+    @property
+    def right(self) -&gt; int:
+        # right side of image
+        return int(self.x + self.image.get_width() / 2.0)
+
+    @property
+    def top(self) -&gt; int:
+        # top side of image
+        return int(self.y - self.image.get_height() / 2.0)
+
+    @property
+    def bottom(self) -&gt; int:
+        # bottom side of image
+        return int(self.y + self.image.get_height() / 2.0)
+
+    def reset(self):
+        # Reset to initial state
+        self.x = self.x0
+        self.y = self.y0
+        self.velocity_y = 0.0
+        self.dead = False
+        self.angle = 0.0
+        self.jump_counter = 0
+
+    def flap(self):
+        # If jump_counter == 0, we can flap!
+        if self.jump_counter == 0:
+            self.velocity_y = -self.jump_velocity
+            self.jump_velocity = self.jump_frequency
+            self.angle = 45.0
+            self.flap_type = &quot;upflap&quot;
+            self.image = self.images[self.flap_type]
+            self.flap_counter = self.num_flaps
+            self.jump_counter = self.jump_frequency
+
+    def step(self, action: int):
+        # Set the image based on flap_counter
+        if self.flap_counter &gt; 0:
+            # If flap_counter &gt; 0, we are flapping. Osscilate between upflap and
+            # downflap.
+            self.flap_counter -= 1
+            if self.flap_type == &quot;upflap&quot;:
+                self.flap_type = &quot;downflap&quot;
+            elif self.flap_type == &quot;downflap&quot;:
+                self.flap_type = &quot;upflap&quot;
+            self.image = self.images[self.flap_type]
+        else:
+            self.flap_type = &quot;midflap&quot;
+            self.image = self.images[&quot;midflap&quot;]
+
+        # Update jump_counter
+        if self.jump_counter &gt; 0:
+            self.jump_counter -= 1
+
+        if action == 1:
+            self.flap()
+
+        # Apply Euler steps
+        self.angle = np.clip(self.angle - self.omega * self.dt, -90.0, 45.0)
+        self.y += self.velocity_y * self.dt
+        self.velocity_y += self.gravity * self.dt
+
+        # Limit speed if requested
+        if self.max_speed is not None:
+            maxv = abs(self.max_speed)
+            self.velocity_y = np.clip(self.velocity_y, -maxv, maxv)
+
+        # Limit bird position to be on screen. If we hit the boundaries, set
+        # velocity to zero.
+        ymax = self.window_height - self.image.get_height() / 2.0
+        if self.y &gt; ymax:
+            self.velocity_y = 0.0
+            self.y = ymax
+        if self.y &lt; 0.0:
+            self.y = 0.0
+            self.velocity_y = 0.0
+
+    @property
+    def rect(self) -&gt; PyGameRect:
+        # Get the pygame rect (used for collision detection)
+        rect = self.image.get_rect()
+        rect.left = self.left
+        rect.top = self.top
+        return rect
+
+    def draw(self, surface: PyGameSurface) -&gt; None:
+        # Draw the bird to the surface
+        image = self.image
+        rect = self.rect
+        if self.rotate:
+            image = pygame.transform.rotate(image, self.angle)
+        surface.blit(image, rect)
+</code></pre>
+<h3 id="making-the-pipes-corepipespy">Making the pipes <code>core.pipes.py</code></h3>
+<p>Our next goal is to implement the pipes. The pipe dynamics are very simple
+compared to the bird dynamics. The pipes will simply move to the left. However,
+there are a few things we need to consider. First, we want the location of the
+gap (where the bird can fly through) to be random. Second, our images of the
+pipes have a finite height, and we want the pipes to fit on the screen.</p>
+<p>Let $h$ be the total height one segement of the pipe (upper or lower pipe). Let
+$H$ be the height from the top of the screen to the ground. Lastly, let $G$ be
+the height of the gap between the upper and lower pipe. Here is an annotated
+image with these measurements (aside from $h$ since part of the pipe is hidden.)</p>
+<p align="center">
+  <img width="600" height="450" src="../images/pipe_annotated.png">
+</p>
+<p>We might be tempted to choose the center between the upper can lower pipes to be
+a random number between $0$ and $H$.  However, since $h &lt; H_{g}$, this could
+cause part of either the upper or lower pipe to be off the screen. To ensure the
+pipes are completely on the screen, the center must be between:</p>
+<p>
+$$
+h_{\mathrm{min}} = H - h - G/2 < h_{c} < h + G / 2 = h_{\mathrm{max}} 
+$$
+</p>
+<p>Now that we know the limits, we can choose a random number between
+$h_{\mathrm{min}} &lt; h_{c} &lt; h_{\mathrm{max}}$ for the location of the center.
+Once we know the center, we then set the location of the bottom of the top pipe
+$h_{t} = h_{c} - G/2$ and the location of the top of the bottom pipe to
+$h_{b} =h_{c} + G/2$.</p>
+<p>This is all we need to implement the <code>Pipe</code> class. Note that we only have one
+image for the pipes. So for the top pipe, we need to rotate the image by $180$
+degrees to make it look likes its coming from above.</p>
+<pre><code class="language-python">import pygame
+
+from .config import FlappyBirdConfig
+from .resources import pipe_images
+from .types import PyGameImage, PyGameSurface, RngGenerator
+
+
+class Pipe:
+    def __init__(
+        self,
+        config: FlappyBirdConfig,
+        x: float,
+        ymin: float,
+        ymax: float,
+        rng: RngGenerator,
+    ):
+        # Config
+        self.gap_size = config.pipe_gap_size
+        self.velocity_x = config.pipe_speed
+        self.ymin = ymin
+        self.ymax = ymax
+        image: PyGameImage = pipe_images[config.pipe_color]
+        self.top_image = pygame.transform.rotate(image, 180.0)
+        self.top_rect = self.top_image.get_rect()
+        self.bottom_image = image
+        self.bottom_rect = self.bottom_image.get_rect()
+        self.width = self.top_rect.width
+        self.dt = config.dt
+
+        # State
+        self.x = x
+        self.y = 0.0
+        self.reset(x, rng)
+
+    def step(self) -&gt; None:
+        self.x -= self.velocity_x * self.dt
+        left = int(self.left)
+        self.top_rect.left = left
+        self.bottom_rect.left = left
+
+    def reset(self, x, rng: RngGenerator) -&gt; None:
+        self.x = x
+        self.y = rng.uniform(low=self.ymin, high=self.ymax)
+
+        left = int(self.left)
+        self.top_rect.left = left
+        self.top_rect.bottom = int(self.y - self.gap_size / 2.0)
+
+        self.bottom_rect.left = left
+        self.bottom_rect.top = self.top_rect.bottom + self.gap_size
+
+    def draw(self, surface: PyGameSurface):
+        surface.blit(self.top_image, self.top_rect)
+        surface.blit(self.bottom_image, self.bottom_rect)
+
+    @property
+    def left(self) -&gt; float:
+        return self.x - self.width / 2.0
+
+    @property
+    def right(self) -&gt; float:
+        return self.x + self.width / 2.0
+</code></pre>
+<h3 id="game-logic-coreflappypy">Game Logic <code>core.flappy.py</code></h3>
+<p>Now that we have the <code>Bird</code> and <code>Pipe</code> classes, we&rsquo;re ready to implement the
+main game logic. The dynamics of the bird and individual pipes is handled by
+these classes. However, our main class will handle having multiple pipes.</p>
+<p>We want the game to appear as if there is a continuous stream of pipes. To
+achieve this, we will hold onto multiple pipes. When a pipe moves past the
+left-side of the screen, we will move that pipe to a position beyond the pipe
+furthest to the right. Explicitly,</p>
+<p>
+$$
+\ell^{(i)}_{t+1} = \begin{cases}
+    \ell^{(i)}_{t} + v_{p}\Delta t & \ell^{(i)}_{t} > 0\\
+    \ell^{(i-1)}_{t} + \delta & \ell^{(i)}_{t} < 0
+\end{cases}
+$$
+</p>
+<p>where $\ell^{(i)}_{t}$ is the location of the left-side of pipe $i$ at the
+current step. When $\ell^{(i)}_{t} &gt; 0$, we just let the class handle the
+motion (just use Euler step.) When $\ell^{(i)}_{t} &lt; 0$, the pipe has moved
+beyond the left-side of the screen. We then set the new location of the
+left-edge of the pipe to be some shift $\delta$ beyond the pipe before it in the
+queue. The shift $\delta$ is equal to the pipe-width plus the pipe-spacing.</p>
+<p>We also need to ensure the number of pipes in our queue is large enough to keep
+the flow steady with a consistent spacing between the pipe. We use
+$\mathrm{ceil}(W / (w + w_{p}))$, where $w$ is the pipe-spacing and $w_{p}$ is
+the width of a pipe.</p>
+<p>This is essentially all we need to implement the game. We use <strong>pygame</strong>&rsquo;s
+collision detection to determine if the bird hits anything. We also detect if
+the bird has moved passed a pipe by comparing the positions of the bird and
+pipe in front of the bird. We also use <strong>pygame</strong>&rsquo;s interface to render the
+screen. Since this isn&rsquo;t a post about <strong>pygame</strong>, we will not dig into these
+aspects.</p>
+<p>In the implementation below, we added a few bells and whistles. We added some
+dynamics for the base to make it appear as if the screen is moving to the left.
+Additionally, we added functionality to display the score and a game-over screen
+to display the current score and maximum score obtained using the current
+instance of the game. The scoring and game-over screen are mainly to replicate
+existing implementations and are only used in <em>human</em> mode.</p>
+<p>We note, however, the <code>step</code> function. This function records if the bird hit the
+ground, a pipe or if the bird passed a pipe. It then returns a dictionary with
+this information. That way, other classes may choose how to use this information
+to decided what to do next.</p>
+<pre><code class="language-python">from typing import List, Optional
+
+import numpy as np
+import pygame
+
+from .bird import Bird
+from .config import FlappyBirdConfig
+from .pipe import Pipe
+from .resources import background_images, pipe_images
+from .types import PyGameImage, PyGameSurface, RngGenerator
+
+
+class FlappyBird:
+    def __init__(self, config: FlappyBirdConfig, rng: Optional[RngGenerator] = None):
+        # Config
+        self.dead_on_hit_ground = config.bird_dead_on_hit_ground
+        self.bird_constrained_to_screen = config.bird_constrained_to_screen
+        self.background: PyGameImage = background_images[config.background]
+        self.base: PyGameImage = background_images[&quot;base&quot;]
+        self.hide_screen = config.hide_screen
+        self.show_score = config.show_score
+        self.fps = config.fps
+        if rng is None:
+            self.rng = np.random.default_rng()
+
+        # Screen/PyGame init
+        pygame.init()
+        pygame.display.init()
+        self.screen: Optional[PyGameSurface] = None
+        self.width = self.background.get_width()
+        self.height = self.background.get_height()  # + self.base.get_height()
+        self.rect = pygame.rect.Rect(0, 0, self.width, self.height)
+        self.y_ground = self.background.get_height() - self.base.get_height()
+
+        # Setup bases
+        self.base_rects = [self.base.get_rect() for _ in range(3)]
+        for i, rect in enumerate(self.base_rects):
+            rect.top = self.y_ground
+            rect.left = i * rect.width
+
+        # Bird setup
+        x0 = self.width / 2.0
+        y0 = self.background.get_height() / 2.0
+        self.bird = Bird(x0, y0, self.background.get_height(), config)
+
+        # Pipe setup
+        pipe_rect = pipe_images[config.pipe_color].get_rect()
+        self.pipe_spacing = config.pipe_spacing
+        self.pipe_gap_size = config.pipe_gap_size
+        self.pipe_width = pipe_rect.width
+        self.pipe_speed = config.pipe_speed
+        npipes = int(np.ceil(self.width / (self.pipe_spacing + self.pipe_width)))
+
+        bkg_h = self.background.get_height()
+        ymin = bkg_h - pipe_rect.height - self.pipe_gap_size / 2.0
+        ymax = pipe_rect.height + self.pipe_gap_size / 2.0
+        shift = self.width + self.pipe_width / 2.0
+
+        self.pipes: List[Pipe] = []
+        for i in range(npipes):
+            x = shift + i * (self.pipe_width + self.pipe_spacing)
+            self.pipes.append(Pipe(config, x, ymin, ymax, self.rng))
+
+        # Game state
+        self.game_over = False
+        self.score = 0
+        self.next_pipe = 0
+        self.best_score = 0
+        self.clock = pygame.time.Clock()
+
+    def flap(self):
+        self.bird.flap()
+
+    def step(self, action: int):
+        assert action in [0, 1], &quot;Invalid action. Must be 0 or 1.&quot;
+        state = {&quot;reward&quot;: 0, &quot;hit-pipe&quot;: False, &quot;hit-ground&quot;: False}
+
+        self.bird.step(action)
+
+        for i, pipe in enumerate(self.pipes):
+            pipe.step()
+
+            if pipe.right &lt; 0.0:
+                # New left position of the pipe
+                left = self.pipes[i - 1].right + self.pipe_spacing
+                # Make sure the new pipe starts off the screen
+                left = np.clip(left, self.width, None)
+                pipe.reset(left, self.rng)
+
+        # Detect if player has passed a pipe
+        if self.bird.left &gt; self.pipes[self.next_pipe].right:
+            self.next_pipe = (self.next_pipe + 1) % len(self.pipes)
+            state[&quot;reward&quot;] = 1
+
+        # Detect if bird hit a pipe
+        for pipe in self.pipes:
+            if pipe.top_rect.colliderect(self.bird.rect):
+                state[&quot;hit-pipe&quot;] = True
+            if pipe.bottom_rect.colliderect(self.bird.rect):
+                state[&quot;hit-pipe&quot;] = True
+
+        # detect if bird hit ground
+        if self.bird.rect.bottom &gt; self.y_ground:
+            state[&quot;hit-ground&quot;] = True
+
+        self.score += state[&quot;reward&quot;]
+
+        return state
+
+    def _render(self, hidden: Optional[bool] = None):
+        force_reinit = False
+        if not (self.hide_screen == hidden):
+            self.hide_screen = hidden
+            force_reinit = True
+
+        if self.screen is None or force_reinit:
+            pygame.init()
+            pygame.display.init()
+            mode = pygame.SHOWN if not self.hide_screen else pygame.HIDDEN
+            self.screen = pygame.display.set_mode(self.rect.size, flags=mode)
+
+        self.screen.fill((0, 0, 0))
+        self.screen.blit(self.background, (0, 0))
+
+        self.bird.draw(self.screen)
+
+        for pipe in self.pipes:
+            pipe.draw(self.screen)
+
+        # Step bases
+        for i, base_rect in enumerate(self.base_rects):
+            base_rect.left -= int(self.pipe_speed)
+            if base_rect.right &lt; 0:
+                base_rect.left = self.base_rects[i - 1].right - int(self.pipe_speed)
+            self.screen.blit(self.base, base_rect)
+
+    def _flip(self):
+        if not self.hide_screen:
+            pygame.event.pump()
+            if self.fps is not None:
+                self.clock.tick(self.fps)
+            pygame.display.flip()
+
+    def render(self, hidden: Optional[bool] = None):
+        self._render(hidden)
+        assert self.screen is not None
+
+        if self.show_score:
+            score = pygame.font.Font(&quot;freesansbold.ttf&quot;, 32).render(
+                f&quot;{self.score}&quot;, True, (255, 255, 255)
+            )
+            rect = score.get_rect()
+            rect.left = self.background.get_rect().left + 5
+            rect.top = self.background.get_rect().top + 5
+            self.screen.blit(score, rect)
+
+        self._flip()
+
+    def game_over_screen(self, hidden: Optional[bool] = None):
+        self._render(hidden)
+        assert self.screen is not None
+
+        if self.show_score:
+            score = pygame.font.Font(&quot;freesansbold.ttf&quot;, 32).render(
+                f&quot;Score: {self.score}&quot;, True, (255, 255, 255)
+            )
+            rect = score.get_rect()
+            rect.left = self.background.get_rect().width // 2 - rect.width // 2
+            rect.top = self.background.get_rect().height // 3
+            self.screen.blit(score, rect)
+
+            best_score = pygame.font.Font(&quot;freesansbold.ttf&quot;, 32).render(
+                f&quot;Best Score: {self.best_score}&quot;, True, (255, 255, 255)
+            )
+            rect = best_score.get_rect()
+            rect.left = self.background.get_rect().width // 2 - rect.width // 2
+            rect.top = self.background.get_rect().height // 3 + 40
+            self.screen.blit(best_score, rect)
+
+        self._flip()
+
+    def reset(self):
+        self.bird.reset()
+
+        shift = self.width + self.pipe_width / 2.0
+        for i, pipe in enumerate(self.pipes):
+            x = shift + i * (self.pipe_spacing + pipe.top_rect.width)
+            pipe.reset(x, self.rng)
+
+        self.base_rects = [self.base.get_rect() for _ in range(3)]
+        for i, rect in enumerate(self.base_rects):
+            rect.top = self.y_ground
+            rect.left = i * rect.width
+
+        self.game_over = False
+        self.score = 0
+        self.next_pipe = 0
+
+    def close(self):
+        self.screen = None
+        pygame.display.quit()
+        pygame.quit()
+</code></pre>
+<h3 id="game-environment-envsv1py">Game environment <code>envs.v1.py</code></h3>
+<p>Before we train a network to play, we will make an class that implements the
+<code>gym</code> interface. In the <code>v1</code> class, we say the game is over if the bird hits a
+pipe or if the bird touches the ground. We remove the frame rate to make things
+go as fast as possible. Additionally, we hide the screen so nothing is
+displayed. (Rendering to the screen just takes more time and is annoying when
+you used a window manager like xmonad, which I do.)</p>
+<p>There is really only one aspect that is worth mentioning. We need to convert the
+<strong>pygame</strong> screen into a numpy array to pass to our network. To do this, we used
+*<strong>pygame</strong>&rsquo;s <code>surfarray.pixels3d</code> function. Since we will be used <strong>flax</strong> to
+implement our network, we need to transpose the output of <code>surfarray.pixels3d</code>.
+<code>surfarray.pixels3d</code> returns an image of shape <code>(W,H,C)</code>, while we want <code>(H,W,C)</code>.
+We use <code>np.transpose(...,axes=(1,0,2)</code> to achieve this.</p>
+<pre><code class="language-python">from typing import Tuple
+
+import gym
+import numpy as np
+import pygame
+from gym import spaces
+
+from flappy_bird.core.config import FlappyBirdConfig
+from flappy_bird.core.flappy import FlappyBird
+
+ActType = int
+ObsType = np.ndarray
+
+config = FlappyBirdConfig(
+    bird_color=&quot;blue&quot;,
+    bird_jump_velocity=4.0,
+    bird_jump_frequency=4,
+    bird_dead_on_hit_ground=True,
+    bird_max_speed=None,
+    bird_rotate=True,
+    pipe_color=&quot;green&quot;,
+    pipe_speed=3,
+    pipe_gap_size=150,
+    pipe_spacing=200,
+    background=&quot;day&quot;,
+    hide_screen=True,
+    show_score=False,
+    show_game_over_screen=False,
+    gravity=0.4,
+    dt=1.0,
+    fps=None,
+)
+
+
+class FlappyBirdEnvV0(gym.Env):
+    metadate = {&quot;render.modes&quot;: [&quot;human&quot;, &quot;none&quot;]}
+
+    def __init__(self) -&gt; None:
+        self.flappy = FlappyBird(config)
+        self.show_game_over_screen = config.show_game_over_screen
+        self.bird_dead_on_hit_ground = config.bird_dead_on_hit_ground
+        self.grayscale = config.grayscale
+        self.hide_screen = config.hide_screen
+
+        shape = (self.flappy.height, self.flappy.width, 3)
+
+        self.observation_space = spaces.Box(
+            low=0, high=255, shape=shape, dtype=np.uint8
+        )
+        self.action_space = spaces.Discrete(2)
+
+        self.game_over = True
+
+    def _observation(self):
+        self.flappy._render(self.hide_screen)
+        assert self.flappy.screen is not None
+
+        obs = np.array(pygame.surfarray.pixels3d(self.flappy.screen), dtype=np.uint8)
+        return np.transpose(obs, axes=(1, 0, 2))
+
+    def step(self, action: ActType) -&gt; Tuple[ObsType, float, bool, dict]:
+        assert not self.game_over, &quot;Call reset before step.&quot;
+        state = self.flappy.step(action)
+
+        if state[&quot;hit-pipe&quot;]:
+            self.game_over = True
+
+        if state[&quot;hit-ground&quot;] and self.bird_dead_on_hit_ground:
+            self.game_over = True
+
+        obs = self._observation()
+        reward = state[&quot;reward&quot;]
+        done = self.game_over
+        info = dict()
+
+        return obs, reward, done, info
+
+    def render(self, mode: str = &quot;none&quot;):
+        hidden = mode == &quot;none&quot;
+        if self.game_over and self.show_game_over_screen:
+            self.flappy.game_over_screen(hidden)
+        else:
+            self.flappy.render(hidden)
+
+    def close(self) -&gt; None:
+        self.flappy.close()
+
+    def reset(self) -&gt; ObsType:
+        self.flappy.reset()
+        self.game_over = False
+        return self._observation()
+</code></pre>
+<h3 id="bonus-game-for-human-play-coreflappy_gamepy">Bonus: Game for human play <code>core.flappy_game.py</code></h3>
+<p>It is really important to determine visualize the game. This is essential for
+determining if the parameters, such as, gravitational acceleration, the bird
+jump velocity, pipe gap size, pipe spacing, etc. are set to reasonable values.
+Perhaps the best way of doing so is do make the game playable by a human and
+play it. For this purpose, we provide the <code>FlappyBirdGame</code> class.</p>
+<p>This class uses <strong>pygame</strong>&rsquo;s <code>event</code> module to parse keyboard input to allow the
+user to make the bird jump. It uses a couple of features that the AI version
+doesn&rsquo;t, such as the game over screen and score. It also adds some animations
+before the start of the game.</p>
+<pre><code class="language-python">import numpy as np
+import pygame
+
+from .config import FlappyBirdConfig
+from .flappy import FlappyBird
+
+CONFIG = FlappyBirdConfig(
+    bird_color=&quot;blue&quot;,
+    bird_jump_velocity=4.0,
+    bird_jump_frequency=7,
+    bird_dead_on_hit_ground=True,
+    bird_max_speed=None,
+    bird_rotate=True,
+    pipe_color=&quot;green&quot;,
+    pipe_speed=3,
+    pipe_gap_size=150,
+    pipe_spacing=200,
+    background=&quot;day&quot;,
+    hide_screen=False,
+    show_score=True,
+    gravity=0.4,
+    dt=1.0,
+    fps=60,
+)
+
+
+class FlappyBirdGame:
+    def __init__(self):
+        self.game = FlappyBird(CONFIG)
+        self.action_keys = [pygame.K_SPACE, pygame.K_UP, pygame.K_KP_ENTER]
+        self.game_over = False
+
+    def _step(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key in self.action_keys:
+                    return self.game.step(1)
+        return self.game.step(0)
+
+    def step(self):
+        assert not self.game_over, &quot;Game is over. Call reset.&quot;
+        state = self._step()
+        if state[&quot;hit-ground&quot;] or state[&quot;hit-pipe&quot;]:
+            self.game_over = True
+
+    def render(self):
+        self.game.render()
+
+    def reset(self):
+        self.game.reset()
+        self.game_over = False
+
+    def _play(self):
+        while not self.game_over:
+            self.step()
+            self.render()
+
+    def _get_key_press(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                return event.key
+        return None
+
+    def game_over_screen(self) -&gt; None:
+        self.game.game_over_screen()
+        while True:
+            key = self._get_key_press()
+            if key is not None:
+                return
+
+    def play(self):
+        oscillate_amp = 5
+        oscillate_period = 50
+        t = 0
+
+        # This loop waits for an action key to pressed. While waiting, the bird
+        # will appear to oscillate up and down. Once the game starts, we hand
+        # off control to _play. Once finished, we hand off control to the
+        # game-over screen. Onces returned, we reset and wait for input.
+        y0 = self.game.bird.y
+        while True:
+            self.render()
+            key = self._get_key_press()
+            if key is not None:
+                if key in self.action_keys:
+                    self._play()
+                    self.game_over_screen()
+                    self.reset()
+                    y0 = self.game.bird.y
+                elif key == pygame.K_ESCAPE:
+                    self.game.close()
+                    return
+
+            self.game.bird.y = y0 + oscillate_amp * np.sin(2 * np.pi * t / oscillate_period)
+            t = (t + 1) % oscillate_period
+</code></pre>
+<h3 id="possible-improvements">Possible Improvements</h3>
+<p>This implementation works perfectly fine for human play. However, it becomes a
+bit more obvious how slow it is when the AI is training. Here are my thoughts on
+how things <em>might</em> be improved.</p>
+<h4 id="collision-detection">Collision detection</h4>
+<p>First, one thing I would have liked to change is the collision detection. When
+the bird is rotated, the collisions do not see obvious. Sometimes the bird image
+can go through a pipe while escaping the collision detection. The collision
+detection might be improved by constructing a polygon around the bird and
+detecting an intersection of the polygon with the ground or pipe. However, this
+might slow things down more. But it would be more pleasing.</p>
+<h4 id="sprites">Sprites?</h4>
+<p>As one can tell from the implementation, we did not use the <strong>pygame</strong> <code>sprite</code>
+module. It is possible that using the sprite module <em>might</em> improve the
+performance for rendering the screen since groups of sprites can be drawn at
+once, reducing the switching back and forth between the underlying c code and
+python.</p>
+<h4 id="pyglet">Pyglet?</h4>
+<p>The code might be faster using a newer package such as <strong>pyglet</strong>. It was a bit
+less obvious how to control a game using an AI using a <strong>pyglet</strong>
+implementation, so it was not used here. However, <strong>pyglet</strong> might be faster.</p>
+<h4 id="opengl-pil-opencv">OpenGL, PIL, OpenCV</h4>
+<p>The game is quite simple. All the dynamics can be handled in python. The only
+place where <strong>pygame</strong> came in was in collision detection and rendering. The
+collision detection with rectangles is simple and can be implemented ourselves.
+However, the rendering is less trivial. This is where <strong>pygame</strong> really came
+into play (and in a couple places for font rendering for the human version.)</p>
+<p>Rendering might be made faster by directly communicating with OpenGL. Or one
+might try using <code>PIL</code> (the Pillow library) or <code>cv2</code> (OpenCV). The require a bit
+more manual labor than <strong>pygame</strong>, but may yield performance gains (or maybe
+not).</p>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Next</div>
+    <a href="/post/making-some-flapjax/ppo/" rel="prev">FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization</a>
+  </div>
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>Last updated on Apr 8, 2022</p>
+
+          
+
+
+
+          
+
+
+
+
+          
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by copyright-license-text">
+    © 2022 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.3d946de2e8784a477845261d87025092.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/r.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/latex.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/rust.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+    <script src="https://cdn.jsdelivr.net/gh/bryanbraun/anchorjs@4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":false}</script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.a2ed145159dd33ad55ff402163350b5d.js"></script>
+
+    
+    
+    
+    
+    
+    
+      
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <script src="/js/wowchemy-publication.b0d291ed6d27eacec233e6cf5204f99a.js" type="module"></script>
+
+
+
+
+
+
+</body>
+</html>

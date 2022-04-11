@@ -1,0 +1,1539 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.4.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Mono&family=Roboto:wght@400;700&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Logan A. Morrison, PhD" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="In this section, we will be implementing an Actor-Critic reinforcement algorithm.
+Reinforcement Learning Terminology and Deep-Q Learning First, let&rsquo;s setup terminology and pose the problem a reinforcement algorithm aims to solve." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://loganamorrison.github.io/post/making-some-flapjax/ppo/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha512-W0xM4mr6dEP9nREo7Z9z+9X70wytKvMGeDsj7ps2+xg5QPrEBXC8tAW1IFnzjR6eoJ90JmCnFzerQJTLzIEHjA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+        
+      
+    
+
+    
+    
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.1083c5683d81b407a892a791e534f8a7.css" />
+
+  
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="https://loganamorrison.github.io/post/making-some-flapjax/ppo/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+    <meta property="twitter:site" content="@wowchemy" />
+    <meta property="twitter:creator" content="@wowchemy" />
+  
+  <meta property="og:site_name" content="Logan A. Morrison" />
+  <meta property="og:url" content="https://loganamorrison.github.io/post/making-some-flapjax/ppo/" />
+  <meta property="og:title" content="FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization | Logan A. Morrison" />
+  <meta property="og:description" content="In this section, we will be implementing an Actor-Critic reinforcement algorithm.
+Reinforcement Learning Terminology and Deep-Q Learning First, let&rsquo;s setup terminology and pose the problem a reinforcement algorithm aims to solve." /><meta property="og:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" />
+    <meta property="twitter:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2022-04-09T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-04-09T00:00:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization | Logan A. Morrison</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="990c1dcc138e6b958e281e5fe716b7a1" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.63a793a0158e186da77f80f308d537e2.js"></script>
+
+  
+
+
+<aside class="search-modal" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#" aria-label="Close"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search" class="form-control"
+        aria-label="Search...">
+        
+      </div>
+
+      
+      
+
+      
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header--fixed">
+  <nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+    <div class="container-xl">
+
+      
+      <div class="d-none d-lg-inline-flex">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+      <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+      
+      <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+        <a class="navbar-brand" href="/">Logan A. Morrison</a>
+      </div>
+      
+
+      
+      
+      <div class="navbar-collapse main-menu-item collapse justify-content-start" id="navbar-content">
+
+        
+        <ul class="navbar-nav d-md-inline-flex">
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#about"><span>Home</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#posts"><span>Posts</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#publications"><span>Publications</span></a>
+          </li>
+
+          
+          
+
+        
+
+          
+        </ul>
+      </div>
+
+      <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+        
+        
+          
+        
+
+        
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#" aria-label="Search"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+        
+        
+        <li class="nav-item dropdown theme-dropdown">
+          <a href="#" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-label="Display preferences">
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item js-set-theme-light">
+              <span>Light</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-dark">
+              <span>Dark</span>
+            </a>
+            <a href="#" class="dropdown-item js-set-theme-auto">
+              <span>Automatic</span>
+            </a>
+          </div>
+        </li>
+        
+
+        
+        
+
+      </ul>
+
+    </div>
+  </nav>
+</header>
+
+
+  </div>
+
+  <div class="page-body">
+    
+    
+    
+
+    
+
+
+
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          Reinforcement Learning FlappyBird
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+  <button class="form-control sidebar-search js-search d-none d-md-flex">
+    <i class="fas fa-search pr-2"></i>
+    <span class="sidebar-search-text">Search...</span>
+    <span class="sidebar-search-shortcut">/</span>
+  </button>
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      <ul class="nav docs-sidenav">
+        <li><a href="/post/"><i class="fas fa-arrow-left pr-1"></i>Posts</a></li>
+      </ul>
+
+      
+      
+        
+          
+        
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/post/making-some-flapjax/">Reinforcement Learning FlappyBird</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making the game</a></li>
+
+
+
+  <li class="active"><a href="/post/making-some-flapjax/ppo/">FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization</a></li>
+
+
+
+  <li class=""><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - PPO Implementation</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+    
+  
+</nav>
+
+    </div>
+
+    
+    
+    <div class="d-none d-xl-block col-xl-2 docs-toc">
+      
+
+      <ul class="nav toc-top">
+        <li><a href="#" id="back_to_top" class="docs-toc-title">Contents</a></li>
+      </ul>
+
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#reinforcement-learning">Reinforcement Learning</a>
+      <ul>
+        <li><a href="#terminology-and-deep-q-learning">Terminology and Deep-Q Learning</a></li>
+        <li><a href="#probabilistic-policy-functions-and-policy-gradients">Probabilistic Policy Functions and Policy Gradients</a></li>
+        <li><a href="#proximal-policy-optimization">Proximal Policy Optimization</a></li>
+        <li><a href="#references">References</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+      
+    </div>
+    
+
+    <main class="col-12 col-md-9 col-xl-8 py-md-3 pl-md-5 docs-content" role="main">
+
+      <article class="article">
+
+        <div class="docs-article-container">
+          
+
+          <h1>FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization</h1>
+
+          <div class="article-style">
+            <p>In this section, we will be implementing an Actor-Critic reinforcement algorithm.</p>
+<h2 id="reinforcement-learning">Reinforcement Learning</h2>
+<h3 id="terminology-and-deep-q-learning">Terminology and Deep-Q Learning</h3>
+<p>First, let&rsquo;s setup terminology and pose the problem a reinforcement algorithm aims to solve. Supposed we have some
+world which exists in states $s\in\mathcal{S}$, which describe all information about the world. For example, if our world is
+a chess game, the $s$ contains all information about the positions of the game pieces. $\mathcal{S}$ is the state-space,
+containing all possible states our world can exist in.</p>
+<p>The world contains a given number of <em>agents</em>, which can perform actions $a\in\mathcal{A}$ inside the world (in the chess example,
+the agent could be one of the players and the actions would be moving a chess piece to a valid location.) Here, $a$
+is an action taken from the <em>action-space</em> $\mathcal{A}$, which contains all allowed actions.</p>
+<p>The dynamics of the world are determined by the environment $\mathcal{E}$. Think of the environment as the natural laws of the
+world or the rules of the game. The environment dictates how the world will transition from a state $s$ to the next state $s&rsquo;$
+given that the agent took the action $a$, i.e. $\mathcal{E}$ is a map from the current state and the agent action to a new
+state: $\mathcal{E}: \mathcal{S}\times\mathcal{A}\to\mathcal{S}$.</p>
+<p>The goal of reinforcement learning is to construct an agent that performs a certain task. For example, maybe we want an
+agent that can play (and win) chess against another player or maybe an agent that can drive a car. In order to construct such an
+agent, we need a criterion for how well the agent is doing at performing the specified task. We do this be constructing
+a <em>reward</em> system $\mathcal{R}$. A reward is dished out to the agent every time the agent takes an action. The reward will be
+high if the action was beneficial in bringing the agent closer to performing the required task and lower otherwise.
+Mathematically speaking, the reward is a function that maps the current state, action and next state to a real number
+$\mathcal{R}: \mathcal{S}\times\mathcal{A}\times\mathcal{S}\to\mathbb{R}$.</p>
+<p>The agent itself is often described as a <em>policy</em> $\pi$. The policy is a
+function that takes the current state and outputs an action $\pi:
+\mathcal{S}\to\mathcal{A}$. For our purposes, $\pi$ will be a neutral network.
+As described above, the goal is to obtain an agent that chooses actions that
+bring us closer to achieving or goal or completing the specified task. Our way
+of judging whether the agent is choosing actions that bring us closer to the
+goal is through the rewards. So the optimal agent is one that <em>maximizes</em> the
+reward. Consider a trajectory taken by the agent starting from a state $s_{t}$,
+i.e. a sequence of states $s_t,s_{t+1},s_{t+2},\dots$ produced by the agent
+following its policy. Consider the <em>return</em>, the sum of all future rewards
+starting from $s_t$. This is:</p>
+<p>$$
+R(s_{t},a_{t};s_{t+1},a_{t+1};\dots) = r_t + r_{t+1} + r_{t+2} + \cdots  = \sum_{k=0}^{\infty}r_{t+k}
+$$</p>
+<p>with $r_{i} = \mathcal{R}(s_{i}, a, s_{i+1})$ and $a_{i}$ the action taken to
+transition from $s_{i}\to s_{i+1}$. Our goal is to construct an agent to
+maximize this sum. If the rewards are finite numbers, then this sum won&rsquo;t
+converge.  The trick to make this sum converge is to make it geometric by adding
+in a <em>discount</em> factor $\gamma\in(0,1)$ to suppress future rewards, i.e.
+multiply $r_{t+k}$ by $$\gamma^{k}$. Another way to think about the discount
+factor is that we prioritize larger rewards now.  With a discount factor, our
+total reward through the trajectory is</p>
+<p>$$
+R(s_{t},a_{t};s_{t+1},a_{t+1};\dots) =
+r_t + \gamma r_{t+1} + \gamma^{2}r_{t+2} + \cdots  = \sum_{k=0}^{\infty}\gamma^{k}r_{t+k}
+$$</p>
+<p>In order to ease the optimization algorithms, we introduce three additional
+concepts: the action-value function $Q^{\pi}(s,a)$, the value function
+$V^{\pi}(a)$ and the advantage $A^{\pi}(s,a)$. The value function is just the
+return obtained by following the policy $\pi$ forever.  The action-value
+function $Q^{\pi}(s,a)$ is the return obtained by first taking the action $a$
+given state $s$, then following the policy function forever afterwards. Lastly,
+the advantage is the difference between the value-action function and the value
+function $A^{\pi}(s,a) = Q^{\pi}(s,a) - V^{\pi}(s)$. Explicitly, the value and
+action-value functions are given by:</p>
+<p>$$
+V^{\pi}(s_{t}) = \sum_{k=0}^{\infty}\gamma^{k} \mathcal{R}(s_{t+k}, \pi(s_{t+k}), s_{t+k+1})
+$$</p>
+<p>and</p>
+<p>$$
+\begin{align}
+Q^{\pi}(s_{t},a_{t})
+&amp;= \mathcal{R}(s_{t},a_{t},s_{t+1}) + \sum_{k=1}^{\infty}\gamma^{k} \mathcal{R}(s_{t+k}, \pi(s_{t+k}), s_{t+k+1})\\
+&amp;=\mathcal{R}(s_{t},a_{t},s_{t+1}) + \gamma V^{\pi}(s_{t+1})
+\end{align}
+$$</p>
+<p>The advantage function $A^{\pi}(s,a)$ measures how much better it would be to
+take the action $a$ in state $s$ rather than just using the policy $\pi$. Notice
+that the value and action-value functions satisfy the following equations:</p>
+<p>$$
+\begin{align}
+Q^{\pi}(s_{t}, a_{t}) &amp;= \mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma Q^{\pi}(s_{t+1}, \pi(s_{t+1}))\\
+V^{\pi}(s_{t}) &amp;= \mathcal{R}(s_{t}, \pi(s_{t}), s_{t+1}) + \gamma V^{\pi}(s_{t+1})
+\end{align}
+$$</p>
+<p>Now, consider the <em>optimal</em> value/action-value function, denoted as $V^{*}$ and $Q^{*}$. The optimal
+versions satisfy the above equation, but instead of using $a_{t} = \pi(s_{t})$, we simply take the
+action producing the maximum results. That is,</p>
+<p>
+\begin{align}
+Q^{*}(s_{t}, a_{t}) &= \mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma \max_{a_{t+1}}Q^{*}(s_{t+1}, a_{t+1})\\\\
+V^{*}(s_{t}) &= \max_{a_{t}}\mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma V^{\pi}(s_{t+1})
+\end{align}
+</p>
+<p>These are known as Bellman equations. To optimize $Q^{\pi}$, we need to minimize the following
+difference:</p>
+<p>
+\begin{align}
+\delta &= 
+Q^{\pi}(s_{t}, a_{t}) - \qty(\mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma \max_{a_{t+1}}Q^{\pi}(s_{t+1}, a_{t+1}))
+\end{align}
+</p>
+<p>and then take our policy function to be $\pi(s) =\mathrm{argmax}_{a}Q^{\pi}(s,a)$.
+This is the basic approach taken for Deep-$Q$ learning: initialized a network
+that takes the state $s_{t}$ and outputs values for each possible action. That is,
+our network approximates $Q^{\pi}(s,a)$. We use $\pi(s) =\mathrm{argmax}_{a}Q^{\pi}(s,a)$
+to perform actions and update our network at each step by minimize $\delta$ in
+the above equation.</p>
+<p>As currently described, this process is very inefficient. More efficient
+implementations utilize relay-memory to train on batches of experience as well as
+employ multiple network to improve stabilization. However we will not go into
+these optimizations here. Instead we will explore a different method for determining
+the maximal policy.</p>
+<h3 id="probabilistic-policy-functions-and-policy-gradients">Probabilistic Policy Functions and Policy Gradients</h3>
+<p>In the previous section, we assumed that the environment and the policy function
+were deterministic. It is much more common to use a policy function which is a
+distribution of actions given states. In this section, we will transition our
+policy function and environment distributions. We will then discuss policy
+gradients.</p>
+<p>First, let&rsquo;s consider a probabilistic environment. That is, given the state
+$s_{t}$, the probability of transitioning to the state $s_{t+1}$ is
+$\mathcal{E}(s_{t+1}|s_{t},a_{t})$. In addition, we take our policy function to
+be $\pi = \pi(a|s)$, i.e., a probability distribution over actions given the
+state $s$. Given that our system has become stochastic, the trajectories taken by
+an agent following $\pi$ will be stochastic. A stochastic process of this form
+is a Markov Decision Process, where the transition function
+$P(s_{t+1},s_{t}) = \mathcal{E}(s_{t+1}|s_{t},a_{t})\pi(a_{t}|s_{t})$ only depends
+on the current state.</p>
+<p>As in the previous sections, our goal is to optimize our policy function in
+order to maximize the total return. Given that our functions are now
+probabilistic, the return is additionally probabilistic. Therefore, we will
+maximize the expectation value of the return. In order to compute the
+expectation value of the return, we will need to average over all possible
+trajectories the agent can take following the policy. This requires knowing
+the probability of a given trajectory. Consider a trajectory specified by
+the state/action pairs ending in the state $s_{t+N+1}$:
+$\tau=(s_{t},a_{t},\dots,s_{t+N},a_{t+N};s_{t+N+1})$. The probability of
+this trajectory is given by:</p>
+<p>
+\begin{align}
+P(\tau) &= \rho(s_{t})\prod_{k=0}^{N}\mathcal{E}(s_{t+k+1}|s_{t+k},a_{t+k})\pi(a_{t+k}|s_{t+k})
+\end{align}
+</p>
+<p>In this expression, $\rho(s_{t})$ specifies the probability of starting in state
+$s_{t}$. Now consider the return given this trajectory. The reward given the
+transition $s_{t},a_{t}\to s_{t+1}$ is $\mathcal{R}(s_{t},a_{t},s_{t+1})$. Thus,
+the return of the trajectory is</p>
+<p>
+\begin{align}
+R(\tau) &= \sum_{k=0}^{N}\mathcal{R}(s_{t+k},a_{t+k},s_{t+k+1})
+\end{align}
+</p>
+<p>To compute the expectation value of the return, we need to average the return
+over all possible trajectories, which requires an integration over all possible
+trajectories. That is, we need to perform a path integral:</p>
+<p>
+\begin{align}
+\mathbb{E}\qty[R] &= \int\mathcal{D}\tau P(\tau)R(\tau)\\\\
+&= 
+\qty[\prod_{k=0}^{N}\int\dd{a_{t+k}}\int\dd{s_{t+k}}]
+\int\dd{s_{t+N+1}}
+\rho(s_{t})\prod_{k=0}^{N}\mathcal{E}(s_{t+k+1}|s_{t+k},a_{t+k})\pi(a_{t+k}|s_{t+k})
+\end{align}
+</p>
+<p>Now supposed our policy function is parameterized by internal variables
+$\theta$: $\pi = \pi_{\theta}$.  If we want to optimize our policy function to
+yield the maximum return, we need to maximize $\mathbb{E}[R]$.  To do so, we can
+use gradient accent. The gradient of the expectation value of $R$ is:</p>
+<p>
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &= \int\mathcal{D}\tau R(\tau) \nabla_{\theta}P_{\theta}(\tau)\\\\
+&= \int\mathcal{D}\tau R(\tau) P_{\theta}(\tau)\nabla_{\theta}\log P_{\theta}(\tau)\\\\
+&= \mathbb{E}_{\tau}\qty[R(\tau)\nabla_{\theta}\log P_{\theta}(\tau)]
+\end{align}
+</p>
+<p>were we used $\nabla f = f \nabla\log f$. However, note that $\nabla\log P_{\theta}\tau$ is</p>
+<p>
+\begin{align}
+\nabla_{\theta}\log P(\tau) &= \nabla_{\theta}\log\rho(s_{t}) 
++ \sum_{k=0}^{N}\nabla_{\theta}\log\mathcal{E}(s_{t+k+1}|s_{t+k},a_{t+k})
++ \sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})\\\\
+ &= \sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+\end{align}
+</p>
+<p>(since only $\pi$ depends on $\theta$.) Therefore, the expectation value of the return is:</p>
+<p>
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &= \mathbb{E}_{\tau}\qty[R(\tau)
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+]
+\end{align}
+</p>
+<p>In practice, it is impractical to perform the functional integral needed to
+compute this expectation value.  Instead, we make use Monte Carlo integration to
+compute the expectation value. Recall that:</p>
+<p>
+\begin{align}
+\int_{\Omega}\dd{\vec{x}}f(\vec{x}) \sim \frac{1}{N}\sum_{\vec{x}_{i}}f(\vec{x}_{i})
+\end{align}
+</p>
+<p>which is true if sampling $\vec{x}\sim\Omega$ uniformly. If instead we sample from a
+distribution $p(\vec{x})$, then we have</p>
+<p>
+\begin{align}
+\int_{\Omega}\dd{\vec{x}}f(\vec{x}) \sim \frac{1}{N}\sum_{\vec{x}_{i}}\frac{f(\vec{x}_{i})}{p(\vec{x}_{i})}
+\end{align}
+</p>
+<p>Thus, if we sample our trajectories from $P(\tau)$ (which is what we&rsquo;re doing
+when we let follow the policy function in our stochastic environment), our
+expectation value of the return is asymptotic (as $N\to\infty$) to</p>
+<p>
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &\sim \frac{1}{N}\sum_{\tau_{i}}R(\tau_{i})
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a^{\tau_{i}}_{t+k}|s^{\tau_{i}}_{t+k})
+]
+\end{align}
+</p>
+<p>Thus, to optimize our policy function to yield the maximum return, we collect
+$N$ trajectories, perform a gradient decent on $-\mathbb{E}[R]$ and repeat until
+we converge to the optimal policy.</p>
+<p>An important thing to note is the our above expression can be reduced. In the
+current form, we&rsquo;re weighting $\nabla_{\theta}\log\pi_{\theta}(a_{k}|s_{k})$ by
+the entire return $R(\tau)$. It turns out that the expectation value returns
+accumulated prior to $s_{k}$ will vanish. To show this, consider a term in the
+expectation value of the form:</p>
+<p>
+\begin{align}
+\mathcal{R}(s_{m},a_{m},s_{m+1})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+</p>
+<p>with $t &lt; n,m &lt; t + N$. The expectation value of this term can be written as:</p>
+<p>
+\begin{align}
+I_{m,n} &= \mathbb{E}[\mathcal{R}(s_{m},a_{m},s_{m+1})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})] \\\\
+&= \qty(\prod_{k=0}^{N}\int\dd{a_{k}}\dd{s_{k}}P\qty(s_{k+1},s_{k}))\rho(s_{t})\int\dd{s_{t+N+1}}
+\mathcal{R}(s_{m},a_{m},s_{m+1})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+</p>
+<p>Note that we can safely integrate over all $a_{k},s_{k}$ for $k&gt;m+1,n$. This is because the probability of
+having some tail trajectory (unweighted by $R$ or $\nabla_{\theta}\log\pi_{\theta}$) is one. Thus,</p>
+<p>
+\begin{align}
+I_{m,n}
+&= \qty(\prod_{k=0}^{\mathrm{max}(m+1,n)}\int\dd{a_{k}}\dd{s_{k}}P\qty(s_{k+1}|s_{k},a_{k})\pi\qty(a_{k}|s_{k}))
+\rho(s_{t})\mathcal{R}(s_{m},a_{m},s_{m+1})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+</p>
+<p>Now suppose $m &lt; n$. In this case, we can peel off the last integrals of $a_{n},s_{n},s_{n+1}$, obtaining</p>
+<p>
+\begin{align}
+\int\dd{s_{n}}\int\dd{a_{n}}\int\dd{s_{n+1}}
+P\qty(s_{n+1}|s_{n},a_{n})\pi(a_{n}|s_{n})
+P\qty(s_{n}|s_{n-1},a_{n-1})\pi(a_{n-1}|s_{n-1})
+\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+</p>
+<p>The integral over $s_{n+1}$ can be performed and the result is 1. Thus, we are left with</p>
+<p>
+\begin{align}
+\int\dd{s_{n}}
+P\qty(s_{n}|s_{n-1},a_{n-1})\pi(a_{n-1}|s_{n-1})
+\int\dd{a_{n}}
+\pi(a_{n}|s_{n})
+\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n})
+\end{align}
+</p>
+<p>The last integral can be evaluated. To evaluate, we first rewrite the integrand using
+$\pi(a_{n}|s_{s})\nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{s}) = \nabla_{\theta}\pi_{\theta}(a_{n}|s_{n})$.
+Then, pulling the derivative outside the integral, we end up with:</p>
+<p>
+\begin{align}
+\int\dd{a_{n}} \pi(a_{n}|s_{n}) \nabla_{\theta}\log\pi_{\theta}(a_{n}|s_{n}) 
+&= \int\dd{a_{n}} \nabla_{\theta} \pi(a_{n}|s_{n})\\\\ 
+&= \nabla_{\theta} \int\dd{a_{n}} \pi(a_{n}|s_{n})\\\\ 
+&= 0
+\end{align}
+</p>
+<p>where we used the fact that $\int\pi(a_{n}|s_{n})\dd{a_{n}} = 1$.</p>
+<p>In the case where $m \geq n$, we cannot perform the last few steps. This is
+because the tail trajectory beyond $n$ will be weighted by
+$\mathcal{R}(s_{m},a_{m}, s_{m+1})$.  Since $\mathcal{R}(s_{m}, a_{m}, s_{m+1})$
+is dependent on the actions taken in steps before $m$, the integral over the
+tail trajectory will also be dependent on previous actions and hence dependent
+on $a_{n}$.  Thus, the integral over $a_{n}$ will have additional factors from
+the tail trajectory that prevent us from evaluating the integral analytically.</p>
+<p>These results tell use that only future rewards matter inside the expectation
+value. This allows us to reduce the terms inside the expectation value of the
+return to:</p>
+<p>
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &= \mathbb{E}_{\tau}\qty[
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+\sum_{n=k}^{N}\mathcal{R}(s_{t+n},a_{n},s_{t+n+1})
+]
+\end{align}
+</p>
+<p>Another important fact is that we are free to add any function $b$ to the above
+expression that only depends on state, as it will drop out of the expectation
+value. A typical approach is to augment the above expression as:</p>
+<p>
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &= \mathbb{E}_{\tau}\qty[
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+\sum_{n=k}^{N}\qty(\mathcal{R}\qty(s_{t+n},a_{n},s_{t+n+1}) - b(s_{t}))
+]
+\end{align}
+</p>
+<p>Here $b$ is known as the <em>baseline</em>. Adding it has no effect on the expectation
+value, but it often helps in the training of the policy. The approach we will
+end up taking is to set $b$ to be the value function. Then, the above expression
+will reduce to</p>
+<p>
+\begin{align}
+\mathbb{E}_{\tau}\qty[R] &= \mathbb{E}_{\tau}\qty[
+\sum_{k=0}^{N}\nabla_{\theta}\log\pi_{\theta}(a_{t+k}|s_{t+k})
+\hat{A}_{t+k}
+]
+\end{align}
+</p>
+<p>where $\hat{A}_{t} = Q^{\pi}(s_{t},a_{t}) - V^{\pi}(s_{t})$ is the advantage.
+This has the benefit that in cases where the advantage is zero, i.e., when we are
+accurately predicting the value function, the term doesn&rsquo;t contribute, allowing
+us to focus on situations where we are incorrectly predicting the value function. See
+<a href="https://spinningup.openai.com/en/latest/spinningup/extra_pg_proof2.html" target="_blank" rel="noopener">this post</a>
+for a proof that using the action-value $Q^{\pi}(a_{t}|s_{t})$ results in the
+same expectation value.</p>
+<h3 id="proximal-policy-optimization">Proximal Policy Optimization</h3>
+<p>Proximal Policy Optimization (PPO) is similar in spirit to the concepts
+described above but aims to be more stable and efficient. It puts together ideas
+from Advantage Actor-Critic (A2C), Trust-Region Policy Optimization (TRPO) and
+asynchronous methods. We will describe the basic principles of the various
+algorithm then put them together to reproduce PPO.</p>
+<p>First, we will be using an Actor-Critic configuration where we have an <strong>actor</strong>
+network that computes the policy $\pi_{\theta}(a|s)$ and a <strong>critic</strong> network
+which computes the value function $V_{\theta}(s)$. These networks can share
+parameters or have separate parameters. The goal is to have the actor-critic
+maximize the expectation value of the return. The TRPO algorithm suggest using
+the following <em>surrogate</em> function:</p>
+<p>
+$$
+\underset{\theta}{\mathrm{maximize}}\quad
+\hat{\mathbb{E}}_{t}\qty[
+    \frac{\pi_{\theta}(a_{t}|s_{t})}{\pi_{\theta_{\mathrm{old}}}(a_{t}|s_{t})}
+    \hat{A}_{t}
+]
+$$
+</p>
+<p>subject to the constraint that the relative entropy (KL divergence) is less than
+a hyperparameter $\delta$</p>
+<p>
+$$
+\begin{align}
+\hat{\mathbb{E}}_{t}\qty[\mathrm{KL}\qty[\pi_{\theta_{\mathrm{old}}}(\cdot|s_{t}),\pi_{\theta}(\cdot|s_{t})]] \leq \delta
+\end{align}
+$$
+</p>
+<p>Here $\pi_{\theta_{\mathrm{old}}}$ represents the distribution from the previous
+iteration. This expectation value looks different from the one we developed in
+our previous exploration into policy gradients, but it turns out that if
+$\vb*{\theta_{\mathrm{old}}}$ is not too far off from $\vb*{\theta}$ then the two expression
+yield the same gradient up to terms of order $\vb*{\theta}-\vb*{\theta_{\mathrm{old}}}$:</p>
+<p>
+$$
+\begin{align}
+\grad_{\vb*{\theta}}
+\frac{\pi_{\vb*{\theta}}}{\pi_{\vb*{\theta}_{\mathrm{old}}}}
+&=
+\frac{\pi_{\vb*{\theta}}}{\pi_{\vb*{\theta}_{\mathrm{old}}}}
+\grad_{\vb*{\theta}}\log\pi_{\vb*{\theta}}\\\\
+&=
+\frac{
+\pi_{\vb*{\theta_{\mathrm{old}}}} 
++ \delta\vb*{\theta}\cdot\eval{\grad_{\vb*{\theta}}\pi}_{\vb*{\theta}_{\mathrm{old}}}
++ \cdots
+}{
+    \pi_{\vb*{\theta}_{\mathrm{old}}}
+}
+\grad_{\vb*{\theta}}\log\pi_{\vb*{\theta}}\\\\
+&=
+\grad_{\vb*{\theta}}\log\pi_{\vb*{\theta}}
++ \order{\delta\vb*{\theta}}
+\end{align}
+$$
+</p>
+<p>with $\delta\vb*{\theta} = (\vb*{\theta} - \vb*{\theta}_{\mathrm{old}})$. Thus,
+maximizing the surrogate yields the same result as maximizing the
+expectation of the return since the two gradients are identical at the extrema.
+The constraint on the relative entropy ensures that we don&rsquo;t stray too far from
+the old values, keeping $\delta\vb*{\theta}$ small.</p>
+<p>PPO uses a similar surrogate, but doesn&rsquo;t use the relative entropy constraint
+(but there are versions which employ the relative entropy.) Instead, PPO uses
+the following:</p>
+<p>
+$$
+L^{\mathrm{CLIP}}_{t}(\theta) = -\min(r_{t}(\theta)\hat{A}_{t}, \mathrm{clip}(r_{t}(\theta), 1-\epsilon,1+\epsilon)\hat{A}_{t})
+$$
+</p>
+<p>where $r_{\vb*{\theta}} = \pi_{\vb*{\theta}} / \pi_{\vb*{\theta}_{\mathrm{old}}}$.
+In this form, it&rsquo;s not very intuitive what&rsquo;s going on. It is instructive to
+consider what this function does when the advantage is positive or negative:</p>
+<p>
+$$
+\begin{align}
+\hat{A}_{t} > 0: \qquad
+L^{\mathrm{CLIP}}_{t}(\theta)
+&=-\min(r_{t}, 1+\epsilon)\hat{A}_{t}\\\\
+\hat{A}_{t} < 0: \qquad
+L^{\mathrm{CLIP}}_{t}(\theta)
+&=-\max(r_{t}, 1-\epsilon)\hat{A}_{t}
+\end{align}
+$$
+</p>
+<p>This loss function looks as follows:</p>
+<img src="./loss.png" alt="ppo_loss_function" width="600"/>
+<p>We can see that, if we&rsquo;re minimizing $L^{\mathrm{CLIP}}_{t}(\vb*{\theta})$, then
+the clipping cuts off how much we&rsquo;re allowed to minimize. For example, if
+$\hat{A}_{t}&gt;0$, then increasing the probability $\pi_{\theta}(a|s)$ beyond a
+certain point has not effect on the loss function, specifically when
+$r_{t}(\theta) &gt; 1 + \epsilon$. When $\hat{A}_{t}&lt;0$, then
+we have the reverse situation: decreasing the probability will have no effect
+beyond $r_{t}(\theta) &lt; 1-\epsilon$. Thus, there is no incentive to move
+$r_{t}(\vb*{\theta})$ further than $\epsilon$, as moving further than $\epsilon$
+makes the gradient from $L^{\mathrm{CLIP}}_{t}$ zero.</p>
+<p>Next, let&rsquo;s discuss the advantage function. PPO uses the Generalized Advantage
+Estimation (GAE). The GAE used by PPO is given by the following:</p>
+<p>
+$$
+\begin{align}
+\hat{A}_{t} &= \delta_{t} + (\gamma\lambda)\delta_{t+1} + \cdots + (\gamma\lambda)^{N}\delta_{t+N}\\\\
+\delta_{t} &= r_{t} + \gamma V(s_{t+1}) - V(s_{t})
+\end{align}
+$$
+</p>
+<p>where $N$ is the number of times steps taken for the trajectory (fixed for all trajectories),
+$\gamma$ is the discount and $\lambda$ is an additional hyperparameter. For $\lambda=1$, this
+reduces to the standard advantage with a finite number of steps. See <a href="https://arxiv.org/abs/1506.02438" target="_blank" rel="noopener">this paper</a>
+for a detailed explanation of GAE.</p>
+<p>Since we have a critic, we will add a loss function to train the critic. We use the mean-squared-error
+for the critic:</p>
+<p>
+$$
+\begin{align}
+L_{t}^{\mathrm{VF}}(\theta) &= \qty(V_{\theta}(s_{t}) - V_{t}^{\mathrm{targ}})^2
+\end{align}
+$$
+</p>
+<p>where $V_{t}^{\mathrm{targ}}$ is the actual return observed using the policy.
+PPO uses one additional loss function used to encourage exploration. We add a loss
+function that aims to increase the entropy of the policy</p>
+<p>
+$$
+\begin{align}
+L_{t}^{\mathrm{entropy}}(\theta) &= -S[\pi_{\theta}]
+\end{align}
+$$
+</p>
+<p>Thus, our total loss function is given by:</p>
+<p>
+$$
+\begin{align}
+L_{t}(\theta) &= \hat{\mathbb{E}}_{t}\qty[
+    L_{t}^{\mathrm{CLIP}}(\theta)
+    + c_1 L_{t}^{\mathrm{VF}}(\theta) 
+    + c_2 L_{t}^{\mathrm{entropy}}(\theta)
+]
+\end{align}
+$$
+</p>
+<p>where $c_{1}$ and $c_{2}$ are additional hyperparameters. The last item we need to discuss is the
+asynchronous evaluation. Taking inspiration from A2C, we improve training speed and batch size
+by running multiple trajectories at the same time. For example, if we run $M$ separate trajectories
+at the same time, each for $N$ time steps, then we end up with a batch of size $MN$.</p>
+<p>These are all the elements of PPO. The full algorithm is as follows:</p>
+<blockquote>
+<p>$\textbf{for}$ iteration $\leftarrow 1,\text{MaxSteps}$ $\textbf{do}$<br>
+$\quad$// Collect trajectories<br>
+$\quad\textbf{for}$ actor $\leftarrow 1, M$ $\textbf{do}$<br>
+$\quad\quad\textbf{for}$ $t$ $\leftarrow 1, N$ $\textbf{do}$<br>
+$\quad\quad\quad$Step environment using $\pi_{\theta}$<br>
+$\quad\quad\quad$Store $V_{t}$, $r_{t}$, $a_{t}$, $s_{t}$, $\log\pi(a_{t}|s_{t})$<br>
+$\quad\quad\textbf{end}$ $\textbf{for}$<br>
+$\quad\quad$Compute GAEs $\hat{A}_{1},\dots,\hat{A}_{N}$<br>
+$\quad\textbf{end}$ $\textbf{for}$</p>
+<p>$\quad$// Optimize<br>
+$\quad n_{\mathrm{batch}} \leftarrow \text{mini_batch_size}$<br>
+$\quad N_{\mathrm{batches}} \leftarrow MN / n_{\mathrm{batch}}$<br>
+$\quad\textbf{for}$ batch $\leftarrow 1, N_{\mathrm{batches}}$ $\textbf{do}$<br>
+$\quad\quad$ Extract $\log\pi_{\vb*{\theta}_{\mathrm{old}}}$, action $a$ state $s$, value $V$, advantage $\hat{A}$ from trajectory<br>
+$\quad\quad$ Compute $r_{\vb*{\theta}} = \exp(\log\pi_{\vb*{\theta}}(a) - \log\pi_{\vb*{\theta}_{\mathrm{old}}})$<br>
+$\quad\quad$ Compute loss $L_{t}(\vb*{\theta})$<br>
+$\quad\quad$ Back-propagate to update $\vb*{\theta}$<br>
+$\quad\textbf{end}$ $\textbf{for}$<br>
+$\textbf{end}$ $\textbf{for}$</p>
+</blockquote>
+<h3 id="references">References</h3>
+<ol>
+<li>The PPO paper: <a href="https://arxiv.org/abs/1707.06347" target="_blank" rel="noopener">PP0</a></li>
+<li>The TRPO paper: <a href="https://arxiv.org/abs/1502.05477" target="_blank" rel="noopener">TRPO</a></li>
+<li>Paper on Generalized advantage functions: <a href="https://arxiv.org/abs/1506.02438" target="_blank" rel="noopener">GAE</a></li>
+<li>Paper on Asynchronous Actor-Critic <a href="https://arxiv.org/abs/1602.01783" target="_blank" rel="noopener">A2C</a></li>
+<li>Paper on Deep Q-Networks: <a href="https://arxiv.org/pdf/1312.5602.pdf" target="_blank" rel="noopener">DQN</a></li>
+<li>Paper on distributional rewards: <a href="https://arxiv.org/pdf/1707.06887.pdf" target="_blank" rel="noopener">Distributional Rewards</a></li>
+<li>Paper on per-experience replay: <a href="https://arxiv.org/pdf/1511.05952.pdf" target="_blank" rel="noopener">PER</a></li>
+<li>Paper on double Deep-Q networks: <a href="https://arxiv.org/pdf/1511.06581.pdf" target="_blank" rel="noopener">DDQN</a>, <a href="https://arxiv.org/pdf/1509.06461.pdf" target="_blank" rel="noopener">DDQN</a></li>
+<li><a href="https://arxiv.org/pdf/1507.06527.pdf" target="_blank" rel="noopener">DRQN</a></li>
+<li>Paper on Actor-Critic methods: <a href="https://proceedings.neurips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf" target="_blank" rel="noopener">Actor Critc</a></li>
+</ol>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/post/making-some-flapjax/making_the_game/" rel="next">FlapJax Part 1 - Making the game</a>
+  </div>
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Next</div>
+    <a href="/post/making-some-flapjax/impl/" rel="prev">FlapJax Part 3 - PPO Implementation</a>
+  </div>
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          <p>Last updated on Apr 9, 2022</p>
+
+          
+
+
+
+          
+
+
+
+
+          
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+
+
+
+
+  
+  
+  
+
+  
+  
+    
+  
+  
+    
+  
+
+  
+
+  
+  <p class="powered-by copyright-license-text">
+    © 2022 Me. This work is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank">CC BY NC ND 4.0</a>
+  </p>
+  
+
+  <p class="powered-by footer-license-icons">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0" rel="noopener noreferrer" target="_blank" aria-label="Creative Commons">
+      <i class="fab fa-creative-commons fa-2x" aria-hidden="true"></i>
+      <i class="fab fa-creative-commons-by fa-2x" aria-hidden="true"></i>
+      
+        <i class="fab fa-creative-commons-nc fa-2x" aria-hidden="true"></i>
+      
+      
+        <i class="fab fa-creative-commons-nd fa-2x" aria-hidden="true"></i>
+      
+    </a>
+  </p>
+
+
+
+
+  <p class="powered-by">
+    
+    
+    
+      
+      
+      
+      
+      
+      
+      Published with <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a> — the free, <a href="https://github.com/wowchemy/wowchemy-hugo-themes" target="_blank" rel="noopener">open source</a> website builder that empowers creators.
+    
+  </p>
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.3d946de2e8784a477845261d87025092.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdn.jsdelivr.net/gh/desandro/imagesloaded@v4.1.4/imagesloaded.pkgd.min.js" integrity="sha512-S5PZ9GxJZO16tT9r3WJp/Safn31eu8uWrzglMahDT4dsmgqWonRY9grk3j+3tfuPr9WJNsfooOR7Gi7HL5W2jw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/metafizzy/isotope@v3.0.6/dist/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/highlight.min.js" integrity="sha512-Ypjm0o7jOxAd4hpdoppSEN0TQOC19UtPAqD+4s5AlXmUvbmmS/YMxYqAqarQYyxTnB6/rqip9qcxlNB/3U9Wdg==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/r.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/latex.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/cpp.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/julia.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/python.min.js" crossorigin="anonymous"></script>
+        
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/languages/rust.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+
+    
+    
+    <script src="https://cdn.jsdelivr.net/gh/bryanbraun/anchorjs@4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+      
+      <script id="search-hit-fuse-template" type="text/x-template">
+        <div class="search-hit" id="summary-{{key}}">
+          <div class="search-hit-content">
+            <div class="search-hit-name">
+              <a href="{{relpermalink}}">{{title}}</a>
+              <div class="article-metadata search-hit-type">{{type}}</div>
+              <p class="search-hit-description">{{snippet}}</p>
+            </div>
+          </div>
+        </div>
+      </script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/krisk/Fuse@v3.2.1/dist/fuse.min.js" integrity="sha512-o38bmzBGX+hD3JHWUFCDA09btWaqrNmoJ3RXLlrysA7PP01Kgs4UlE4MhelE1v5dJR3+cxlR4qQlotsW7jKsnw==" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/julmot/mark.js@8.11.1/dist/jquery.mark.min.js" integrity="sha512-mhbv5DqBMgrWL+32MmsDOt/OAvqr/cHimk6B8y/bx/xS88MVkYGPiVv2ixKVrkywF2qHplNRUvFsAHUdxZ3Krg==" crossorigin="anonymous"></script>
+      
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+      
+      
+      
+      
+      
+      
+      
+    
+
+    
+
+    
+    
+    
+    <script id="page-data" type="application/json">{"use_headroom":false}</script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+      
+    
+    
+    <script src="/en/js/wowchemy.min.a2ed145159dd33ad55ff402163350b5d.js"></script>
+
+    
+    
+    
+    
+    
+    
+      
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <script src="/js/wowchemy-publication.b0d291ed6d27eacec233e6cf5204f99a.js" type="module"></script>
+
+
+
+
+
+
+</body>
+</html>
