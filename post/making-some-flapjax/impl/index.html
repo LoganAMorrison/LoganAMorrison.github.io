@@ -312,7 +312,7 @@
   
   <meta property="og:site_name" content="Logan A. Morrison" />
   <meta property="og:url" content="https://loganamorrison.github.io/post/making-some-flapjax/impl/" />
-  <meta property="og:title" content="FlapJax Part 3 - PPO Implementation | Logan A. Morrison" />
+  <meta property="og:title" content="FlapJax Part 3 - Implementation of the proximal policy optimization algorithm using Jax and Flax | Logan A. Morrison" />
   <meta property="og:description" content="In this part of the post, we will actually write all the code to implement the Proximal-Policy-Optimization algorithm. We will be using jax, flax and optax to implement the algorithm, network and optimization." /><meta property="og:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
@@ -339,7 +339,7 @@
 
 
 
-  <title>FlapJax Part 3 - PPO Implementation | Logan A. Morrison</title>
+  <title>FlapJax Part 3 - Implementation of the proximal policy optimization algorithm using Jax and Flax | Logan A. Morrison</title>
 </head>
 
 
@@ -511,6 +511,43 @@
           
 
           <li class="nav-item">
+            <a class="nav-link " href="/#experience"><span>Experience</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
             <a class="nav-link " href="/#posts"><span>Posts</span></a>
           </li>
 
@@ -549,6 +586,73 @@
 
           <li class="nav-item">
             <a class="nav-link " href="/#publications"><span>Publications</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/uploads/cv.pdf"><span>Curriculum Vitae</span></a>
           </li>
 
           
@@ -686,7 +790,7 @@
       
 
 
-  <li class=""><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making the game</a></li>
+  <li class=""><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making a Flappy Bird game with PyGame</a></li>
 
 
 
@@ -694,7 +798,7 @@
 
 
 
-  <li class="active"><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - PPO Implementation</a></li>
+  <li class="active"><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - Implementation of the proximal policy optimization algorithm using Jax and Flax</a></li>
 
       
         </ul>
@@ -758,7 +862,7 @@
         <div class="docs-article-container">
           
 
-          <h1>FlapJax Part 3 - PPO Implementation</h1>
+          <h1>FlapJax Part 3 - Implementation of the proximal policy optimization algorithm using Jax and Flax</h1>
 
           <div class="article-style">
             <p>In this part of the post, we will actually write all the code to implement the
@@ -770,6 +874,11 @@ network and optimization. If the reader is unfamiliar with these tools, I advise
 reading though their documentation. These tools have a bit of a learning curve.
 But once you get used to them, they are a joy to work with. Much of the code
 written here is easily adapted to <code>tensorflow</code> or <code>pytorch</code>.</p>
+<div class="alert alert-note">
+  <div>
+    All the code for the PPO algorithm is available <a href="https://github.com/LoganAMorrison/flapjax/tree/main/proximal_policy_optimization" target="_blank" rel="noopener">here</a>.
+  </div>
+</div>
 <h2 id="gym-environment"><code>gym</code> Environment</h2>
 <p>It will be helpful to make a couple adjustments to the observations returned by the game. Let&rsquo;s take a quick peek at the observation:</p>
 <pre><code class="language-python">env = FlappyBirdEnvV0()
@@ -1515,6 +1624,11 @@ def optimize(state: PPOTrainState, traj: Tuple):
     return np.average(episode_rewards)
 </code></pre>
 <h2 id="testing-with-cartpole">Testing with <code>CartPole</code></h2>
+<div class="alert alert-note">
+  <div>
+    A notebook with the code is available <a href="https://github.com/LoganAMorrison/flapjax/blob/main/cartpole.ipynb" target="_blank" rel="noopener">here</a>.
+  </div>
+</div>
 <h3 id="training-1">Training</h3>
 <p>Before going for flappy bird, we will start with a much more simile problem: <code>CartPole</code>. This environment can return non-image observations of the system, which are much easier to learn from. We will use our MLP model to implement our agent. First, let&rsquo;s set up out environment. We will use <code>gym</code>&rsquo;s async vector environment.</p>
 <pre><code class="language-python">n_actors = 8
@@ -1658,6 +1772,11 @@ these results are sufficient.</p>
 </p>
 <p>We thus conclude that we are on the right track! Next, let&rsquo;s try the flappy bird environment.</p>
 <h2 id="training-flappy-bird">Training Flappy Bird</h2>
+<div class="alert alert-note">
+  <div>
+    A notebook with the code is available <a href="https://github.com/LoganAMorrison/flapjax/blob/main/flappybird.ipynb" target="_blank" rel="noopener">here</a>.
+  </div>
+</div>
 <h3 id="training-2">Training</h3>
 <p>We are now ready to train an agent to play flappy bird. As in the <code>CartPole</code> example, we first set up our environments.</p>
 <pre><code class="language-python"># Initialize environments

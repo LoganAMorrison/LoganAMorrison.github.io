@@ -312,7 +312,7 @@
   
   <meta property="og:site_name" content="Logan A. Morrison" />
   <meta property="og:url" content="https://loganamorrison.github.io/post/making-some-flapjax/making_the_game/" />
-  <meta property="og:title" content="FlapJax Part 1 - Making the game | Logan A. Morrison" />
+  <meta property="og:title" content="FlapJax Part 1 - Making a Flappy Bird game with PyGame | Logan A. Morrison" />
   <meta property="og:description" content="The flappy bird game is quite simple. Each step, the user can take one of two options: do nothing or flap. There are pipes that slide by which have a gap which the player is supposed to go through." /><meta property="og:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" />
     <meta property="twitter:image" content="https://loganamorrison.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png" /><meta property="og:locale" content="en-us" />
   
@@ -339,7 +339,7 @@
 
 
 
-  <title>FlapJax Part 1 - Making the game | Logan A. Morrison</title>
+  <title>FlapJax Part 1 - Making a Flappy Bird game with PyGame | Logan A. Morrison</title>
 </head>
 
 
@@ -511,6 +511,43 @@
           
 
           <li class="nav-item">
+            <a class="nav-link " href="/#experience"><span>Experience</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
             <a class="nav-link " href="/#posts"><span>Posts</span></a>
           </li>
 
@@ -549,6 +586,73 @@
 
           <li class="nav-item">
             <a class="nav-link " href="/#publications"><span>Publications</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/uploads/cv.pdf"><span>Curriculum Vitae</span></a>
           </li>
 
           
@@ -686,7 +790,7 @@
       
 
 
-  <li class="active"><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making the game</a></li>
+  <li class="active"><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making a Flappy Bird game with PyGame</a></li>
 
 
 
@@ -694,7 +798,7 @@
 
 
 
-  <li class=""><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - PPO Implementation</a></li>
+  <li class=""><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - Implementation of the proximal policy optimization algorithm using Jax and Flax</a></li>
 
       
         </ul>
@@ -749,7 +853,7 @@
         <div class="docs-article-container">
           
 
-          <h1>FlapJax Part 1 - Making the game</h1>
+          <h1>FlapJax Part 1 - Making a Flappy Bird game with PyGame</h1>
 
           <div class="article-style">
             <p>The flappy bird game is quite simple. Each step, the user can take one of two
@@ -759,6 +863,11 @@ is over. In the original game, if the player hits the ground, the game is over
 as well. Additionally, the original game allows for the bird to go arbitrarily
 high of the top of the screen. We will deviate from these last two. We will clip
 the player to always be on the screen and allow the player to touch the ground.</p>
+<div class="alert alert-note">
+  <div>
+    All the code for the game is available <a href="https://github.com/LoganAMorrison/flapjax/tree/main/flappy_bird" target="_blank" rel="noopener">here</a>.
+  </div>
+</div>
 <p>To implement the game, we will use <code>pygame</code>. However, much of the dynamics will
 be handled ourselves with basic Python code. We will write a couple classes to
 handle the bird and the pipes as well as a <code>gym</code>-compatible class for running

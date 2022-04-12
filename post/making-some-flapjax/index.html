@@ -507,6 +507,43 @@
           
 
           <li class="nav-item">
+            <a class="nav-link " href="/#experience"><span>Experience</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
             <a class="nav-link " href="/#posts"><span>Posts</span></a>
           </li>
 
@@ -545,6 +582,73 @@
 
           <li class="nav-item">
             <a class="nav-link " href="/#publications"><span>Publications</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+              
+              
+              
+                
+              
+              
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/#talks"><span>Talks</span></a>
+          </li>
+
+          
+          
+
+          
+
+          
+          
+          
+            
+          
+
+          
+
+          
+          
+          
+          
+
+          
+            
+              
+              
+            
+            
+          
+
+          <li class="nav-item">
+            <a class="nav-link " href="/uploads/cv.pdf"><span>Curriculum Vitae</span></a>
           </li>
 
           
@@ -678,7 +782,7 @@
       
 
 
-  <li class=""><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making the game</a></li>
+  <li class=""><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making a Flappy Bird game with PyGame</a></li>
 
 
 
@@ -686,7 +790,7 @@
 
 
 
-  <li class=""><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - PPO Implementation</a></li>
+  <li class=""><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - Implementation of the proximal policy optimization algorithm using Jax and Flax</a></li>
 
       
         </ul>
@@ -731,7 +835,11 @@
             <p>In this post, we will implement a FlappyBird-like game, implement the
 Proximal-Policy-Optimization (PPO) algorithm, and use PPO to train an agent to
 play the game.</p>
-<p>
+<div class="alert alert-note">
+  <div>
+    All the code is available in <a href="https://github.com/LoganAMorrison/flapjax" target="_blank" rel="noopener">this repo</a>.
+  </div>
+</div>
 
 
 
@@ -746,29 +854,29 @@ play the game.</p>
 
 
 
-
-<figure  >
+<figure  id="figure-trained-network-playing-flappy-bird">
   <div class="d-flex justify-content-center">
-    <div class="w-100" ><img src="./images/flappy_bird_tenth.gif" alt="Alt Text" loading="lazy" data-zoomable /></div>
-  </div></figure>
-</p>
+    <div class="w-100" ><img src="./images/flappy_bird_tenth.gif" alt="Trained network playing Flappy Bird" loading="lazy" data-zoomable width="300" /></div>
+  </div><figcaption>
+      Trained network playing Flappy Bird
+    </figcaption></figure>
 
 
   <ul class="list-unstyled">
     
       <li>
-        <h5><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making the game</a></h5>
+        <h5><a href="/post/making-some-flapjax/making_the_game/">FlapJax Part 1 - Making a Flappy Bird game with PyGame</a></h5>
         <p>The flappy bird game is quite simple. Each step, the user can take one of two options: do nothing or flap. There are pipes that slide by which have a gap which the player is supposed to go through.</p>
       </li>
     
       <li>
         <h5><a href="/post/making-some-flapjax/ppo/">FlapJax Part 2 - Reinforcement Learning, Policy Gradients, and Proximal Policy Optimization</a></h5>
         <p>In this section, we will be implementing an Actor-Critic reinforcement algorithm.
-Reinforcement Learning Terminology and Deep-Q Learning First, let&rsquo;s setup terminology and pose the problem a reinforcement algorithm aims to solve.</p>
+Reinforcement Learning Terminology and Deep-Q Learning First, let us set up terminology and pose the problem a reinforcement algorithm aims to solve.</p>
       </li>
     
       <li>
-        <h5><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - PPO Implementation</a></h5>
+        <h5><a href="/post/making-some-flapjax/impl/">FlapJax Part 3 - Implementation of the proximal policy optimization algorithm using Jax and Flax</a></h5>
         <p>In this part of the post, we will actually write all the code to implement the Proximal-Policy-Optimization algorithm. We will be using jax, flax and optax to implement the algorithm, network and optimization.</p>
       </li>
     

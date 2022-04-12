@@ -13,7 +13,7 @@
     </image>
     
     <item>
-      <title>FlapJax Part 1 - Making the game</title>
+      <title>FlapJax Part 1 - Making a Flappy Bird game with PyGame</title>
       <link>https://loganamorrison.github.io/post/making-some-flapjax/making_the_game/</link>
       <pubDate>Fri, 08 Apr 2022 00:00:00 +0000</pubDate>
       <guid>https://loganamorrison.github.io/post/making-some-flapjax/making_the_game/</guid>
@@ -24,6 +24,11 @@ is over. In the original game, if the player hits the ground, the game is over
 as well. Additionally, the original game allows for the bird to go arbitrarily
 high of the top of the screen. We will deviate from these last two. We will clip
 the player to always be on the screen and allow the player to touch the ground.&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    All the code for the game is available &lt;a href=&#34;https://github.com/LoganAMorrison/flapjax/tree/main/flappy_bird&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;.
+  &lt;/div&gt;
+&lt;/div&gt;
 &lt;p&gt;To implement the game, we will use &lt;code&gt;pygame&lt;/code&gt;. However, much of the dynamics will
 be handled ourselves with basic Python code. We will write a couple classes to
 handle the bird and the pipes as well as a &lt;code&gt;gym&lt;/code&gt;-compatible class for running
@@ -1048,70 +1053,79 @@ not).&lt;/p&gt;
       <description>&lt;p&gt;In this section, we will be implementing an Actor-Critic reinforcement algorithm.&lt;/p&gt;
 &lt;h2 id=&#34;reinforcement-learning&#34;&gt;Reinforcement Learning&lt;/h2&gt;
 &lt;h3 id=&#34;terminology-and-deep-q-learning&#34;&gt;Terminology and Deep-Q Learning&lt;/h3&gt;
-&lt;p&gt;First, let&amp;rsquo;s setup terminology and pose the problem a reinforcement algorithm aims to solve. Supposed we have some
+&lt;p&gt;First, let us set up terminology and pose the problem a reinforcement algorithm aims to solve. Supposed we have some
 world which exists in states $s\in\mathcal{S}$, which describe all information about the world. For example, if our world is
-a chess game, the $s$ contains all information about the positions of the game pieces. $\mathcal{S}$ is the state-space,
-containing all possible states our world can exist in.&lt;/p&gt;
+a chess game, the $s$ contains all information about the positions of the game pieces. $\mathcal{S}$ is the state-space
+containing all possible states in our world can that exist.&lt;/p&gt;
 &lt;p&gt;The world contains a given number of &lt;em&gt;agents&lt;/em&gt;, which can perform actions $a\in\mathcal{A}$ inside the world (in the chess example,
 the agent could be one of the players and the actions would be moving a chess piece to a valid location.) Here, $a$
 is an action taken from the &lt;em&gt;action-space&lt;/em&gt; $\mathcal{A}$, which contains all allowed actions.&lt;/p&gt;
 &lt;p&gt;The dynamics of the world are determined by the environment $\mathcal{E}$. Think of the environment as the natural laws of the
-world or the rules of the game. The environment dictates how the world will transition from a state $s$ to the next state $s&amp;rsquo;$
+world or the game&amp;rsquo;s rules. The environment dictates how the world will transition from a state $s$ to the next state $s&amp;rsquo;$
 given that the agent took the action $a$, i.e. $\mathcal{E}$ is a map from the current state and the agent action to a new
 state: $\mathcal{E}: \mathcal{S}\times\mathcal{A}\to\mathcal{S}$.&lt;/p&gt;
-&lt;p&gt;The goal of reinforcement learning is to construct an agent that performs a certain task. For example, maybe we want an
+&lt;p&gt;Reinforcement learning aims to construct an agent that performs a particular task. For example, maybe we want an
 agent that can play (and win) chess against another player or maybe an agent that can drive a car. In order to construct such an
-agent, we need a criterion for how well the agent is doing at performing the specified task. We do this be constructing
+agent, we need a criterion for how well the agent is doing at performing the specified task. We do this by constructing
 a &lt;em&gt;reward&lt;/em&gt; system $\mathcal{R}$. A reward is dished out to the agent every time the agent takes an action. The reward will be
 high if the action was beneficial in bringing the agent closer to performing the required task and lower otherwise.
-Mathematically speaking, the reward is a function that maps the current state, action and next state to a real number
+Mathematically speaking, the reward is a function that maps the current state, action, and next state to a real number
 $\mathcal{R}: \mathcal{S}\times\mathcal{A}\times\mathcal{S}\to\mathbb{R}$.&lt;/p&gt;
-&lt;p&gt;The agent itself is often described as a &lt;em&gt;policy&lt;/em&gt; $\pi$. The policy is a
+&lt;p&gt;The agent is often described as a &lt;em&gt;policy&lt;/em&gt; $\pi$. The policy is a
 function that takes the current state and outputs an action $\pi:
 \mathcal{S}\to\mathcal{A}$. For our purposes, $\pi$ will be a neutral network.
-As described above, the goal is to obtain an agent that chooses actions that
-bring us closer to achieving or goal or completing the specified task. Our way
-of judging whether the agent is choosing actions that bring us closer to the
-goal is through the rewards. So the optimal agent is one that &lt;em&gt;maximizes&lt;/em&gt; the
-reward. Consider a trajectory taken by the agent starting from a state $s_{t}$,
+As described above, the goal is to obtain an agent who chooses actions that
+bring us closer to achieving or completing the specified task. Our way
+of judging whether the agent chooses actions that bring us closer to the
+goal is through the rewards. The optimal agent is one that &lt;em&gt;maximizes&lt;/em&gt; the
+reward.&lt;/p&gt;
+&lt;p&gt;Consider a trajectory taken by the agent starting from a state $s_{t}$,
 i.e. a sequence of states $s_t,s_{t+1},s_{t+2},\dots$ produced by the agent
-following its policy. Consider the &lt;em&gt;return&lt;/em&gt;, the sum of all future rewards
-starting from $s_t$. This is:&lt;/p&gt;
-&lt;p&gt;$$
-R(s_{t},a_{t};s_{t+1},a_{t+1};\dots) = r_t + r_{t+1} + r_{t+2} + \cdots  = \sum_{k=0}^{\infty}r_{t+k}
-$$&lt;/p&gt;
+following its policy. Consider the &lt;em&gt;return&lt;/em&gt; - the sum of all future rewards
+starting from $s_t$. The return is given by&lt;/p&gt;
+&lt;p&gt;
+$$
+R(s_{t},a_{t};s_{t+1},a_{t+1};\dots) = r_t + r_{t+1} + r_{t+2} + \cdots  = \sum_{k=0}^{\infty}r_{t+k},
+$$
+&lt;/p&gt;
 &lt;p&gt;with $r_{i} = \mathcal{R}(s_{i}, a, s_{i+1})$ and $a_{i}$ the action taken to
 transition from $s_{i}\to s_{i+1}$. Our goal is to construct an agent to
 maximize this sum. If the rewards are finite numbers, then this sum won&amp;rsquo;t
 converge.  The trick to make this sum converge is to make it geometric by adding
-in a &lt;em&gt;discount&lt;/em&gt; factor $\gamma\in(0,1)$ to suppress future rewards, i.e.
-multiply $r_{t+k}$ by $$\gamma^{k}$. Another way to think about the discount
+in a &lt;em&gt;discount&lt;/em&gt; factor $\gamma\in(0,1)$ to suppress future rewards. Explicitly,
+we multiply $r_{t+k}$ by $$\gamma^{k}$. Another way to think about the discount
 factor is that we prioritize larger rewards now.  With a discount factor, our
 total reward through the trajectory is&lt;/p&gt;
-&lt;p&gt;$$
-R(s_{t},a_{t};s_{t+1},a_{t+1};\dots) =
+&lt;p&gt;
+$$
+R(s_{t},a_{t};s_{t+1},a_{t+1};\dots) = 
 r_t + \gamma r_{t+1} + \gamma^{2}r_{t+2} + \cdots  = \sum_{k=0}^{\infty}\gamma^{k}r_{t+k}
-$$&lt;/p&gt;
-&lt;p&gt;In order to ease the optimization algorithms, we introduce three additional
+$$
+&lt;/p&gt;
+&lt;p&gt;In order to ease the explanation of the optimization algorithms, we introduce three additional
 concepts: the action-value function $Q^{\pi}(s,a)$, the value function
-$V^{\pi}(a)$ and the advantage $A^{\pi}(s,a)$. The value function is just the
+$V^{\pi}(s)$ and the advantage $A^{\pi}(s,a)$. The value function is just the
 return obtained by following the policy $\pi$ forever.  The action-value
 function $Q^{\pi}(s,a)$ is the return obtained by first taking the action $a$
 given state $s$, then following the policy function forever afterwards. Lastly,
-the advantage is the difference between the value-action function and the value
+the advantage is the difference between the action-value function and the value
 function $A^{\pi}(s,a) = Q^{\pi}(s,a) - V^{\pi}(s)$. Explicitly, the value and
 action-value functions are given by:&lt;/p&gt;
-&lt;p&gt;$$
+&lt;p&gt;
+$$
 V^{\pi}(s_{t}) = \sum_{k=0}^{\infty}\gamma^{k} \mathcal{R}(s_{t+k}, \pi(s_{t+k}), s_{t+k+1})
-$$&lt;/p&gt;
+$$
+&lt;/p&gt;
 &lt;p&gt;and&lt;/p&gt;
-&lt;p&gt;$$
+&lt;p&gt;
+$$
 \begin{align}
-Q^{\pi}(s_{t},a_{t})
-&amp;amp;= \mathcal{R}(s_{t},a_{t},s_{t+1}) + \sum_{k=1}^{\infty}\gamma^{k} \mathcal{R}(s_{t+k}, \pi(s_{t+k}), s_{t+k+1})\\
-&amp;amp;=\mathcal{R}(s_{t},a_{t},s_{t+1}) + \gamma V^{\pi}(s_{t+1})
+Q^{\pi}(s_{t},a_{t}) 
+&amp;= \mathcal{R}(s_{t},a_{t},s_{t+1}) + \sum_{k=1}^{\infty}\gamma^{k} \mathcal{R}(s_{t+k}, \pi(s_{t+k}), s_{t+k+1})\\\\
+&amp;=\mathcal{R}(s_{t},a_{t},s_{t+1}) + \gamma V^{\pi}(s_{t+1})
 \end{align}
-$$&lt;/p&gt;
+$$
+&lt;/p&gt;
 &lt;p&gt;The advantage function $A^{\pi}(s,a)$ measures how much better it would be to
 take the action $a$ in state $s$ rather than just using the policy $\pi$. Notice
 that the value and action-value functions satisfy the following equations:&lt;/p&gt;
@@ -1125,18 +1139,22 @@ $$&lt;/p&gt;
 versions satisfy the above equation, but instead of using $a_{t} = \pi(s_{t})$, we simply take the
 action producing the maximum results. That is,&lt;/p&gt;
 &lt;p&gt;
+$$
 \begin{align}
 Q^{*}(s_{t}, a_{t}) &amp;= \mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma \max_{a_{t+1}}Q^{*}(s_{t+1}, a_{t+1})\\\\
 V^{*}(s_{t}) &amp;= \max_{a_{t}}\mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma V^{\pi}(s_{t+1})
 \end{align}
+$$
 &lt;/p&gt;
 &lt;p&gt;These are known as Bellman equations. To optimize $Q^{\pi}$, we need to minimize the following
 difference:&lt;/p&gt;
 &lt;p&gt;
+$$
 \begin{align}
 \delta &amp;= 
 Q^{\pi}(s_{t}, a_{t}) - \qty(\mathcal{R}(s_{t}, a_{t}, s_{t+1}) + \gamma \max_{a_{t+1}}Q^{\pi}(s_{t+1}, a_{t+1}))
 \end{align}
+$$
 &lt;/p&gt;
 &lt;p&gt;and then take our policy function to be $\pi(s) =\mathrm{argmax}_{a}Q^{\pi}(s,a)$.
 This is the basic approach taken for Deep-$Q$ learning: initialized a network
@@ -1145,7 +1163,7 @@ our network approximates $Q^{\pi}(s,a)$. We use $\pi(s) =\mathrm{argmax}_{a}Q^{\
 to perform actions and update our network at each step by minimize $\delta$ in
 the above equation.&lt;/p&gt;
 &lt;p&gt;As currently described, this process is very inefficient. More efficient
-implementations utilize relay-memory to train on batches of experience as well as
+implementations utilize replay-memory to train on batches of experience as well as
 employ multiple network to improve stabilization. However we will not go into
 these optimizations here. Instead we will explore a different method for determining
 the maximal policy.&lt;/p&gt;
@@ -1175,23 +1193,28 @@ the state/action pairs ending in the state $s_{t+N+1}$:
 $\tau=(s_{t},a_{t},\dots,s_{t+N},a_{t+N};s_{t+N+1})$. The probability of
 this trajectory is given by:&lt;/p&gt;
 &lt;p&gt;
+$$
 \begin{align}
 P(\tau) &amp;= \rho(s_{t})\prod_{k=0}^{N}\mathcal{E}(s_{t+k+1}|s_{t+k},a_{t+k})\pi(a_{t+k}|s_{t+k})
 \end{align}
+$$
 &lt;/p&gt;
 &lt;p&gt;In this expression, $\rho(s_{t})$ specifies the probability of starting in state
 $s_{t}$. Now consider the return given this trajectory. The reward given the
 transition $s_{t},a_{t}\to s_{t+1}$ is $\mathcal{R}(s_{t},a_{t},s_{t+1})$. Thus,
 the return of the trajectory is&lt;/p&gt;
 &lt;p&gt;
+$$
 \begin{align}
 R(\tau) &amp;= \sum_{k=0}^{N}\mathcal{R}(s_{t+k},a_{t+k},s_{t+k+1})
 \end{align}
+$$
 &lt;/p&gt;
 &lt;p&gt;To compute the expectation value of the return, we need to average the return
 over all possible trajectories, which requires an integration over all possible
 trajectories. That is, we need to perform a path integral:&lt;/p&gt;
 &lt;p&gt;
+$$
 \begin{align}
 \mathbb{E}\qty[R] &amp;= \int\mathcal{D}\tau P(\tau)R(\tau)\\\\
 &amp;= 
@@ -1199,6 +1222,7 @@ trajectories. That is, we need to perform a path integral:&lt;/p&gt;
 \int\dd{s_{t+N+1}}
 \rho(s_{t})\prod_{k=0}^{N}\mathcal{E}(s_{t+k+1}|s_{t+k},a_{t+k})\pi(a_{t+k}|s_{t+k})
 \end{align}
+$$
 &lt;/p&gt;
 &lt;p&gt;Now supposed our policy function is parameterized by internal variables
 $\theta$: $\pi = \pi_{\theta}$.  If we want to optimize our policy function to
@@ -1449,7 +1473,7 @@ L^{\mathrm{CLIP}}_{t}(\theta)
 $$
 &lt;/p&gt;
 &lt;p&gt;This loss function looks as follows:&lt;/p&gt;
-&lt;img src=&#34;./loss.png&#34; alt=&#34;ppo_loss_function&#34; width=&#34;600&#34;/&gt;
+&lt;img src=&#34;../images/loss.png&#34; alt=&#34;ppo_loss_function&#34; width=&#34;600&#34;/&gt;
 &lt;p&gt;We can see that, if we&amp;rsquo;re minimizing $L^{\mathrm{CLIP}}_{t}(\vb*{\theta})$, then
 the clipping cuts off how much we&amp;rsquo;re allowed to minimize. For example, if
 $\hat{A}_{t}&amp;gt;0$, then increasing the probability $\pi_{\theta}(a|s)$ beyond a
@@ -1547,7 +1571,7 @@ $\textbf{end}$ $\textbf{for}$&lt;/p&gt;
     </item>
     
     <item>
-      <title>FlapJax Part 3 - PPO Implementation</title>
+      <title>FlapJax Part 3 - Implementation of the proximal policy optimization algorithm using Jax and Flax</title>
       <link>https://loganamorrison.github.io/post/making-some-flapjax/impl/</link>
       <pubDate>Sun, 10 Apr 2022 00:00:00 +0000</pubDate>
       <guid>https://loganamorrison.github.io/post/making-some-flapjax/impl/</guid>
@@ -1560,6 +1584,11 @@ network and optimization. If the reader is unfamiliar with these tools, I advise
 reading though their documentation. These tools have a bit of a learning curve.
 But once you get used to them, they are a joy to work with. Much of the code
 written here is easily adapted to &lt;code&gt;tensorflow&lt;/code&gt; or &lt;code&gt;pytorch&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    All the code for the PPO algorithm is available &lt;a href=&#34;https://github.com/LoganAMorrison/flapjax/tree/main/proximal_policy_optimization&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;.
+  &lt;/div&gt;
+&lt;/div&gt;
 &lt;h2 id=&#34;gym-environment&#34;&gt;&lt;code&gt;gym&lt;/code&gt; Environment&lt;/h2&gt;
 &lt;p&gt;It will be helpful to make a couple adjustments to the observations returned by the game. Let&amp;rsquo;s take a quick peek at the observation:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;env = FlappyBirdEnvV0()
@@ -2305,6 +2334,11 @@ def optimize(state: PPOTrainState, traj: Tuple):
     return np.average(episode_rewards)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&#34;testing-with-cartpole&#34;&gt;Testing with &lt;code&gt;CartPole&lt;/code&gt;&lt;/h2&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    A notebook with the code is available &lt;a href=&#34;https://github.com/LoganAMorrison/flapjax/blob/main/cartpole.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;.
+  &lt;/div&gt;
+&lt;/div&gt;
 &lt;h3 id=&#34;training-1&#34;&gt;Training&lt;/h3&gt;
 &lt;p&gt;Before going for flappy bird, we will start with a much more simile problem: &lt;code&gt;CartPole&lt;/code&gt;. This environment can return non-image observations of the system, which are much easier to learn from. We will use our MLP model to implement our agent. First, let&amp;rsquo;s set up out environment. We will use &lt;code&gt;gym&lt;/code&gt;&amp;rsquo;s async vector environment.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;n_actors = 8
@@ -2448,6 +2482,11 @@ these results are sufficient.&lt;/p&gt;
 &lt;/p&gt;
 &lt;p&gt;We thus conclude that we are on the right track! Next, let&amp;rsquo;s try the flappy bird environment.&lt;/p&gt;
 &lt;h2 id=&#34;training-flappy-bird&#34;&gt;Training Flappy Bird&lt;/h2&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    A notebook with the code is available &lt;a href=&#34;https://github.com/LoganAMorrison/flapjax/blob/main/flappybird.ipynb&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;here&lt;/a&gt;.
+  &lt;/div&gt;
+&lt;/div&gt;
 &lt;h3 id=&#34;training-2&#34;&gt;Training&lt;/h3&gt;
 &lt;p&gt;We are now ready to train an agent to play flappy bird. As in the &lt;code&gt;CartPole&lt;/code&gt; example, we first set up our environments.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;# Initialize environments
